@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSure STP | Member Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        green: {
+                            50: 'rgba(5,163,87,0.08)',
+                            100: 'rgba(5,163,87,0.15)',
+                            200: 'rgba(5,163,87,0.25)',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#06C164',
+                            600: '#05A357',
+                            700: '#048245',
+                            800: '#036134',
+                            900: '#024122',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'DM Sans', system-ui, -apple-system, sans-serif; }
+        .nav-active { background-color: rgba(5,163,87,0.08); color: #05A357; font-weight: 600; border-right: 4px solid #05A357; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #05A357; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 h-screen overflow-hidden">
+
+    <!-- ========================================== -->
+    <!-- REDESIGNED LOGIN SCREEN                    -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: #1a1f36;">
+        <!-- Blurred Background Image -->
+        <div class="absolute inset-0 opacity-20" style="background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=2070') center/cover no-repeat; filter: blur(8px);"></div>
+        
+        <!-- Main Login Card -->
+        <div class="relative w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-2">
+            
+            <!-- LEFT PANEL - Blue Branding -->
+            <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-black p-10 md:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+                <!-- Decorative Circles -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-white opacity-5 rounded-full"></div>
+                <div class="absolute bottom-10 -left-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 mb-12 relative z-10">
+                    <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-shield-halved text-green-700 text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">HealthSure STP</span>
+                </div>
+
+                <!-- Hero Content -->
+                <div class="relative z-10 mb-12">
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">Claims that settle themselves.</h1>
+                    <p class="text-green-100 text-lg leading-relaxed">Experience AI-powered Straight-Through Processing. Zero touch. Zero fraud. Zero friction.</p>
+                </div>
+
+                <!-- Feature Cards -->
+                <div class="space-y-4 relative z-10 mb-12">
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex items-center gap-4">
+                        <div class="w-10 h-10 bg-yellow-400/20 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-bolt text-yellow-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">87% Auto-Approval Rate</p>
+                            <p class="text-xs text-green-200">Sub-15 minute settlement TAT</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex items-center gap-4">
+                        <div class="w-10 h-10 bg-green-400/20 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-user-shield text-green-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">Real-time Fraud Interception</p>
+                            <p class="text-xs text-green-200">Multi-layer AI risk scoring</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 flex items-center gap-4">
+                        <div class="w-10 h-10 bg-cyan-400/20 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-hospital text-cyan-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">ABDM & NHCX Compliant</p>
+                            <p class="text-xs text-green-200">Seamless hospital integration</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="relative z-10">
+                    <p class="text-xs text-green-300">&copy; 2024 HealthSure Enterprise. Protected by enterprise-grade encryption.</p>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL - White Login Form -->
+            <div class="bg-white p-10 md:p-12 flex flex-col justify-center">
+                <div class="max-w-sm mx-auto w-full">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome back</h2>
+                    <p class="text-gray-500 mb-8">Access your member portal and track your claims.</p>
+                    
+                    <form onsubmit="event.preventDefault(); doLogin();" class="space-y-5">
+                        <!-- Email Field -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address or Member ID</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-400"></i>
+                                <input type="text" value="amit.sharma@example.com" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-semibold text-gray-700">Password</label>
+                                <a href="#" class="text-xs font-medium text-green-600 hover:text-green-800">Forgot password?</a>
+                            </div>
+                            <div class="relative">
+                                <i class="fa-solid fa-lock absolute left-4 top-3.5 text-gray-400"></i>
+                                <input type="password" value="password123" id="login-password" class="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition text-sm">
+                                <button type="button" onclick="togglePassword()" class="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600">
+                                    <i class="fa-solid fa-eye" id="eye-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Keep Signed In -->
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500" checked>
+                            <span class="ml-2 text-sm text-gray-600">Keep me signed in</span>
+                        </label>
+
+                        <!-- Sign In Button -->
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-green-600/20 transition duration-200 flex items-center justify-center gap-2 text-base">
+                            Sign In Securely <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="relative my-8">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-400">Or continue with</span></div>
+                    </div>
+
+                    <!-- Social Login Buttons -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="doLogin()" class="flex items-center justify-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition text-gray-600">
+                            <i class="fa-brands fa-microsoft text-lg"></i>
+                        </button>
+                        <button onclick="doLogin()" class="flex items-center justify-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition text-gray-600">
+                            <i class="fa-brands fa-google text-lg text-red-500"></i>
+                        </button>
+                        <button onclick="doLogin()" class="flex items-center justify-center py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition text-gray-600">
+                            <i class="fa-solid fa-fingerprint text-lg text-green-500"></i>
+                        </button>
+                    </div>
+
+                    <!-- Footer -->
+                    <p class="text-center text-xs text-gray-400 mt-8 flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-lock"></i> Protected by 256-bit encryption & ABDM compliance
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MAIN APPLICATION SHELL                     -->
+    <!-- ========================================== -->
+    <div id="app-shell" class="hidden h-full flex">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col h-full overflow-y-auto shrink-0">
+            <div class="p-4 border-b border-gray-200 flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved text-green-600 text-xl"></i>
+                <span class="font-bold text-gray-900">HealthSure STP</span>
+            </div>
+            
+            <nav class="flex-1 py-4">
+                <p class="px-4 text-xs font-bold text-gray-400 uppercase mb-2">Main Menu</p>
+                <a href="javascript:void(0);" onclick="showPage('page-dashboard')" id="link-page-dashboard" class="nav-link nav-active flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-gauge-high w-5 text-center"></i> Dashboard
+                </a>
+                <a href="javascript:void(0);" onclick="showPage('page-policies')" id="link-page-policies" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> My Policies
+                </a>
+
+                <p class="px-4 text-xs font-bold text-gray-400 uppercase mt-6 mb-2">Claims Management</p>
+                <a href="javascript:void(0);" onclick="showPage('page-submit')" id="link-page-submit" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-plus-circle w-5 text-center"></i> Submit New Claim
+                </a>
+                <a href="javascript:void(0);" onclick="showPage('page-tracker')" id="link-page-tracker" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> Claim Tracker
+                </a>
+
+                <p class="px-4 text-xs font-bold text-gray-400 uppercase mt-6 mb-2">Network & Health</p>
+                <a href="javascript:void(0);" onclick="showPage('page-hospitals')" id="link-page-hospitals" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-hospital w-5 text-center"></i> Network Hospitals
+                </a>
+                <a href="javascript:void(0);" onclick="showPage('page-locker')" id="link-page-locker" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-notes-medical w-5 text-center"></i> Health Locker (ABDM)
+                </a>
+
+                <p class="px-4 text-xs font-bold text-gray-400 uppercase mt-6 mb-2">Assistance</p>
+                <a href="javascript:void(0);" onclick="showPage('page-support')" id="link-page-support" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-headset w-5 text-center"></i> 24/7 Support
+                </a>
+                <a href="javascript:void(0);" onclick="showPage('page-settings')" id="link-page-settings" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100">
+                    <i class="fa-solid fa-gear w-5 text-center"></i> Settings & Profile
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">AS</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-sm font-bold text-gray-900 truncate">Amit Sharma</p>
+                        <p class="text-xs text-gray-500 truncate">Gold Plus Plan</p>
+                    </div>
+                </div>
+                <button onclick="openModal('modal-logout')" class="w-full mt-3 text-xs text-red-600 font-bold hover:underline flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <!-- Top Header -->
+            <header class="h-16 bg-white border-b border-gray-200 px-8 flex justify-between items-center shrink-0">
+                <h2 id="header-title" class="text-xl font-bold text-gray-900">Dashboard</h2>
+                <div class="flex items-center gap-4">
+                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">System Healthy</span>
+                    <button onclick="openModal('modal-notifications')" class="relative text-gray-500 hover:text-gray-700">
+                        <i class="fa-solid fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Page Content Container -->
+            <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                
+                <!-- ========================================== -->
+                <!-- PAGE 1: DASHBOARD                          -->
+                <!-- ========================================== -->
+                <div id="page-dashboard" class="page-content">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <p class="text-sm text-gray-500 font-medium">Total Sum Insured</p>
+                            <h3 class="text-2xl font-bold text-gray-900 mt-1">₹10,00,000</h3>
+                            <p class="text-xs text-gray-400 mt-2">Policy: HS-2024-88421</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <p class="text-sm text-gray-500 font-medium">Claimed This Year</p>
+                            <h3 class="text-2xl font-bold text-orange-600 mt-1">₹45,000</h3>
+                            <p class="text-xs text-gray-400 mt-2">1 Claim Processed via STP</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <p class="text-sm text-gray-500 font-medium">Available Balance</p>
+                            <h3 class="text-2xl font-bold text-green-600 mt-1">9,55,000</h3>
+                            <p class="text-xs text-green-600 mt-2 font-bold">Renewal due in 240 days</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">Active Claim: CLM-8842</h3>
+                                <p class="text-sm text-gray-500">Apollo Hospitals • Discharged: 14-Dec-2024</p>
+                            </div>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">STP APPROVED</span>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <p class="text-xs font-bold text-gray-500 uppercase mb-3">STP Processing Pipeline (12 Mins TAT)</p>
+                            <div class="flex items-center justify-between text-xs font-medium text-gray-700">
+                                <div class="flex-1 text-center"><i class="fa-solid fa-check-circle text-green-500 text-lg mb-1 block"></i>Ingestion</div>
+                                <div class="flex-1 border-t-2 border-green-500"></div>
+                                <div class="flex-1 text-center"><i class="fa-solid fa-check-circle text-green-500 text-lg mb-1 block"></i>AI OCR</div>
+                                <div class="flex-1 border-t-2 border-green-500"></div>
+                                <div class="flex-1 text-center"><i class="fa-solid fa-check-circle text-green-500 text-lg mb-1 block"></i>Fraud Check</div>
+                                <div class="flex-1 border-t-2 border-green-500"></div>
+                                <div class="flex-1 text-center"><i class="fa-solid fa-check-circle text-green-500 text-lg mb-1 block"></i>Rule Match</div>
+                                <div class="flex-1 border-t-2 border-green-500"></div>
+                                <div class="flex-1 text-center text-green-600 font-bold"><i class="fa-solid fa-building-columns text-lg mb-1 block"></i>Payout</div>
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-gray-900 mb-4 border-b pb-2">Transparent Claim Breakdown</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded">
+                                <div><p class="font-semibold text-sm">Doctor Consultation & Nursing</p><p class="text-xs text-gray-600">Fully covered</p></div>
+                                <p class="font-bold text-green-700">₹15,000</p>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white border border-gray-200 rounded">
+                                <div><p class="font-semibold text-sm">Room Rent (ICU)</p><p class="text-xs text-red-600">8,000 deducted (Policy cap limit exceeded)</p></div>
+                                <p class="font-bold text-gray-900">₹32,000 <span class="text-xs text-gray-400 line-through">₹40k</span></p>
+                            </div>
+                            <div class="flex justify-between items-start p-3 bg-white border border-gray-200 rounded">
+                                <div>
+                                    <p class="font-semibold text-sm">Consumables & Drugs</p>
+                                    <p class="text-xs text-red-600">₹25,000 deducted (Standard exclusion)</p>
+                                    <button onclick="openModal('modal-review')" class="text-xs text-red-600 font-bold hover:underline mt-1 flex items-center gap-1">
+                                        <i class="fa-solid fa-gavel"></i> Dispute this Deduction
+                                    </button>
+                                </div>
+                                <p class="font-bold text-gray-900">₹0 <span class="text-xs text-gray-400 line-through">₹25k</span></p>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded flex justify-between items-center">
+                            <div><p class="font-bold text-green-900">Final Approved Payout</p><p class="text-xs text-green-700">Credited via IMPS in 12 mins</p></div>
+                            <div class="flex items-center gap-4">
+                                <button onclick="alert('Downloading Settlement Letter...')" class="text-xs bg-white border border-green-300 text-green-700 px-3 py-1.5 rounded font-bold hover:bg-green-50">Download Letter</button>
+                                <p class="text-2xl font-extrabold text-green-700">45,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 2: MY POLICIES                        -->
+                <!-- ========================================== -->
+                <div id="page-policies" class="page-content" style="display: none;">
+                    <div class="bg-green-700 p-8 rounded-lg text-white mb-8 shadow-lg flex justify-between items-center">
+                        <div>
+                            <p class="text-green-200 text-sm font-bold uppercase">Active Policy</p>
+                            <h2 class="text-3xl font-extrabold mt-1">Gold Plus Family Floater</h2>
+                            <p class="mt-2 text-green-100">Policy No: HS-2024-88421 • Valid till 15 Dec 2025</p>
+                        </div>
+                        <button onclick="openModal('modal-ecard')" class="bg-white text-green-700 px-6 py-3 rounded-lg font-bold text-sm hover:bg-green-50">View Digital e-Card</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Coverage Benefits</h3>
+                            <ul class="space-y-3 text-sm text-gray-700">
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Room Rent: Single Private / ICU Capped at ₹8k/day</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Pre/Post Hospitalization: 60 & 180 Days</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> AYUSH Treatment: Full Cover</li>
+                                <li class="flex gap-2"><i class="fa-solid fa-check text-green-500 mt-1"></i> Maternity: Capped at ₹50,000</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Covered Members</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded"><div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-xs">AS</div><div><p class="font-bold text-sm">Amit Sharma (Self)</p><p class="text-xs text-gray-500">Age 34</p></div></div>
+                                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded"><div class="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center font-bold text-xs">PS</div><div><p class="font-bold text-sm">Priya Sharma (Spouse)</p><p class="text-xs text-gray-500">Age 31</p></div></div>
+                                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded"><div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-xs">RS</div><div><p class="font-bold text-sm">Rohan Sharma (Son)</p><p class="text-xs text-gray-500">Age 5</p></div></div>
+                            </div>
+                            <button onclick="openModal('modal-adddependent')" class="w-full border-2 border-dashed border-gray-300 text-gray-500 py-3 rounded-lg font-bold mt-4 hover:bg-gray-50 hover:border-green-400 hover:text-green-600 transition">+ Add Dependent</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 3: SUBMIT CLAIM                       -->
+                <!-- ========================================== -->
+                <div id="page-submit" class="page-content" style="display: none;">
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-3xl mx-auto">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Submit Reimbursement Claim</h2>
+                        <form onsubmit="event.preventDefault(); processClaim();" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Patient</label><select class="w-full border border-gray-300 rounded p-2"><option>Amit Sharma (Self)</option></select></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Hospital Name</label><input type="text" placeholder="e.g. Apollo Hospitals" class="w-full border border-gray-300 rounded p-2"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Admission Date</label><input type="date" class="w-full border border-gray-300 rounded p-2"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Total Bill Amount (₹)</label><input type="number" placeholder="0.00" class="w-full border border-gray-300 rounded p-2"></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Upload Documents (Discharge Summary, Bills)</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded p-8 text-center bg-gray-50">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
+                                    <p class="text-sm text-gray-600">Drag & drop or click to browse (PDF, JPG)</p>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700">Submit to AI STP Engine</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 4: CLAIM TRACKER                      -->
+                <!-- ========================================== -->
+                <div id="page-tracker" class="page-content" style="display: none;">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 border-b border-gray-200 font-bold text-gray-900">Claim History</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                                <tr>
+                                    <th class="px-6 py-3">Claim ID</th>
+                                    <th class="px-6 py-3">Date</th>
+                                    <th class="px-6 py-3">Hospital</th>
+                                    <th class="px-6 py-3">Amount</th>
+                                    <th class="px-6 py-3">Status</th>
+                                    <th class="px-6 py-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold">#CLM-8842</td><td class="px-6 py-4">14 Dec 2024</td><td class="px-6 py-4">Apollo Hospitals</td><td class="px-6 py-4">₹45,000</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">STP Approved</span></td>
+                                    <td class="px-6 py-4"><button onclick="showPage('page-dashboard')" class="text-green-600 font-bold text-xs hover:underline">View Breakdown</button></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold">#CLM-8511</td><td class="px-6 py-4">02 Nov 2024</td><td class="px-6 py-4">Max Healthcare</td><td class="px-6 py-4">₹12,500</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">Approved</span></td>
+                                    <td class="px-6 py-4"><button class="text-green-600 font-bold text-xs hover:underline">View Details</button></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold">#CLM-8102</td><td class="px-6 py-4">15 Aug 2024</td><td class="px-6 py-4">City Dental</td><td class="px-6 py-4">₹4,000</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded">Rejected</span></td>
+                                    <td class="px-6 py-4"><button onclick="openModal('modal-claimdetails')" class="text-green-600 font-bold text-xs hover:underline">View Reason</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 5: NETWORK HOSPITALS                  -->
+                <!-- ========================================== -->
+                <div id="page-hospitals" class="page-content" style="display: none;">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6 flex gap-4">
+                        <input type="text" placeholder="Search hospitals by city or name..." class="flex-1 border border-gray-300 rounded p-2">
+                        <button class="bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700">Search</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <div class="flex justify-between mb-2"><h3 class="font-bold">Apollo Hospitals</h3><span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">TIER 1</span></div>
+                            <p class="text-sm text-gray-500 mb-4">Jubilee Hills, Hyderabad</p>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">Cashless Available</span>
+                            <button onclick="openModal('modal-preauth')" class="w-full bg-green-600 text-white py-2 rounded font-bold text-sm mt-4 hover:bg-green-700">Request Pre-Auth</button>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <div class="flex justify-between mb-2"><h3 class="font-bold">Fortis Healthcare</h3><span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">TIER 1</span></div>
+                            <p class="text-sm text-gray-500 mb-4">Bannerghatta Road, Bangalore</p>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">Cashless Available</span>
+                            <button onclick="openModal('modal-preauth')" class="w-full bg-green-600 text-white py-2 rounded font-bold text-sm mt-4 hover:bg-green-700">Request Pre-Auth</button>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <div class="flex justify-between mb-2"><h3 class="font-bold">Max Super Speciality</h3><span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-bold">TIER 2</span></div>
+                            <p class="text-sm text-gray-500 mb-4">Saket, New Delhi</p>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">Cashless Available</span>
+                            <button onclick="openModal('modal-preauth')" class="w-full bg-green-600 text-white py-2 rounded font-bold text-sm mt-4 hover:bg-green-700">Request Pre-Auth</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 6: HEALTH LOCKER (ABDM)               -->
+                <!-- ========================================== -->
+                <div id="page-locker" class="page-content" style="display: none;">
+                    <div class="bg-green-700 p-6 rounded-lg text-white mb-8 flex justify-between items-center">
+                        <div><h2 class="text-xl font-bold">ABDM Health Locker</h2><p class="text-green-100 text-sm">Linked via ABHA ID: 91-1234-5678-9012</p></div>
+                        <button onclick="openModal('modal-abdmsync')" class="bg-white text-green-700 px-4 py-2 rounded font-bold text-sm hover:bg-green-50">Sync New Records</button>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 border-b font-bold text-gray-900">Recent Health Records</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-50 text-gray-500 uppercase text-xs"><tr><th class="px-6 py-3">Document</th><th class="px-6 py-3">Source</th><th class="px-6 py-3">Date</th><th class="px-6 py-3">Action</th></tr></thead>
+                            <tbody class="divide-y">
+                                <tr><td class="px-6 py-4 font-medium">Discharge Summary</td><td class="px-6 py-4">Apollo Hospitals</td><td class="px-6 py-4">14 Dec 2024</td><td class="px-6 py-4"><button onclick="openModal('modal-docviewer')" class="text-green-600 font-bold text-xs hover:underline">View</button></td></tr>
+                                <tr><td class="px-6 py-4 font-medium">Blood Test (CBC)</td><td class="px-6 py-4">Dr. Lal PathLabs</td><td class="px-6 py-4">12 Dec 2024</td><td class="px-6 py-4"><button onclick="openModal('modal-docviewer')" class="text-green-600 font-bold text-xs hover:underline">View</button></td></tr>
+                                <tr><td class="px-6 py-4 font-medium">Prescription</td><td class="px-6 py-4">City Care Clinic</td><td class="px-6 py-4">10 Dec 2024</td><td class="px-6 py-4"><button onclick="openModal('modal-docviewer')" class="text-green-600 font-bold text-xs hover:underline">View</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 7: 24/7 SUPPORT                       -->
+                <!-- ========================================== -->
+                <div id="page-support" class="page-content" style="display: none;">
+                    <div class="bg-red-600 p-6 rounded-lg text-white mb-8 flex justify-between items-center shadow-lg">
+                        <div><h3 class="text-xl font-bold">Medical Emergency?</h3><p class="text-red-100">Call 24/7 Ambulance & Pre-Auth Hotline</p></div>
+                        <a href="tel:1800123456" class="bg-white text-red-700 px-6 py-3 rounded font-extrabold text-lg">1-800-123-456</a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-900 mb-4">Raise a Grievance Ticket</h3>
+                            <form onsubmit="event.preventDefault(); alert('Ticket Raised!');" class="space-y-4">
+                                <select class="w-full border border-gray-300 rounded p-2"><option>Dispute AI Deduction</option><option>Claim Status Inquiry</option></select>
+                                <textarea rows="4" class="w-full border border-gray-300 rounded p-2" placeholder="Describe issue..."></textarea>
+                                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold">Submit Ticket</button>
+                            </form>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-900 mb-4">Live Assistance</h3>
+                            <p class="text-sm text-gray-600 mb-4">Chat with our AI assistant or a human agent to resolve queries instantly.</p>
+                            <button onclick="openModal('modal-chat')" class="w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-comments"></i> Start Live Chat
+                            </button>
+                            <div class="mt-6 border-t pt-4">
+                                <h4 class="font-bold text-sm mb-2">FAQs</h4>
+                                <div class="space-y-2 text-xs text-gray-600">
+                                    <p><strong>Why was my claim deducted?</strong> AI applies policy rules like room-rent caps.</p>
+                                    <p><strong>What is STP?</strong> Straight-Through Processing means AI approves claims in 12 mins.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- PAGE 8: SETTINGS                           -->
+                <!-- ========================================== -->
+                <div id="page-settings" class="page-content" style="display: none;">
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h2>
+                        <div class="space-y-4">
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Full Name</label><input type="text" value="Amit Sharma" class="w-full border border-gray-300 rounded p-2"></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Email</label><input type="email" value="amit.sharma@example.com" class="w-full border border-gray-300 rounded p-2"></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Phone</label><input type="tel" value="+91 98765 43210" class="w-full border border-gray-300 rounded p-2"></div>
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded border border-gray-200">
+                                <span class="font-bold text-sm">Two-Factor Authentication (2FA)</span>
+                                <input type="checkbox" checked class="w-5 h-5 text-green-600">
+                            </div>
+                            <button onclick="alert('Settings Saved!')" class="w-full bg-gray-900 text-white py-3 rounded font-bold hover:bg-gray-800">Save Changes</button>
+                            <button onclick="openModal('modal-changepass')" class="w-full border border-gray-400 text-gray-700 py-2 rounded font-bold hover:bg-gray-50">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODALS & POPUPS                            -->
+    <!-- ========================================== -->
+
+    <!-- 1. Dispute Deduction Modal -->
+    <div id="modal-review" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-review')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Dispute AI Deduction</h3>
+            <p class="text-sm text-gray-600 mb-4">Request a manual review for the ₹25,000 Consumables deduction.</p>
+            <textarea rows="4" class="w-full border border-gray-300 rounded p-2 mb-4 text-sm" placeholder="Explain why this was medically necessary..."></textarea>
+            <div class="flex gap-3">
+                <button onclick="closeModal('modal-review')" class="flex-1 py-2 border border-gray-300 rounded font-bold text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button onclick="alert('Dispute Submitted! A human agent will review within 24 hours.'); closeModal('modal-review')" class="flex-1 py-2 bg-orange-600 text-white rounded font-bold hover:bg-orange-700">Submit Dispute</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Digital e-Card Modal -->
+    <div id="modal-ecard" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-ecard')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Digital Health e-Card</h3>
+            <div class="bg-gradient-to-br from-green-700 to-indigo-900 p-6 rounded-xl text-white shadow-lg">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="text-xl font-bold">HealthSure STP</div>
+                    <div class="text-xs bg-white/20 px-2 py-1 rounded">Gold Plus</div>
+                </div>
+                <div class="mb-6">
+                    <p class="text-xs text-green-200 uppercase">Policyholder Name</p>
+                    <p class="text-lg font-bold">Amit Sharma</p>
+                </div>
+                <div class="flex justify-between text-xs">
+                    <div><p class="text-green-200 uppercase">Policy No</p><p class="font-bold">HS-2024-88421</p></div>
+                    <div><p class="text-green-200 uppercase">Valid Till</p><p class="font-bold">15 Dec 2025</p></div>
+                    <div class="w-12 h-12 bg-white p-1 rounded flex items-center justify-center"><i class="fa-solid fa-qrcode text-green-900 text-2xl"></i></div>
+                </div>
+            </div>
+            <button onclick="closeModal('modal-ecard')" class="w-full mt-4 py-2 bg-gray-100 rounded font-bold text-gray-700">Close</button>
+        </div>
+    </div>
+
+    <!-- 3. Add Dependent Modal -->
+    <div id="modal-adddependent" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-adddependent')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Add Dependent</h3>
+            <form onsubmit="event.preventDefault(); alert('Dependent Added!'); closeModal('modal-adddependent');" class="space-y-4">
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Full Name</label><input type="text" class="w-full border border-gray-300 rounded p-2" required></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-bold text-gray-700 mb-1">DOB</label><input type="date" class="w-full border border-gray-300 rounded p-2" required></div>
+                    <div><label class="block text-sm font-bold text-gray-700 mb-1">Relation</label><select class="w-full border border-gray-300 rounded p-2"><option>Child</option><option>Parent</option></select></div>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">Add Member</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. STP Processing Animation Modal -->
+    <div id="modal-processing" class="fixed inset-0 bg-black bg-opacity-80 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm p-8 text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">AI STP Engine Processing...</h3>
+            <p class="text-sm text-gray-500 mb-4">Scanning documents, validating fraud checks, and matching policy rules.</p>
+            <div class="text-xs text-green-600 font-bold animate-pulse">Please do not close this window.</div>
+        </div>
+    </div>
+
+    <!-- 5. Claim Rejection Details Modal -->
+    <div id="modal-claimdetails" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-claimdetails')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <div class="flex items-center gap-3 mb-4 text-red-600">
+                <i class="fa-solid fa-circle-exclamation text-2xl"></i>
+                <h3 class="text-lg font-bold">Claim #CLM-8102 Rejected</h3>
+            </div>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                <p class="text-sm font-bold text-red-800">Reason: Waiting Period Not Met</p>
+                <p class="text-xs text-red-700 mt-1">Dental procedures are subject to a 2-year waiting period. Your policy was active for only 8 months at the time of treatment.</p>
+            </div>
+            <button onclick="closeModal('modal-claimdetails')" class="w-full py-2 bg-gray-100 rounded font-bold text-gray-700">Understood</button>
+        </div>
+    </div>
+
+    <!-- 6. Hospital Pre-Auth Modal -->
+    <div id="modal-preauth" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-preauth')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Request Cashless Pre-Auth</h3>
+            <form onsubmit="event.preventDefault(); alert('Pre-Auth Request Sent to Hospital!'); closeModal('modal-preauth');" class="space-y-4">
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Planned Procedure</label><input type="text" placeholder="e.g. Cataract Surgery" class="w-full border border-gray-300 rounded p-2"></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Estimated Cost (₹)</label><input type="number" placeholder="0.00" class="w-full border border-gray-300 rounded p-2"></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Admission Date</label><input type="date" class="w-full border border-gray-300 rounded p-2"></div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">Send Pre-Auth Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 7. ABDM OTP Sync Modal -->
+    <div id="modal-abdmsync" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm p-6 relative text-center">
+            <button onclick="closeModal('modal-abdmsync')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <i class="fa-solid fa-shield-halved text-green-600 text-4xl mb-4"></i>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Verify ABHA Identity</h3>
+            <p class="text-sm text-gray-500 mb-6">Enter the 4-digit OTP sent to your registered mobile number (+91 98765 43210).</p>
+            <div class="flex justify-center gap-3 mb-6">
+                <input type="text" maxlength="1" class="w-12 h-12 border border-gray-300 rounded text-center text-xl font-bold focus:ring-2 focus:ring-green-500 outline-none">
+                <input type="text" maxlength="1" class="w-12 h-12 border border-gray-300 rounded text-center text-xl font-bold focus:ring-2 focus:ring-green-500 outline-none">
+                <input type="text" maxlength="1" class="w-12 h-12 border border-gray-300 rounded text-center text-xl font-bold focus:ring-2 focus:ring-green-500 outline-none">
+                <input type="text" maxlength="1" class="w-12 h-12 border border-gray-300 rounded text-center text-xl font-bold focus:ring-2 focus:ring-green-500 outline-none">
+            </div>
+            <button onclick="alert('ABDM Synced Successfully!'); closeModal('modal-abdmsync')" class="w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">Verify & Sync Records</button>
+        </div>
+    </div>
+
+    <!-- 8. Document Viewer Modal -->
+    <div id="modal-docviewer" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl h-[80vh] flex flex-col relative">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 rounded-t-lg">
+                <h3 class="font-bold text-gray-900"><i class="fa-solid fa-file-pdf text-red-500 mr-2"></i> Discharge_Summary_Apollo.pdf</h3>
+                <button onclick="closeModal('modal-docviewer')" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
+            </div>
+            <div class="flex-1 bg-gray-200 flex items-center justify-center overflow-auto p-8">
+                <div class="bg-white p-12 shadow-lg w-full max-w-md text-gray-600 text-sm">
+                    <h4 class="font-bold text-lg text-center mb-4 text-gray-900">APOLLO HOSPITALS</h4>
+                    <p class="mb-2"><strong>Patient:</strong> Amit Sharma (54/M)</p>
+                    <p class="mb-2"><strong>UHID:</strong> APL-992837</p>
+                    <p class="mb-2"><strong>Diagnosis:</strong> Acute Dengue Fever</p>
+                    <p class="mb-2"><strong>Treatment:</strong> IV Fluids, Platelet Monitoring</p>
+                    <p class="mt-6 italic text-center text-gray-400">[Simulated Document Preview Area]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Live Chat Modal -->
+    <div id="modal-chat" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col h-[500px] relative">
+            <div class="p-4 bg-green-600 text-white rounded-t-lg flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-robot"></i></div>
+                    <div><p class="font-bold text-sm">HealthSure AI Assistant</p><p class="text-[10px] text-green-200">Online</p></div>
+                </div>
+                <button onclick="closeModal('modal-chat')" class="text-white hover:text-green-200"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-3">
+                <div class="bg-white p-3 rounded-lg shadow-sm text-sm max-w-[80%]">Hello Amit! I see your recent claim CLM-8842 was approved. How can I help you today?</div>
+                <div class="bg-green-600 text-white p-3 rounded-lg shadow-sm text-sm max-w-[80%] ml-auto">Why was ₹25k deducted for consumables?</div>
+                <div class="bg-white p-3 rounded-lg shadow-sm text-sm max-w-[80%]">Consumables like gloves and masks are standard exclusions under IRDAI guidelines unless you have the 'Zero Dep' add-on.</div>
+            </div>
+            <div class="p-3 border-t flex gap-2">
+                <input type="text" placeholder="Type a message..." class="flex-1 border border-gray-300 rounded p-2 text-sm">
+                <button class="bg-green-600 text-white px-4 rounded hover:bg-green-700"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Notifications Modal -->
+    <div id="modal-notifications" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm relative max-h-[80vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="font-bold text-gray-900">Notifications</h3>
+                <button onclick="closeModal('modal-notifications')" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto divide-y">
+                <div class="p-4 bg-green-50 hover:bg-green-100 transition">
+                    <p class="text-sm font-bold text-gray-900">Claim CLM-8842 Approved</p>
+                    <p class="text-xs text-gray-600 mt-1">₹45,000 payout initiated via STP.</p>
+                    <p class="text-[10px] text-green-600 font-bold mt-2">2 minutes ago</p>
+                </div>
+                <div class="p-4 hover:bg-gray-50 transition">
+                    <p class="text-sm font-bold text-gray-900">ABDM Sync Complete</p>
+                    <p class="text-xs text-gray-600 mt-1">3 new lab reports added to locker.</p>
+                    <p class="text-[10px] text-gray-400 font-bold mt-2">1 hour ago</p>
+                </div>
+                <div class="p-4 hover:bg-gray-50 transition">
+                    <p class="text-sm font-bold text-gray-900">Policy Renewal Reminder</p>
+                    <p class="text-xs text-gray-600 mt-1">Your Gold Plus plan expires in 240 days.</p>
+                    <p class="text-[10px] text-gray-400 font-bold mt-2">1 day ago</p>
+                </div>
+            </div>
+            <div class="p-3 border-t text-center">
+                <button onclick="alert('All marked as read'); closeModal('modal-notifications')" class="text-xs text-green-600 font-bold hover:underline">Mark All as Read</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. Change Password Modal -->
+    <div id="modal-changepass" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button onclick="closeModal('modal-changepass')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Change Password</h3>
+            <form onsubmit="event.preventDefault(); alert('Password Updated!'); closeModal('modal-changepass');" class="space-y-4">
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Current Password</label><input type="password" class="w-full border border-gray-300 rounded p-2" required></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">New Password</label><input type="password" class="w-full border border-gray-300 rounded p-2" required></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Confirm New Password</label><input type="password" class="w-full border border-gray-300 rounded p-2" required></div>
+                <button type="submit" class="w-full bg-gray-900 text-white py-2 rounded font-bold hover:bg-gray-800">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 12. Logout Confirmation Modal -->
+    <div id="modal-logout" class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-xs p-6 text-center">
+            <i class="fa-solid fa-triangle-exclamation text-red-500 text-4xl mb-4"></i>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Sign Out?</h3>
+            <p class="text-sm text-gray-600 mb-6">Are you sure you want to securely sign out of the Member Portal?</p>
+            <div class="flex gap-3">
+                <button onclick="closeModal('modal-logout')" class="flex-1 py-2 border border-gray-300 rounded font-bold text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button onclick="confirmLogout()" class="flex-1 py-2 bg-red-600 text-white rounded font-bold hover:bg-red-700">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BULLETPROOF JAVASCRIPT                     -->
+    <!-- ========================================== -->
+    <script>
+        function doLogin() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-shell').classList.remove('hidden');
+            document.getElementById('app-shell').classList.add('flex');
+            showPage('page-dashboard');
+        }
+
+        function confirmLogout() {
+            closeModal('modal-logout');
+            document.getElementById('app-shell').classList.add('hidden');
+            document.getElementById('app-shell').classList.remove('flex');
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        function togglePassword() {
+            var pwd = document.getElementById('login-password');
+            var icon = document.getElementById('eye-icon');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pwd.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function showPage(pageId) {
+            var pages = document.getElementsByClassName('page-content');
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].style.display = 'none';
+            }
+            var target = document.getElementById(pageId);
+            if (target) target.style.display = 'block';
+            
+            var links = document.getElementsByClassName('nav-link');
+            for (var i = 0; i < links.length; i++) links[i].classList.remove('nav-active');
+            var activeLink = document.getElementById('link-' + pageId);
+            if (activeLink) activeLink.classList.add('nav-active');
+
+            var titles = {
+                'page-dashboard': 'Dashboard', 'page-policies': 'My Policies', 'page-submit': 'Submit New Claim',
+                'page-tracker': 'Claim Tracker', 'page-hospitals': 'Network Hospitals', 'page-locker': 'Health Locker (ABDM)',
+                'page-support': '24/7 Support', 'page-settings': 'Settings & Profile'
+            };
+            document.getElementById('header-title').innerText = titles[pageId] || 'Dashboard';
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function processClaim() {
+            openModal('modal-processing');
+            setTimeout(function() {
+                closeModal('modal-processing');
+                alert('Claim Successfully Submitted to STP Engine!');
+                showPage('page-tracker');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
