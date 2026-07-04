@@ -411,22 +411,8 @@
                                     <th class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-bold">#CLM-8842</td><td class="px-6 py-4">14 Dec 2024</td><td class="px-6 py-4">Apollo Hospitals</td><td class="px-6 py-4">₹45,000</td>
-                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">STP Approved</span></td>
-                                    <td class="px-6 py-4"><button onclick="showPage('page-dashboard')" class="text-green-600 font-bold text-xs hover:underline">View Breakdown</button></td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-bold">#CLM-8511</td><td class="px-6 py-4">02 Nov 2024</td><td class="px-6 py-4">Max Healthcare</td><td class="px-6 py-4">₹12,500</td>
-                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">Approved</span></td>
-                                    <td class="px-6 py-4"><button class="text-green-600 font-bold text-xs hover:underline">View Details</button></td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-bold">#CLM-8102</td><td class="px-6 py-4">15 Aug 2024</td><td class="px-6 py-4">City Dental</td><td class="px-6 py-4">₹4,000</td>
-                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded">Rejected</span></td>
-                                    <td class="px-6 py-4"><button onclick="openModal('modal-claimdetails')" class="text-green-600 font-bold text-xs hover:underline">View Reason</button></td>
-                                </tr>
+                            <tbody id="patient-claims-tbody" class="divide-y divide-gray-100">
+                                <!-- Rendered dynamically by JS -->
                             </tbody>
                         </table>
                     </div>
@@ -819,6 +805,43 @@
                 showPage('page-tracker');
             }, 2500);
         }
+
+        // --- LocalStorage Sync for Prototyping ---
+        function renderPatientClaims() {
+            let claimsData = JSON.parse(localStorage.getItem('healthsure_claims')) || [];
+            // Filter claims to only show for Amit Sharma
+            let patientClaims = claimsData.filter(c => c.patient === 'Amit Sharma');
+            
+            const tbody = document.getElementById('patient-claims-tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = patientClaims.map(c => {
+                let statusClass = 'bg-yellow-100 text-yellow-800';
+                if (c.status === 'STP Approved' || c.status === 'Approved') statusClass = 'bg-green-100 text-green-800';
+                if (c.status === 'Fraud Flagged' || c.status === 'Rejected') statusClass = 'bg-red-100 text-red-800';
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-bold">#${c.id}</td>
+                        <td class="px-6 py-4">${c.date}</td>
+                        <td class="px-6 py-4">${c.hospital}</td>
+                        <td class="px-6 py-4">₹${c.amount.toLocaleString('en-IN')}</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 ${statusClass} text-xs font-bold rounded">${c.status}</span></td>
+                        <td class="px-6 py-4"><button onclick="showPage('page-dashboard')" class="text-green-600 font-bold text-xs hover:underline">View Details</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Render on load
+        renderPatientClaims();
+
+        // Sync when other tabs update localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'healthsure_claims') {
+                renderPatientClaims();
+            }
+        });
     </script>
 </body>
 </html>

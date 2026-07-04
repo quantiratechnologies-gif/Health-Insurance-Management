@@ -414,6 +414,7 @@
   .btn-secondary .icon-wrapper { background-color: var(--bg-surface-hover); color: var(--text-main); }
   .btn-secondary:hover { background-color: var(--bg-surface-hover); border-color: var(--brand-primary); color: var(--text-strong); }
   .btn-secondary:hover .icon-wrapper { background-color: var(--brand-primary-light); color: var(--brand-primary); }
+  .btn-secondary:hover .icon-wrapper { background-color: var(--brand-primary-light); color: var(--brand-primary); }
   .filled-icon { fill: currentColor; stroke: none; }
 </style>
 </head>
@@ -1002,12 +1003,14 @@ Policy No: HS-2024-88421</pre>
 <div class="u-modal wide" id="modal-new-claim">
     <div class="u-modal-header"><span class="u-modal-title">New Claim Entry</span><button class="u-modal-close" onclick="closeModal('modal-new-claim')"><i class="fas fa-xmark"></i></button></div>
     <div class="u-modal-body">
-        <div class="u-steps" id="claim-wizard-steps"><div class="u-step active"><div class="u-step-icon">1</div><div class="u-step-title">Patient Info</div></div><div class="u-step-line"></div><div class="u-step"><div class="u-step-icon">2</div><div class="u-step-title">Claim Details</div></div><div class="u-step-line"></div><div class="u-step"><div class="u-step-icon">3</div><div class="u-step-title">Review</div></div></div>
-        <div id="claim-wizard-1"><div class="u-grid-2" style="gap:16px;"><div class="form-group"><label>Policy Number</label><input type="text" class="u-input" placeholder="HS-2024-XXXXX" id="new-policy"></div><div class="form-group"><label>Member ID</label><input type="text" class="u-input" placeholder="MEM-XXXXX" id="new-member"></div><div class="form-group"><label>Patient Name</label><input type="text" class="u-input" placeholder="Full name" id="new-patient"></div><div class="form-group"><label>Age / Gender</label><div class="u-flex u-gap-8"><input type="number" class="u-input" placeholder="Age" style="width:50%;" id="new-age"><select class="u-select" style="width:50%;" id="new-gender"><option>Male</option><option>Female</option><option>Other</option></select></div></div><div class="form-group"><label>Hospital Name</label><input type="text" class="u-input" placeholder="Hospital name" id="new-hospital"></div><div class="form-group"><label>Admission Date</label><input type="date" class="u-input" id="new-doa"></div></div></div>
-        <div id="claim-wizard-2" class="u-hidden"><div class="u-grid-2" style="gap:16px;"><div class="form-group"><label>Procedure / Diagnosis</<label><input type="text" class="u-input" placeholder="e.g., Appendectomy" id="new-procedure"></div><div class="form-group"><label>ICD-10 Code</label><input type="text" class="u-input" placeholder="e.g., K35.80" id="new-icd"></div><div class="form-group"><label>Claimed Amount</label><input type="number" class="u-input" placeholder="₹0" id="new-amount"></div><div class="form-group"><label>Pre-Authorization ID</label><input type="text" class="u-input" placeholder="Optional" id="new-preauth"></div><div class="form-group" style="grid-column:span 2;"><label>Supporting Documents</label><div style="border:2px dashed var(--uber-border);border-radius:var(--uber-radius);padding:32px;text-align:center;cursor:pointer;transition:var(--uber-transition);" onmouseover="this.style.borderColor='var(--uber-green)'" onmouseout="this.style.borderColor='var(--uber-border)'" onclick="showToast('File picker would open here','info')"><i class="fas fa-cloud-arrow-up" style="font-size:28px;color:var(--uber-text-quaternary);margin-bottom:8px;display:block;"></i><span style="font-size:14px;color:var(--uber-text-secondary);">Click to upload or drag & drop</span><br><span style="font-size:12px;color:var(--uber-text-tertiary);">PDF, JPG, PNG up to 10MB</span></div></div></div></div>
-        <div id="claim-wizard-3" class="u-hidden"><div style="background:var(--uber-bg);border-radius:var(--uber-radius);padding:24px;border:1px solid var(--uber-border);"><h4 style="margin-bottom:16px;font-size:15px;">Claim Summary</h4><div class="u-desc-row"><div class="u-desc-label">Patient</div><div class="u-desc-value" id="review-patient">-</div></div><div class="u-desc-row"><div class="u-desc-label">Hospital</div><div class="u-desc-value" id="review-hospital">-</div></div><div class="u-desc-row"><div class="u-desc-label">Procedure</div><div class="u-desc-value" id="review-procedure">-</div></div><div class="u-desc-row"><div class="u-desc-label">Amount</div><div class="u-desc-value u-text-green" id="review-amount">-</div></div><div class="u-desc-row"><div class="u-desc-label">STP Eligibility</div><div class="u-desc-value"><span class="u-tag u-tag-green">Eligible</span></div></div></div></div>
+        <form id="form-new-claim">
+            <div class="u-steps" id="claim-wizard-steps"><div class="u-step active"><div class="u-step-icon">1</div><div class="u-step-title">Patient Info</div></div><div class="u-step-line"></div><div class="u-step"><div class="u-step-icon">2</div><div class="u-step-title">Claim Details</div></div><div class="u-step-line"></div><div class="u-step"><div class="u-step-icon">3</div><div class="u-step-title">Review</div></div></div>
+            <div id="claim-wizard-1"><div class="u-grid-2" style="gap:16px;"><div class="form-group"><label>Policy Number</label><input type="text" class="u-input" placeholder="HS-2024-XXXXX" id="new-policy"></div><div class="form-group"><label>Member ID</label><input type="text" class="u-input" placeholder="MEM-XXXXX" id="new-member"></div><div class="form-group"><label>Patient Name</label><input type="text" class="u-input" placeholder="Full name" id="new-patient"></div><div class="form-group"><label>Age / Gender</label><div class="u-flex u-gap-8"><input type="number" class="u-input" placeholder="Age" style="width:50%;" id="new-age"><select class="u-select" style="width:50%;" id="new-gender"><option>Male</option><option>Female</option><option>Other</option></select></div></div><div class="form-group"><label>Hospital Name</label><input type="text" class="u-input" placeholder="Hospital name" id="new-hospital"></div><div class="form-group"><label>Admission Date</label><input type="date" class="u-input" id="new-doa"></div></div></div>
+            <div id="claim-wizard-2" class="u-hidden"><div class="u-grid-2" style="gap:16px;"><div class="form-group"><label>Procedure / Diagnosis</label><input type="text" class="u-input" placeholder="e.g., Appendectomy" id="new-procedure"></div><div class="form-group"><label>ICD-10 Code</label><input type="text" class="u-input" placeholder="e.g., K35.80" id="new-icd"></div><div class="form-group"><label>Claimed Amount</label><input type="number" class="u-input" placeholder="₹0" id="new-amount"></div><div class="form-group"><label>Pre-Authorization ID</label><input type="text" class="u-input" placeholder="Optional" id="new-preauth"></div><div class="form-group" style="grid-column:span 2;"><label>Supporting Documents</label><div style="border:2px dashed var(--uber-border);border-radius:var(--uber-radius);padding:32px;text-align:center;cursor:pointer;transition:var(--uber-transition);" onmouseover="this.style.borderColor='var(--uber-green)'" onmouseout="this.style.borderColor='var(--uber-border)'" onclick="showToast('File picker would open here','info')"><i class="fas fa-cloud-arrow-up" style="font-size:28px;color:var(--uber-text-quaternary);margin-bottom:8px;display:block;"></i><span style="font-size:14px;color:var(--uber-text-secondary);">Click to upload or drag & drop</span><br><span style="font-size:12px;color:var(--uber-text-tertiary);">PDF, JPG, PNG up to 10MB</span></div></div></div></div>
+            <div id="claim-wizard-3" class="u-hidden"><div style="background:var(--uber-bg);border-radius:var(--uber-radius);padding:24px;border:1px solid var(--uber-border);"><h4 style="margin-bottom:16px;font-size:15px;">Claim Summary</h4><div class="u-desc-row"><div class="u-desc-label">Patient</div><div class="u-desc-value" id="review-patient">-</div></div><div class="u-desc-row"><div class="u-desc-label">Hospital</div><div class="u-desc-value" id="review-hospital">-</div></div><div class="u-desc-row"><div class="u-desc-label">Procedure</div><div class="u-desc-value" id="review-procedure">-</div></div><div class="u-desc-row"><div class="u-desc-label">Amount</div><div class="u-desc-value u-text-green" id="review-amount">-</div></div><div class="u-desc-row"><div class="u-desc-label">STP Eligibility</div><div class="u-desc-value"><span class="u-tag u-tag-green">Eligible</span></div></div></div></div>
+            <div class="u-modal-footer"><button type="button" class="u-btn u-btn-secondary" id="wizard-back" onclick="claimWizardBack()" style="display:none;">Back</button><div style="flex:1;"></div><button type="button" class="u-btn u-btn-secondary" onclick="closeModal('modal-new-claim')">Cancel</button><button type="button" class="u-btn u-btn-primary" id="wizard-next" onclick="claimWizardNext()">Next Step</button></div>
+        </form>
     </div>
-    <div class="u-modal-footer"><button class="u-btn u-btn-secondary" id="wizard-back" onclick="claimWizardBack()" style="display:none;">Back</button><div style="flex:1;"></div><button class="u-btn u-btn-secondary" onclick="closeModal('modal-new-claim')">Cancel</button><button class="u-btn u-btn-primary" id="wizard-next" onclick="claimWizardNext()">Next Step</button></div>
 </div>
 
 <!-- Export -->
@@ -1027,7 +1030,7 @@ Policy No: HS-2024-88421</pre>
 <div class="u-drawer" id="drawer-claim-detail">
     <div class="u-drawer-header"><span class="u-modal-title" id="drawer-claim-title">Claim Details</span><button class="u-modal-close" onclick="closeDrawer('drawer-claim-detail')"><i class="fas fa-xmark"></i></button></div>
     <div class="u-drawer-body" id="drawer-claim-body"></div>
-    <div class="u-drawer-footer"><button class="u-btn u-btn-danger u-btn-sm" onclick="showToast('Claim rejected','error');closeDrawer('drawer-claim-detail');"><i class="fas fa-xmark"></i> Reject</button><div style="flex:1;"></div><button class="u-btn u-btn-secondary u-btn-sm" onclick="navigateTo('fraud');closeDrawer('drawer-claim-detail');"><i class="fas fa-shield-halved"></i> Fraud Check</button><button class="u-btn u-btn-primary u-btn-sm" onclick="showToast('Claim approved successfully','success');closeDrawer('drawer-claim-detail');"><i class="fas fa-check"></i> Approve</button></div>
+    <div class="u-drawer-footer" id="drawer-claim-footer"></div>
 </div>
 
 <!-- Fraud Scan -->
@@ -1110,7 +1113,16 @@ Policy No: HS-2024-88421</pre>
 /* ============================================================
    DATA
    ============================================================ */
-const claimsData = [
+// Sync across tabs
+window.addEventListener('storage', function(e) {
+    if (e.key === 'healthsure_claims') {
+        claimsData = JSON.parse(e.newValue);
+        renderClaimsTable(getFilteredClaims());
+        renderKanban(claimsData);
+    }
+});
+
+let defaultClaims = [
     { id:'CLM-8842', patient:'Amit Sharma', hospital:'Apollo Hospitals, Chennai', procedure:'Coronary Angioplasty', amount:450000, risk:'Low', riskScore:12, status:'STP Approved', date:'2024-12-14', doctor:'Dr. Priya Mehta', policy:'HS-2024-88421' },
     { id:'CLM-8841', patient:'Sneha Reddy', hospital:'Fortis Malar, Chennai', procedure:'Laparoscopic Cholecystectomy', amount:125000, risk:'Low', riskScore:8, status:'STP Approved', date:'2024-12-14', doctor:'Dr. Ramesh Iyer', policy:'HS-2024-77230' },
     { id:'CLM-8840', patient:'Vikram Joshi', hospital:'Max Super Speciality, Delhi', procedure:'Total Knee Replacement', amount:380000, risk:'Medium', riskScore:45, status:'Manual Review', date:'2024-12-13', doctor:'Dr. Anil Sharma', policy:'HS-2024-65189' },
@@ -1118,10 +1130,20 @@ const claimsData = [
     { id:'CLM-8838', patient:'Priya Nair', hospital:'KIMS Trivandrum', procedure:'Normal Delivery', amount:85000, risk:'Low', riskScore:5, status:'STP Approved', date:'2024-12-13', doctor:'Dr. Lakshmi Devi', policy:'HS-2024-91023' },
     { id:'CLM-8837', patient:'Rajesh Gupta', hospital:'Medanta Gurugram', procedure:'Spinal Fusion', amount:520000, risk:'Medium', riskScore:52, status:'Manual Review', date:'2024-12-12', doctor:'Dr. S.K. Rajan', policy:'HS-2024-44310' },
     { id:'CLM-8836', patient:'Meena Devi', hospital:'AIIMS Delhi', procedure:'Cataract Surgery', amount:45000, risk:'Low', riskScore:3, status:'STP Approved', date:'2024-12-12', doctor:'Dr. Sunita Agarwal', policy:'HS-2024-33218' },
-    { id:'CLM-8835', patient:'Arjun Menon', hospital:'Aster Medcity, Kochi', procedure:'ACL Reconstruction', amount:195000, risk:'Low', riskScore:15, status:'STP Approved', date:'2024-12-11', doctor:'Dr. Thomas Philip', policy:'HS-2024-87654' },
-    { id:'CLM-8834', patient:'Kavitha Srinivas', hospital:'Manipal Bangalore', procedure:'Hysterectomy', amount:220000, risk:'Medium', riskScore:38, status:'Manual Review', date:'2024-12-11', doctor:'Dr. Radha Krishnan', policy:'HS-2024-22109' },
-    { id:'CLM-8833', patient:'Deepak Verma', hospital:'Unknown Clinic, Jaipur', procedure:'Dental Implant', amount:180000, risk:'High', riskScore:92, status:'Fraud Flagged', date:'2024-12-10', doctor:'Dr. R.P. Jain', policy:'HS-2024-11098' },
+    { id:'CLM-8835', patient:'Karan Singh', hospital:'Manipal Hospital, B\'lore', procedure:'Appendectomy', amount:65000, risk:'Low', riskScore:11, status:'STP Approved', date:'2024-12-11', doctor:'Dr. Vivek Murthy', policy:'HS-2024-21990' },
+    { id:'CLM-8834', patient:'Anjali Desai', hospital:'Apollo Hospitals, B\'lore', procedure:'Hernia Repair', amount:110000, risk:'Medium', riskScore:35, status:'Manual Review', date:'2024-12-11', doctor:'Dr. Kiran Kumar', policy:'HS-2024-88421' },
+    { id:'CLM-8833', patient:'Rohan Kapoor', hospital:'Lilavati Hospital, Mumbai', procedure:'Rhinoplasty', amount:180000, risk:'High', riskScore:78, status:'Fraud Flagged', date:'2024-12-10', doctor:'Dr. Zoya Khan', policy:'HS-2024-55412' },
+    { id:'CLM-8832', patient:'Neha Gupta', hospital:'Fortis Malar, Chennai', procedure:'Gallbladder Removal', amount:95000, risk:'Low', riskScore:9, status:'STP Approved', date:'2024-12-10', doctor:'Dr. R. Kannan', policy:'HS-2024-11884' }
 ];
+
+if (!localStorage.getItem('healthsure_claims')) {
+    localStorage.setItem('healthsure_claims', JSON.stringify(defaultClaims));
+}
+let claimsData = JSON.parse(localStorage.getItem('healthsure_claims'));
+
+function saveClaims() {
+    localStorage.setItem('healthsure_claims', JSON.stringify(claimsData));
+}
 
 const providersData = [
     { name:'Star Health Insurance', type:'Health Insurance', tier:'Tier 1', city:'Chennai', claims:12847, stp:92, emr:'ABDM', beds:'14k+', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Star_Health_and_Allied_Insurance.svg/1280px-Star_Health_and_Allied_Insurance.svg.png', initials:'SH', color:'var(--uber-blue)' },
@@ -1302,7 +1324,7 @@ function getFilteredClaims() {
 function filterClaims() {
     var f = getFilteredClaims();
     renderClaimsTable(f);
-    renderKanban(f);
+    renderKanban(claimsData);
 }
 
 function resetFilters() {
@@ -1326,14 +1348,14 @@ function toggleClaimSelect(id) {
 }
 
 function bulkApprove() {
-    if (!selectedClaims.size) return;
-    var count = selectedClaims.size;
+    if (selectedClaims.size === 0) return alert('No claims selected');
     selectedClaims.forEach(function(id) { var c = claimsData.find(function(x) { return x.id === id; }); if (c) c.status = 'STP Approved'; });
+    saveClaims();
     selectedClaims.clear();
-    document.getElementById('btn-bulk-approve').disabled = true;
     document.getElementById('select-all').checked = false;
-    filterClaims();
-    showToast(count + ' claims bulk approved successfully', 'success');
+    renderClaimsTable(getFilteredClaims());
+    renderKanban(claimsData);
+    showToast('Bulk approval successful', 'success');
 }
 
 document.querySelectorAll('.view-toggle').forEach(function(btn) {
@@ -1373,7 +1395,20 @@ function openClaimDetail(id) {
         '<div class="u-timeline-item"><div class="u-timeline-line"></div><div class="u-timeline-dot ' + (c.riskScore > 60 ? 'red' : 'green') + '"></div><div class="u-timeline-content">Risk assessment: ' + c.risk + '<div class="u-timeline-time">' + c.date + ' 09:17 AM</div></div></div>' +
         (c.status === 'STP Approved' ? '<div class="u-timeline-item"><div class="u-timeline-dot green"></div><div class="u-timeline-content">Auto-approved via STP<div class="u-timeline-time">' + c.date + ' 09:18 AM</div></div></div>' : '') +
         '</div>';
+    document.getElementById('drawer-claim-footer').innerHTML = '<button class="u-btn u-btn-danger u-btn-sm" onclick="handleClaimAction(\'' + c.id + '\',\'reject\')"><i class="fas fa-xmark"></i> Reject</button><div style="flex:1;"></div><button class="u-btn u-btn-secondary u-btn-sm" onclick="handleClaimAction(\'' + c.id + '\',\'manual\')"><i class="fas fa-shield-halved"></i> Review</button><button class="u-btn u-btn-primary u-btn-sm" onclick="handleClaimAction(\'' + c.id + '\',\'approve\')"><i class="fas fa-check"></i> Approve</button>';
     openDrawer('drawer-claim-detail');
+}
+
+function handleClaimAction(id, action) {
+    var c = claimsData.find(function(x) { return x.id === id; });
+    if (!c) return;
+    if (action === 'approve') { c.status = 'STP Approved'; showToast(id + ' Approved via STP', 'success'); }
+    if (action === 'reject') { c.status = 'Fraud Flagged'; showToast(id + ' Flagged for Fraud', 'error'); }
+    if (action === 'manual') { c.status = 'Manual Review'; showToast(id + ' Sent to Manual Review', 'warning'); }
+    saveClaims();
+    renderClaimsTable(getFilteredClaims());
+    renderKanban(claimsData);
+    closeDrawer('drawer-claim-detail');
 }
 
 /* ============================================================
@@ -1398,16 +1433,20 @@ function claimWizardNext() {
         document.getElementById('review-procedure').textContent = document.getElementById('new-procedure').value || '-';
         document.getElementById('review-amount').textContent = '\u20B9' + Number(document.getElementById('new-amount').value).toLocaleString('en-IN');
         updateWizardSteps();
-    } else {
-        var nid = 'CLM-' + (8843 + Math.floor(Math.random() * 100));
-        claimsData.unshift({ id:nid, patient:document.getElementById('new-patient').value, hospital:document.getElementById('new-hospital').value||'Not specified', procedure:document.getElementById('new-procedure').value||'Not specified', amount:Number(document.getElementById('new-amount').value), risk:'Low', riskScore:Math.floor(Math.random()*25), status:'Manual Review', date:new Date().toISOString().split('T')[0], doctor:'TBD', policy:document.getElementById('new-policy').value||'HS-2024-NEW' });
-        closeModal('modal-new-claim');
-        showToast('Claim ' + nid + ' created successfully', 'success');
-        claimWizardStep = 1;
-        resetWizard();
-        filterClaims();
     }
 }
+
+document.getElementById('form-new-claim').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var nid = 'CLM-' + Math.floor(Math.random()*10000);
+    claimsData.unshift({ id:nid, patient:document.getElementById('new-patient').value, hospital:document.getElementById('new-hospital').value||'Not specified', procedure:document.getElementById('new-procedure').value||'Not specified', amount:Number(document.getElementById('new-amount').value), risk:'Low', riskScore:Math.floor(Math.random()*25), status:'Manual Review', date:new Date().toISOString().split('T')[0], doctor:'TBD', policy:document.getElementById('new-policy').value||'HS-2024-NEW' });
+    saveClaims();
+    renderClaimsTable(getFilteredClaims());
+    renderKanban(claimsData);
+    closeModal('modal-new-claim');
+    e.target.reset();
+    showToast('Claim ' + nid + ' created', 'success');
+});
 
 function claimWizardBack() {
     if (claimWizardStep === 2) { claimWizardStep = 1; document.getElementById('claim-wizard-2').classList.add('u-hidden'); document.getElementById('claim-wizard-1').classList.remove('u-hidden'); document.getElementById('wizard-back').style.display = 'none'; }

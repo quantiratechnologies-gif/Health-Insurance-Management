@@ -222,12 +222,15 @@
                 <div id="page-claims" class="page-content">
                     <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-4xl mx-auto">
                         <h2 class="text-2xl font-bold text-gray-900 mb-6">Submit New Claim</h2>
-                        <form onsubmit="event.preventDefault(); alert('Claim submitted for STP processing!');" class="space-y-6">
+                        <form onsubmit="handleClaimSubmit(event)" class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Patient Member ID</label><input type="text" class="w-full border border-gray-300 rounded p-2"></div>
-                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Total Bill Amount (₹)</label><input type="number" class="w-full border border-gray-300 rounded p-2"></div>
-                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Primary ICD-10 Code</label><input type="text" placeholder="e.g. A09 (Gastroenteritis)" class="w-full border border-gray-300 rounded p-2"></div>
-                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Discharge Date</label><input type="date" class="w-full border border-gray-300 rounded p-2"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Patient Name</label><input type="text" id="claim-patient" placeholder="e.g. Amit Sharma" class="w-full border border-gray-300 rounded p-2" required></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Patient Member ID</label><input type="text" id="claim-member-id" placeholder="e.g. HS-2024-88421" class="w-full border border-gray-300 rounded p-2" required></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Hospital Name</label><input type="text" id="claim-hospital" placeholder="e.g. Apollo Hospitals" value="Apollo Hospitals" class="w-full border border-gray-300 rounded p-2" required></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Procedure / Service</label><input type="text" id="claim-procedure" placeholder="e.g. Appendectomy" class="w-full border border-gray-300 rounded p-2" required></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Total Bill Amount (₹)</label><input type="number" id="claim-amount" class="w-full border border-gray-300 rounded p-2" required></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Primary ICD-10 Code</label><input type="text" id="claim-icd" placeholder="e.g. A09 (Gastroenteritis)" class="w-full border border-gray-300 rounded p-2"></div>
+                                <div><label class="block text-sm font-bold text-gray-700 mb-1">Discharge Date</label><input type="date" id="claim-date" class="w-full border border-gray-300 rounded p-2" required></div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Upload Discharge Summary & Final Bill (PDF/Images)</label>
@@ -261,6 +264,45 @@
     </div>
 
     <script>
+        // Seed default claims if none exist so the platforms start with data
+        if (!localStorage.getItem('healthsure_claims')) {
+            const defaultClaims = [
+                { id: 'HS-2024-88421', patient: 'Amit Sharma', hospital: 'Apollo Hospitals', procedure: 'Appendectomy', amount: 45000, risk: 'Low', riskScore: 12, status: 'STP Approved', date: '2024-03-12' },
+                { id: 'HS-2023-11299', patient: 'Priya Singh', hospital: 'Fortis Healthcare', procedure: 'Knee Replacement', amount: 120000, risk: 'Medium', riskScore: 45, status: 'Manual Review', date: '2024-03-11' }
+            ];
+            localStorage.setItem('healthsure_claims', JSON.stringify(defaultClaims));
+        }
+
+        function handleClaimSubmit(e) {
+            e.preventDefault();
+            const patient = document.getElementById('claim-patient').value;
+            const hospital = document.getElementById('claim-hospital').value;
+            const procedure = document.getElementById('claim-procedure').value;
+            const amount = Number(document.getElementById('claim-amount').value);
+            const date = document.getElementById('claim-date').value;
+
+            let claimsData = JSON.parse(localStorage.getItem('healthsure_claims')) || [];
+            
+            const newClaim = {
+                id: 'HS-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000),
+                patient: patient,
+                hospital: hospital,
+                procedure: procedure,
+                amount: amount,
+                risk: 'Low', // Simple mock logic
+                riskScore: Math.floor(Math.random() * 20),
+                status: 'Manual Review',
+                date: date
+            };
+            
+            claimsData.unshift(newClaim);
+            localStorage.setItem('healthsure_claims', JSON.stringify(claimsData));
+            
+            alert('Claim submitted! It is now synced to the Super Admin platform.');
+            e.target.reset();
+            switchTab('dashboard');
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('nav-active'));
