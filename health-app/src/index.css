@@ -78,13 +78,13 @@
     ============================================ */
     --radius: 0.625rem;
 
-    --sidebar-background: 217 56% 14%;    /* Dark navy sidebar */
-    --sidebar-foreground: 210 30% 90%;
+    --sidebar-background: 0 0% 100%;      /* White sidebar */
+    --sidebar-foreground: 217 56% 14%;    /* Dark navy text */
     --sidebar-primary: 159 53% 50%;       /* Green accent */
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 40% 22%;
-    --sidebar-accent-foreground: 210 30% 95%;
-    --sidebar-border: 217 40% 20%;
+    --sidebar-accent: 214 32% 94%;        /* Light grey on hover */
+    --sidebar-accent-foreground: 217 56% 14%;
+    --sidebar-border: 214 25% 88%;
     --sidebar-ring: 159 53% 45%;
   }
 

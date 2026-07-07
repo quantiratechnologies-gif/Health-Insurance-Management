@@ -976,9 +976,16 @@ export default function PatientPortal() {
       userSub="ID: HS-89302"
     >
       <AnimatePresence mode="wait">
-        <div key={activeView} className="p-6 md:p-8 max-w-5xl mx-auto">
+        <motion.div 
+          key={activeView} 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          className="p-6 md:p-8 max-w-5xl mx-auto"
+        >
           {renderView()}
-        </div>
+        </motion.div>
       </AnimatePresence>
     </AppLayout>
   );
