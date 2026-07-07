@@ -70,9 +70,9 @@ export default function HospitalPortal() {
         <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
         <Input className="pl-10 w-64 bg-slate-50 border-slate-200 rounded-full" placeholder="Search patient ID..." />
       </div>
-      <button className="relative p-2 text-slate-400 hover:text-primary transition-colors cursor-pointer">
+      <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-primary transition-colors cursor-pointer">
         <Bell className="w-6 h-6" />
-      </button>
+      </Button>
       <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
         <div className="text-right">
           <p className="text-sm font-bold">Billing Dept</p>

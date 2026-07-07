@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { useStore } from "../store/useStore"
 import { motion, Variants } from "framer-motion"
@@ -29,10 +30,10 @@ export default function PatientPortal() {
         <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
         <Input type="text" placeholder="Search..." className="pl-10 w-64 bg-slate-50 border-slate-200" />
       </div>
-      <button className="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors cursor-pointer">
+      <Button variant="ghost" size="icon" className="relative text-slate-500 hover:bg-slate-50 rounded-full transition-colors cursor-pointer">
         <Bell className="w-5 h-5" />
         <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
-      </button>
+      </Button>
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>VK</AvatarFallback>

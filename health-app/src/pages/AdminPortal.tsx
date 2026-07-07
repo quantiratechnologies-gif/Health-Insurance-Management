@@ -27,12 +27,12 @@ export default function AdminPortal() {
 
   const headerContent = (
     <>
-      <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-bold">
+      <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-bold border-none">
         <Server className="w-4 h-4" /> Systems Operational
-      </div>
-      <button className="relative p-2 text-slate-400 hover:text-purple-600 transition-colors cursor-pointer">
+      </Badge>
+      <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-purple-600 transition-colors cursor-pointer">
         <Bell className="w-6 h-6" />
-      </button>
+      </Button>
       <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
         <div className="text-right">
           <p className="text-sm font-bold">System Administrator</p>
