@@ -18,6 +18,9 @@ const config = {
   		}
   	},
   	extend: {
+  		fontFamily: {
+  			sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+  		},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
@@ -48,24 +51,28 @@ const config = {
   				DEFAULT: 'hsl(var(--success))',
   				foreground: 'hsl(var(--success-foreground))',
   				muted: 'hsl(var(--success-muted))',
+  				text: 'hsl(var(--success-text))',
   				border: 'hsl(var(--success-border))'
   			},
   			warning: {
   				DEFAULT: 'hsl(var(--warning))',
   				foreground: 'hsl(var(--warning-foreground))',
   				muted: 'hsl(var(--warning-muted))',
+  				text: 'hsl(var(--warning-text))',
   				border: 'hsl(var(--warning-border))'
   			},
   			info: {
   				DEFAULT: 'hsl(var(--info))',
   				foreground: 'hsl(var(--info-foreground))',
   				muted: 'hsl(var(--info-muted))',
+  				text: 'hsl(var(--info-text))',
   				border: 'hsl(var(--info-border))'
   			},
   			error: {
   				DEFAULT: 'hsl(var(--error))',
   				foreground: 'hsl(var(--error-foreground))',
   				muted: 'hsl(var(--error-muted))',
+  				text: 'hsl(var(--error-text))',
   				border: 'hsl(var(--error-border))'
   			},
   			popover: {
@@ -91,6 +98,26 @@ const config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		boxShadow: {
+  			'card': '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+  			'card-hover': '0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)',
+  			'modal': '0 24px 64px rgba(0,0,0,0.15)',
+  		},
+  		animation: {
+  			'fade-in': 'fadeIn 0.3s ease-out',
+  			'slide-up': 'slideUp 0.35s cubic-bezier(0.16,1,0.3,1)',
+  			'pulse-slow': 'pulse 3s ease-in-out infinite',
+  		},
+  		keyframes: {
+  			fadeIn: {
+  				'0%': { opacity: '0' },
+  				'100%': { opacity: '1' },
+  			},
+  			slideUp: {
+  				'0%': { opacity: '0', transform: 'translateY(12px)' },
+  				'100%': { opacity: '1', transform: 'translateY(0)' },
+  			}
   		}
   	}
   },
