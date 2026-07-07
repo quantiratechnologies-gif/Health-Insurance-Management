@@ -6,9 +6,15 @@ import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useNavigate } from "react-router-dom"
+import { useStore } from "../store/useStore"
 
 export default function PatientPortal() {
   const navigate = useNavigate()
+  const { policies, claims } = useStore()
+  
+  const currentUserId = 'HS-89302'
+  const policy = policies.find(p => p.id === currentUserId)
+  const userClaims = claims.filter(c => c.patientId === currentUserId)
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900">
@@ -58,12 +64,11 @@ export default function PatientPortal() {
             </div>
             <button className="relative p-2 text-slate-400 hover:text-primary transition-colors">
               <Bell className="w-6 h-6" />
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-destructive rounded-full border-2 border-white"></span>
             </button>
             <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
               <div className="text-right">
-                <p className="text-sm font-bold">Vempati Vamshi Krishna</p>
-                <p className="text-xs text-slate-500">Member ID: HS-89302</p>
+                <p className="text-sm font-bold">{policy?.patientName}</p>
+                <p className="text-xs text-slate-500">Member ID: {policy?.id}</p>
               </div>
               <Avatar>
                 <AvatarImage src="https://ui.shadcn.com/avatars/02.png" />
@@ -83,7 +88,7 @@ export default function PatientPortal() {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-sm font-medium text-slate-500">Active Policy</p>
-                    <h3 className="text-xl font-bold mt-1">Arogya Sanjeevani</h3>
+                    <h3 className="text-xl font-bold mt-1">{policy?.planName}</h3>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <ShieldHalf className="w-5 h-5" />
@@ -98,13 +103,13 @@ export default function PatientPortal() {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-sm font-medium text-slate-500">Total Sum Insured</p>
-                    <h3 className="text-xl font-bold mt-1">₹5,00,000</h3>
+                    <h3 className="text-xl font-bold mt-1">₹{policy?.totalSumInsured.toLocaleString('en-IN')}</h3>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                     <CreditCard className="w-5 h-5" />
                   </div>
                 </div>
-                <p className="text-sm text-slate-500">₹4,20,000 balance remaining</p>
+                <p className="text-sm text-slate-500 font-bold text-primary">₹{policy?.availableBalance.toLocaleString('en-IN')} balance remaining</p>
               </CardContent>
             </Card>
 
@@ -113,7 +118,7 @@ export default function PatientPortal() {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-sm font-medium text-primary-foreground/80">Total Claims This Year</p>
-                    <h3 className="text-3xl font-bold mt-1">2</h3>
+                    <h3 className="text-3xl font-bold mt-1">{userClaims.length}</h3>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
                     <Activity className="w-5 h-5" />
@@ -141,24 +146,23 @@ export default function PatientPortal() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">CLM-98231</TableCell>
-                    <TableCell>Apollo Hospitals, Jubilee Hills</TableCell>
-                    <TableCell>Oct 12, 2025</TableCell>
-                    <TableCell>₹45,000</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Settled (STP)</Badge>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">CLM-84920</TableCell>
-                    <TableCell>Yashoda Hospitals</TableCell>
-                    <TableCell>Jun 04, 2025</TableCell>
-                    <TableCell>₹35,000</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Settled (Manual)</Badge>
-                    </TableCell>
-                  </TableRow>
+                  {userClaims.map(claim => (
+                    <TableRow key={claim.id}>
+                      <TableCell className="font-medium font-mono text-xs">{claim.id}</TableCell>
+                      <TableCell>{claim.hospital}</TableCell>
+                      <TableCell>{claim.date}</TableCell>
+                      <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
+                      <TableCell>
+                         {claim.status === 'Auto-Approved' || claim.status === 'Manual-Approved' ? (
+                           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
+                        ) : claim.status === 'Rejected' ? (
+                           <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
+                        ) : (
+                           <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </CardContent>
