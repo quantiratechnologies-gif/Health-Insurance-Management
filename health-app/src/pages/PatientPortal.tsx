@@ -134,15 +134,15 @@ function DashboardView({ claims }: { claims: any[] }) {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Welcome back, Vamshi 👋</h1>
-        <p className="text-gray-500 text-sm mt-1">Here's your health insurance snapshot for today.</p>
+        <h1 className="text-2xl font-bold text-foreground">Welcome back, Vamshi 👋</h1>
+        <p className="text-muted-foreground text-sm mt-1">Here's your health insurance snapshot for today.</p>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Policy card */}
         <Card className="col-span-1 border-0 shadow-md overflow-hidden">
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 text-foreground">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 text-white">
             <p className="text-xs font-semibold uppercase tracking-widest opacity-80">Active Policy</p>
             <h2 className="text-xl font-bold mt-1">Family Floater Gold</h2>
             <p className="text-xs opacity-70 mt-0.5">Policy No: HLTH-2024-98302</p>
@@ -160,10 +160,10 @@ function DashboardView({ claims }: { claims: any[] }) {
         <Card className="border-0 shadow-md flex flex-col justify-between">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase tracking-widest">Total Claims Filed</CardDescription>
-            <CardTitle className="text-4xl font-extrabold text-blue-600">{claims.length}</CardTitle>
+            <CardTitle className="text-4xl font-extrabold text-primary">{claims.length}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500">Across all policy periods</p>
+            <p className="text-sm text-muted-foreground">Across all policy periods</p>
           </CardContent>
         </Card>
 
@@ -174,7 +174,7 @@ function DashboardView({ claims }: { claims: any[] }) {
             <CardTitle className="text-4xl font-extrabold text-amber-600 dark:text-amber-500">1</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500">Due in Dec 2027</p>
+            <p className="text-sm text-muted-foreground">Due in Dec 2027</p>
             <Button size="sm" variant="outline" className="mt-3 w-full text-xs">Renew Now</Button>
           </CardContent>
         </Card>
@@ -205,7 +205,7 @@ function DashboardView({ claims }: { claims: any[] }) {
             </TableHeader>
             <TableBody>
               {recentClaims.length === 0 && (
-                <TableRow><TableCell colSpan={5} className="text-center text-gray-400 py-6">No claims found</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">No claims found</TableCell></TableRow>
               )}
               {recentClaims.map((c: any) => (
                 <TableRow key={c.id}>
@@ -215,7 +215,7 @@ function DashboardView({ claims }: { claims: any[] }) {
                   <TableCell>
                     <Badge variant="outline" className={`text-xs ${getClaimStatusColor(c.status)}`}>{c.status}</Badge>
                   </TableCell>
-                  <TableCell className="text-xs text-gray-500">{c.admissionDate ?? c.date ?? '—'}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{c.admissionDate ?? c.date ?? '—'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -265,15 +265,15 @@ function MyPoliciesView() {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">My Policies</h1>
-        <p className="text-gray-500 text-sm mt-1">All your active health insurance plans.</p>
+        <h1 className="text-2xl font-bold text-foreground">My Policies</h1>
+        <p className="text-muted-foreground text-sm mt-1">All your active health insurance plans.</p>
       </div>
 
       <Card className="border-0 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 p-6 text-foreground">
+        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <Badge className="bg-white/20 text-foreground border-white/30 mb-2">Active</Badge>
+              <Badge className="bg-white/20 text-white border-white/30 mb-2">Active</Badge>
               <h2 className="text-2xl font-bold">Family Floater Gold</h2>
               <p className="text-xs opacity-80 mt-0.5">Policy No: HLTH-2024-98302 | UIN: IRDAI-HLT-2024</p>
             </div>
@@ -321,8 +321,8 @@ function MyPoliciesView() {
               { label: 'Maternity Benefit', value: '₹50,000' },
             ].map(item => (
               <div key={item.label}>
-                <p className="text-xs text-gray-400 uppercase tracking-wide">{item.label}</p>
-                <p className="font-semibold text-gray-800 mt-0.5">{item.value}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{item.label}</p>
+                <p className="font-semibold text-foreground mt-0.5">{item.value}</p>
               </div>
             ))}
           </div>
@@ -355,7 +355,7 @@ function MyPoliciesView() {
               Your policy is valid until Dec 2027. Would you like to initiate early renewal?
             </DialogDescription>
           </DialogHeader>
-          <div className="py-3 text-sm text-gray-600 space-y-2">
+          <div className="py-3 text-sm text-muted-foreground space-y-2">
             <p>Plan: <strong>Family Floater Gold</strong></p>
             <p>Premium: <strong>₹18,500/year</strong> (incl. GST)</p>
             <p>New validity: <strong>Dec 2028</strong></p>
@@ -363,7 +363,7 @@ function MyPoliciesView() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setRenewOpen(false)}>Cancel</Button>
             <Button
-              className="bg-green-600 hover:bg-green-700 text-foreground"
+              
               onClick={() => {
                 setRenewOpen(false);
                 toast.success('Policy renewal initiated! You will receive a payment link via email.');
@@ -415,8 +415,8 @@ function SubmitClaimView() {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Submit New Claim</h1>
-        <p className="text-gray-500 text-sm mt-1">Fill in reimbursement details and upload documents.</p>
+        <h1 className="text-2xl font-bold text-foreground">Submit New Claim</h1>
+        <p className="text-muted-foreground text-sm mt-1">Fill in reimbursement details and upload documents.</p>
       </div>
 
       <Card className="border-0 shadow-md">
@@ -484,9 +484,9 @@ function SubmitClaimView() {
             }}
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${dragging ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-400 hover:bg-blue-50/40'}`}
           >
-            <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-            <p className="text-sm text-gray-600 font-medium">Drag & drop files or click to upload</p>
-            <p className="text-xs text-gray-400 mt-1">Bills, discharge summary, prescriptions (PDF/JPG, max 10 MB)</p>
+            <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground font-medium">Drag & drop files or click to upload</p>
+            <p className="text-xs text-muted-foreground mt-1">Bills, discharge summary, prescriptions (PDF/JPG, max 10 MB)</p>
             {files.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-2 justify-center">
                 {files.map((f, i) => (
@@ -513,9 +513,9 @@ function SubmitClaimView() {
           <DialogHeader className="text-center items-center">
             <DialogTitle className="text-xl mt-3">Claim Received!</DialogTitle>
             <DialogDescription className="text-center space-y-1 mt-1">
-              <span className="block font-bold text-gray-800 text-base">{generatedId}</span>
+              <span className="block font-bold text-foreground text-base">{generatedId}</span>
               <span className="block text-sm">Your claim has been submitted successfully.</span>
-              <span className="block text-sm text-gray-500">Expected processing in 5–7 working days.</span>
+              <span className="block text-sm text-muted-foreground">Expected processing in 5–7 working days.</span>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="justify-center mt-2">
@@ -541,13 +541,13 @@ function ClaimTrackerView({ claims }: { claims: any[] }) {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Claim Tracker</h1>
-        <p className="text-gray-500 text-sm mt-1">Track the real-time status of your claims.</p>
+        <h1 className="text-2xl font-bold text-foreground">Claim Tracker</h1>
+        <p className="text-muted-foreground text-sm mt-1">Track the real-time status of your claims.</p>
       </div>
 
       {claims.length === 0 && (
         <Card className="border-0 shadow-md">
-          <CardContent className="py-16 text-center text-gray-400">No claims found for your account.</CardContent>
+          <CardContent className="py-16 text-center text-muted-foreground">No claims found for your account.</CardContent>
         </Card>
       )}
 
@@ -565,8 +565,8 @@ function ClaimTrackerView({ claims }: { claims: any[] }) {
                 <CardHeader className="bg-gray-50 border-b pb-3 pt-4 px-5">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div>
-                      <p className="font-mono text-xs text-gray-400">{c.id}</p>
-                      <p className="font-semibold text-gray-900">{c.hospitalName ?? 'Hospital'}</p>
+                      <p className="font-mono text-xs text-muted-foreground">{c.id}</p>
+                      <p className="font-semibold text-foreground">{c.hospitalName ?? 'Hospital'}</p>
                     </div>
                     <Badge variant="outline" className={`text-xs ${getClaimStatusColor(c.status)}`}>{c.status}</Badge>
                   </div>
@@ -588,7 +588,7 @@ function ClaimTrackerView({ claims }: { claims: any[] }) {
                             ) : (
                               <Circle className="w-6 h-6 text-gray-300" />
                             )}
-                            <span className={`text-[10px] font-medium text-center leading-tight ${state === 'done' ? 'text-green-600' : state === 'active' ? 'text-blue-600' : 'text-gray-400'}`}>
+                            <span className={`text-[10px] font-medium text-center leading-tight ${state === 'done' ? 'text-green-600' : state === 'active' ? 'text-primary' : 'text-muted-foreground'}`}>
                               {label}
                             </span>
                           </div>
@@ -603,19 +603,19 @@ function ClaimTrackerView({ claims }: { claims: any[] }) {
                   {/* Claim details */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm bg-gray-50 rounded-lg p-3">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase">Amount Claimed</p>
+                      <p className="text-xs text-muted-foreground uppercase">Amount Claimed</p>
                       <p className="font-semibold">{formatINR(c.claimedAmount ?? c.amount ?? 0)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase">Amount Approved</p>
+                      <p className="text-xs text-muted-foreground uppercase">Amount Approved</p>
                       <p className="font-semibold">{formatINR(c.approvedAmount ?? 0)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase">Admission Date</p>
+                      <p className="text-xs text-muted-foreground uppercase">Admission Date</p>
                       <p className="font-semibold">{c.admissionDate ?? '—'}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase">Decision</p>
+                      <p className="text-xs text-muted-foreground uppercase">Decision</p>
                       <p className="font-semibold">{c.tpaDecision ?? c.status ?? '—'}</p>
                     </div>
                   </div>
@@ -649,8 +649,8 @@ function NetworkHospitalsView() {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Network Hospitals</h1>
-        <p className="text-gray-500 text-sm mt-1">Cashless treatment at 10,000+ empanelled hospitals nationwide.</p>
+        <h1 className="text-2xl font-bold text-foreground">Network Hospitals</h1>
+        <p className="text-muted-foreground text-sm mt-1">Cashless treatment at 10,000+ empanelled hospitals nationwide.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -669,7 +669,7 @@ function NetworkHospitalsView() {
                 </div>
               </CardHeader>
               <CardContent className="flex-1 space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-gray-500">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Heart className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
                   <span>{h.location}</span>
                 </div>
@@ -678,7 +678,7 @@ function NetworkHospitalsView() {
                 )}
                 <Button
                   size="sm"
-                  className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-foreground text-xs"
+                  className="w-full mt-3 text-xs"
                   onClick={() => setPreAuthHosp(h.name)}
                 >
                   Request Pre-Auth
@@ -740,12 +740,12 @@ function HealthLockerView() {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Health Locker / ABDM</h1>
-        <p className="text-gray-500 text-sm mt-1">Securely store and access your health records via ABDM PHR.</p>
+        <h1 className="text-2xl font-bold text-foreground">Health Locker / ABDM</h1>
+        <p className="text-muted-foreground text-sm mt-1">Securely store and access your health records via ABDM PHR.</p>
       </div>
 
       {/* ABDM Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-teal-500 to-green-500 p-6 text-foreground flex items-center justify-between flex-wrap gap-4 shadow-lg">
+      <div className="rounded-2xl bg-gradient-to-r from-teal-500 to-green-500 p-6 text-white flex items-center justify-between flex-wrap gap-4 shadow-lg">
         <div>
           <p className="font-bold text-lg flex items-center gap-2"><Lock className="w-5 h-5" /> ABDM Health Locker</p>
           <p className="text-sm opacity-80 mt-0.5">ABHA ID: 12-3456-7890-1234 · Linked &amp; Verified</p>
@@ -780,11 +780,11 @@ function HealthLockerView() {
               {HEALTH_DOCS.map(doc => (
                 <TableRow key={doc.id}>
                   <TableCell className="font-medium">{doc.name}</TableCell>
-                  <TableCell className="text-gray-500 text-sm">{doc.source}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{doc.source}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="text-xs">{doc.type}</Badge>
                   </TableCell>
-                  <TableCell className="text-gray-500 text-sm">{doc.date}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{doc.date}</TableCell>
                   <TableCell className="text-right">
                     <Button size="sm" variant="outline" className="text-xs gap-1" onClick={() => setViewDoc(doc)}>
                       <FileText className="w-3.5 h-3.5" /> View
@@ -807,15 +807,15 @@ function HealthLockerView() {
           <div className="space-y-3 py-2">
             <div className="flex gap-4 text-sm">
               <div>
-                <span className="text-xs text-gray-400 uppercase">Type</span>
+                <span className="text-xs text-muted-foreground uppercase">Type</span>
                 <p className="font-medium">{viewDoc?.type}</p>
               </div>
               <div>
-                <span className="text-xs text-gray-400 uppercase">Source</span>
+                <span className="text-xs text-muted-foreground uppercase">Source</span>
                 <p className="font-medium">{viewDoc?.source}</p>
               </div>
               <div>
-                <span className="text-xs text-gray-400 uppercase">Date</span>
+                <span className="text-xs text-muted-foreground uppercase">Date</span>
                 <p className="font-medium">{viewDoc?.date}</p>
               </div>
             </div>
@@ -865,12 +865,12 @@ function SupportView() {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Support</h1>
-        <p className="text-gray-500 text-sm mt-1">We're here to help 24/7.</p>
+        <h1 className="text-2xl font-bold text-foreground">Support</h1>
+        <p className="text-muted-foreground text-sm mt-1">We're here to help 24/7.</p>
       </div>
 
       {/* Emergency banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 p-5 text-foreground flex items-center gap-4 shadow-lg">
+      <div className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 p-5 text-white flex items-center gap-4 shadow-lg">
         <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
           <Phone className="w-6 h-6" />
         </div>
@@ -927,7 +927,7 @@ function SupportView() {
               <div className="space-y-2">
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${msg.from === 'user' ? 'bg-blue-600 text-foreground rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'}`}>
+                    <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${msg.from === 'user' ? 'bg-blue-600 text-white rounded-br-sm' : 'bg-gray-100 text-foreground rounded-bl-sm'}`}>
                       {msg.text}
                     </div>
                   </div>
