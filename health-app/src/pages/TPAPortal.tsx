@@ -184,7 +184,7 @@ export default function TPAPortal() {
                           )}
                         </TableCell>
                         <TableCell>
-                          {claim.status === 'Flagged' ? (
+                          {claim.status === 'Flagged' || claim.status === 'Pending TPA' ? (
                             <div className="flex gap-2">
                               <Button size="sm" onClick={() => handleResolve(claim.id, 'Approve')} className="bg-success hover:bg-success/90 text-white cursor-pointer">Approve</Button>
                               <Button size="sm" onClick={() => handleResolve(claim.id, 'Reject')} variant="destructive" className="cursor-pointer">Reject</Button>
