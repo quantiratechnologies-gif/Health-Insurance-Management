@@ -312,7 +312,7 @@ const DashboardView = ({ pendingClaims, allClaims, resolveClaim }: ViewProps) =>
                         <div className="flex gap-2 pt-1">
                           <Button
                             size="sm"
-                            className="h-7 bg-green-600 px-3 text-xs hover:bg-green-700"
+                            className="h-7 px-3 text-xs"
                             onClick={() => {
                               resolveClaim(claim.id, 'Approve');
                               toast.success(`Claim ${claim.id} approved`);
@@ -462,7 +462,7 @@ const ClaimsQueueView = ({ pendingClaims, resolveClaim }: ViewProps) => {
                         <div className="flex gap-2">
                           <Button
                             size="sm"
-                            className="h-7 bg-green-600 px-3 text-xs hover:bg-green-700"
+                            className="h-7 px-3 text-xs"
                             onClick={() => {
                               resolveClaim(claim.id, 'Approve');
                               toast.success(`Claim ${claim.id} approved`);

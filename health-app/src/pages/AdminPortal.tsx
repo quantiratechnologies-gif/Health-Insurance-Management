@@ -402,7 +402,7 @@ function RuleEngineSettings() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={() => setOpen(false)} className="bg-emerald-600 hover:bg-emerald-500 text-foreground">
+            <Button onClick={() => setOpen(false)} >
               Close
             </Button>
           </DialogFooter>
@@ -553,7 +553,7 @@ function ProviderApprovals() {
                     <div className="flex gap-2">
                       <Button
                         size="sm"
-                        className="bg-emerald-600 hover:bg-emerald-500 text-foreground text-xs"
+                        className="text-xs"
                         onClick={() => {
                           setTier("2");
                           setApproveTarget(h);
@@ -639,7 +639,7 @@ function ProviderApprovals() {
             >
               Cancel
             </Button>
-            <Button onClick={handleApprove} className="bg-emerald-600 hover:bg-emerald-500 text-foreground">
+            <Button onClick={handleApprove} >
               Confirm & Send Credentials
             </Button>
           </DialogFooter>
@@ -674,7 +674,7 @@ function ProviderApprovals() {
             >
               Cancel
             </Button>
-            <Button onClick={handleReject} className="bg-red-600 hover:bg-red-500 text-foreground">
+            <Button onClick={handleReject} variant="destructive">
               Reject Application
             </Button>
           </DialogFooter>
@@ -731,7 +731,7 @@ function TPAAccounts() {
       <div className="flex justify-end">
         <Button
           onClick={() => setAddOpen(true)}
-          className="bg-indigo-600 hover:bg-indigo-500 text-foreground"
+          
         >
           + Add TPA User
         </Button>
@@ -851,7 +851,7 @@ function TPAAccounts() {
             >
               Cancel
             </Button>
-            <Button onClick={handleAddUser} className="bg-indigo-600 hover:bg-indigo-500 text-foreground">
+            <Button onClick={handleAddUser} >
               Create Account
             </Button>
           </DialogFooter>
@@ -877,7 +877,7 @@ function TPAAccounts() {
             >
               Cancel
             </Button>
-            <Button onClick={handleSuspend} className="bg-yellow-600 hover:bg-yellow-500 text-foreground">
+            <Button onClick={handleSuspend} variant="destructive">
               Yes, Suspend
             </Button>
           </DialogFooter>
@@ -997,7 +997,7 @@ function SystemAuditLogs() {
               Cancel
             </Button>
             <Button
-              className="bg-red-600 hover:bg-red-500 text-foreground"
+              variant="destructive"
               onClick={() => {
                 setLogs([]);
                 setClearOpen(false);

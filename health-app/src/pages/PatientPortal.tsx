@@ -182,7 +182,7 @@ function DashboardView({ claims }: { claims: any[] }) {
 
       {/* Quick action */}
       <div className="flex items-center gap-3">
-        <Button onClick={() => setPreAuthOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2">
+        <Button onClick={() => setPreAuthOpen(true)} className="gap-2">
           <CreditCard className="w-4 h-4" /> Request Pre-Auth
         </Button>
       </div>
@@ -246,7 +246,7 @@ function DashboardView({ claims }: { claims: any[] }) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setPreAuthOpen(false)}>Cancel</Button>
-            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-foreground">Submit Request</Button>
+            <Button onClick={handlePreAuth} >Submit Request</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -339,7 +339,7 @@ function MyPoliciesView() {
             </Button>
             <Button
               onClick={() => setRenewOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2"
+              className="gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Renew Policy
             </Button>
@@ -388,6 +388,7 @@ function SubmitClaimView() {
   const [files, setFiles] = useState<string[]>([]);
   const [successOpen, setSuccessOpen] = useState(false);
   const [generatedId, setGeneratedId] = useState('');
+  const { submitClaim } = useStore();
 
   function handleChange(field: string, value: string) {
     setForm(f => ({ ...f, [field]: value }));
@@ -398,7 +399,15 @@ function SubmitClaimView() {
       toast.error('Please fill all required fields');
       return;
     }
-    const id = `CLM-${rand5()}`;
+    const cost = parseInt(form.billAmount, 10);
+    submitClaim({
+      patientId: 'HS-89302',
+      patientName: 'Vempati Vamshi Krishna',
+      treatment: form.claimType,
+      cost,
+      hospital: form.hospitalName,
+    });
+    const id = `CLM-${Math.floor(10000 + Math.random() * 90000)}`;
     setGeneratedId(id);
     setSuccessOpen(true);
   }
@@ -487,7 +496,7 @@ function SubmitClaimView() {
             )}
           </div>
 
-          <Button onClick={handleSubmit} className="w-full bg-blue-600 hover:bg-blue-700 text-foreground h-11 text-sm font-semibold gap-2">
+          <Button onClick={handleSubmit} className="w-full h-11 text-sm font-semibold gap-2">
             <Send className="w-4 h-4" /> Submit Claim
           </Button>
         </CardContent>
@@ -511,7 +520,7 @@ function SubmitClaimView() {
           </DialogHeader>
           <DialogFooter className="justify-center mt-2">
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-foreground"
+              
               onClick={() => {
                 setSuccessOpen(false);
                 setForm({ hospitalName: '', claimType: 'Hospitalization', admissionDate: '', dischargeDate: '', billAmount: '', icdCode: '', notes: '' });
@@ -706,7 +715,7 @@ function NetworkHospitalsView() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setPreAuthHosp(null)}>Cancel</Button>
-            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-foreground">Submit</Button>
+            <Button onClick={handlePreAuth} >Submit</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -818,7 +827,7 @@ function HealthLockerView() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewDoc(null)}>Close</Button>
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2"
+              className="gap-2"
               onClick={() => { toast.success('Document downloaded'); setViewDoc(null); }}
             >
               <Download className="w-4 h-4" /> Download
@@ -901,7 +910,7 @@ function SupportView() {
                 onChange={e => setGrievanceText(e.target.value)}
               />
             </div>
-            <Button onClick={handleGrievance} className="w-full bg-amber-500 hover:bg-amber-600 text-foreground gap-2">
+            <Button onClick={handleGrievance} variant="destructive" className="w-full gap-2">
               <Send className="w-4 h-4" /> Submit Grievance
             </Button>
           </CardContent>
@@ -933,7 +942,7 @@ function SupportView() {
                 onKeyDown={e => e.key === 'Enter' && handleChat()}
                 className="flex-1"
               />
-              <Button size="icon" onClick={handleChat} className="bg-blue-600 hover:bg-blue-700 text-foreground shrink-0">
+              <Button size="icon" onClick={handleChat} className="shrink-0">
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
