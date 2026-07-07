@@ -1,6 +1,6 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { Building2, User, ShieldCheck, Loader2 } from "lucide-react"
+import { Building2, User, ShieldCheck, Loader2, Activity } from "lucide-react"
 import { Logo } from "./components/Logo"
 import { motion } from "framer-motion"
 
@@ -25,6 +25,7 @@ import {
 import PatientPortal from './pages/PatientPortal'
 import HospitalPortal from './pages/HospitalPortal'
 import AdminPortal from './pages/AdminPortal'
+import TPAPortal from './pages/TPAPortal'
 import KnowledgeBase from './pages/KnowledgeBase'
 
 function LoginScreen() {
@@ -64,9 +65,10 @@ function LoginScreen() {
         className="w-full max-w-[420px] z-10"
       >
         <Tabs defaultValue="patient" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6 p-1 bg-background/50 backdrop-blur-md border border-border/50 rounded-xl shadow-sm">
+          <TabsList className="grid w-full grid-cols-4 mb-6 p-1 bg-background/50 backdrop-blur-md border border-border/50 rounded-xl shadow-sm">
             <TabsTrigger value="patient" className="flex gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"><User className="w-4 h-4" /> Patient</TabsTrigger>
             <TabsTrigger value="hospital" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Building2 className="w-4 h-4" /> Provider</TabsTrigger>
+            <TabsTrigger value="tpa" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Activity className="w-4 h-4" /> TPA</TabsTrigger>
             <TabsTrigger value="admin" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
           </TabsList>
           
@@ -122,6 +124,35 @@ function LoginScreen() {
                 <CardFooter className="pt-2 pb-6">
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Sign In to Provider Portal"}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="tpa">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-xl">
+              <CardHeader className="space-y-1 pb-6">
+                <CardTitle className="text-2xl font-bold tracking-tight">TPA Portal</CardTitle>
+                <CardDescription>Manage claims, pre-auths, and AI predictions.</CardDescription>
+              </CardHeader>
+              <form onSubmit={(e) => handleLogin(e, '/tpa')}>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="tpa-email">TPA Email</Label>
+                    <Input id="tpa-email" type="email" placeholder="tpa@healthsure.com" required className="bg-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="tpa-password">Password</Label>
+                      <a href="#" className="text-xs text-primary font-medium hover:underline">Forgot password?</a>
+                    </div>
+                    <Input id="tpa-password" type="password" required className="bg-white" />
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-2 pb-6">
+                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Sign In to TPA Portal"}
                   </Button>
                 </CardFooter>
               </form>
@@ -184,6 +215,7 @@ function App() {
         <Route path="/patient" element={<PatientPortal />} />
         <Route path="/hospital" element={<HospitalPortal />} />
         <Route path="/admin" element={<AdminPortal />} />
+        <Route path="/tpa" element={<TPAPortal />} />
         <Route path="/knowledge-base" element={<KnowledgeBase />} />
       </Routes>
     </Router>
