@@ -1,97 +1,83 @@
-import { Users, PlusCircle, FileCheck, CheckCircle2, XCircle, Clock, Search, Bell } from "lucide-react"
+import { Activity, ShieldCheck, UserCheck, CheckCircle2, Search, Bell, FilePlus2 } from "lucide-react"
 import { AppLayout, NavGroup } from "../components/AppLayout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useStore } from "../store/useStore"
+import { motion, Variants } from "framer-motion"
 import { useState } from "react"
 import { toast } from "sonner"
-import { motion, Variants } from "framer-motion"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-
-const claimFormSchema = z.object({
-  patientId: z.string().regex(/^HS-\d{5}$/, "Policy ID must be in format HS-XXXXX (e.g. HS-89302)"),
-  patientName: z.string().min(2, "Patient Name is required"),
-  treatment: z.string().min(5, "Treatment description must be at least 5 characters"),
-  cost: z.string().min(1, "Minimum cost is ₹100"),
-})
+import { Label } from "@/components/ui/label"
 
 export default function HospitalPortal() {
   const { claims, submitClaim } = useStore()
-  const [open, setOpen] = useState(false)
+  const [activeView, setActiveView] = useState("Dashboard")
 
-  const form = useForm<z.infer<typeof claimFormSchema>>({
-    resolver: zodResolver(claimFormSchema),
-    defaultValues: {
-      patientId: "",
-      patientName: "",
-      treatment: "",
-      cost: "",
-    },
-  })
+  const pendingClaimsCount = claims.filter(c => c.status === 'Pending TPA' || c.status === 'Flagged').length
+  const totalClaims = claims.length
+  
+  const [patientName, setPatientName] = useState("")
+  const [patientId, setPatientId] = useState("")
+  const [amount, setAmount] = useState("")
+  const [treatment, setTreatment] = useState("")
 
-  const onSubmit = (values: z.infer<typeof claimFormSchema>) => {
+  const handleClaimSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!patientId || !patientName || !amount) {
+      toast.error("Please fill all required fields")
+      return
+    }
     submitClaim({
-      patientId: values.patientId,
-      patientName: values.patientName,
-      treatment: values.treatment,
-      cost: Number(values.cost),
-      hospital: 'Apollo Hospitals, Jubilee Hills'
+      patientId,
+      patientName,
+      hospital: "Apollo Hospitals",
+      cost: parseFloat(amount),
+      treatment: treatment || "General Treatment"
     })
-    
-    toast.success("Pre-Authorization Submitted", {
-      description: `Claim for ${values.patientName} has been routed to the STP Engine.`,
-    })
-
-    setOpen(false)
-    form.reset()
+    toast.success("Claim Submitted to STP Engine", { description: "The claim has been pushed for real-time adjudication." })
+    setPatientName("")
+    setPatientId("")
+    setAmount("")
+    setTreatment("")
+    setActiveView("Dashboard")
   }
-
-  const hospitalClaims = claims.filter(c => c.hospital === 'Apollo Hospitals, Jubilee Hills')
-  const pendingCount = hospitalClaims.filter(c => c.status === 'Pending TPA' || c.status === 'Flagged').length
-  const approvedCount = hospitalClaims.filter(c => c.status === 'Auto-Approved' || c.status === 'Manual-Approved').length
-  const rejectedCount = hospitalClaims.filter(c => c.status === 'Rejected').length
 
   const navGroups: NavGroup[] = [
     {
       title: "NETWORK TOOLS",
       items: [
-        { label: "Dashboard", icon: Users, active: true },
-        { label: "Check Eligibility", icon: FileCheck },
+        { label: "Dashboard", icon: Activity, active: activeView === "Dashboard", onClick: () => setActiveView("Dashboard") },
+        { label: "Check Eligibility", icon: UserCheck, active: activeView === "Check Eligibility", onClick: () => setActiveView("Check Eligibility") }
       ]
     },
     {
       title: "CLAIMS & AUTH",
       items: [
-        { label: "Submit Claim", icon: FileCheck },
-        { label: "Pre-Authorizations", icon: Users }
+        { label: "Submit Claim", icon: FilePlus2, active: activeView === "Submit Claim", onClick: () => setActiveView("Submit Claim") },
+        { label: "Pre-Authorizations", icon: ShieldCheck, active: activeView === "Pre-Authorizations", onClick: () => setActiveView("Pre-Authorizations") }
       ]
     }
   ]
 
   const headerContent = (
     <>
-      <div className="relative">
+      <div className="relative hidden md:block">
         <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-        <Input className="pl-10 w-64 bg-muted border-border rounded-full" placeholder="Search patient ID..." />
+        <Input type="text" placeholder="Search Patient ID..." className="pl-10 w-64 bg-muted border-border" />
       </div>
-      <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-        <Bell className="w-6 h-6" />
+      <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:bg-muted rounded-full">
+        <Bell className="w-5 h-5" />
       </Button>
-      <div className="flex items-center gap-3 border-l border-border pl-6">
-        <div className="text-right">
-          <p className="text-sm font-bold">Billing Dept</p>
-          <p className="text-xs text-muted-foreground">ID: PRV-8492</p>
+      <div className="flex items-center gap-3 border-l border-border pl-4">
+        <div className="text-right hidden md:block">
+          <p className="text-sm font-bold leading-none text-foreground">Apollo Hospitals</p>
+          <p className="text-xs text-muted-foreground mt-1">Tier 1 Provider</p>
         </div>
         <Avatar>
-          <AvatarFallback className="bg-primary/20 text-primary font-bold">AH</AvatarFallback>
+          <AvatarFallback className="bg-primary/10 text-primary font-bold">AH</AvatarFallback>
         </Avatar>
       </div>
     </>
@@ -101,9 +87,7 @@ export default function HospitalPortal() {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+      transition: { staggerChildren: 0.1 }
     }
   }
 
@@ -112,179 +96,204 @@ export default function HospitalPortal() {
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
   }
 
-  return (
-    <AppLayout title="Provider Portal" navGroups={navGroups} headerContent={headerContent}>
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-          className="flex-1 overflow-auto p-8"
-        >
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-foreground">Apollo Hospitals, Jubilee Hills</h2>
-            
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"><PlusCircle className="w-4 h-4 mr-2" /> New Request</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Submit Pre-Auth</DialogTitle>
-                  <DialogDescription>
-                    Enter patient details to trigger the STP Adjudication Engine.
-                  </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="patientId"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Policy ID</FormLabel>
-                          <FormControl>
-                            <Input placeholder="HS-89302" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="patientName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Patient Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Vempati Vamshi Krishna" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="treatment"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Diagnosis / Treatment</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Cataract Surgery" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control as any}
-                      name="cost"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Estimated Cost (₹)</FormLabel>
-                          <FormControl>
-                            <Input type="number" placeholder="45000" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <DialogFooter className="pt-4">
-                      <Button type="submit">Submit to TPA</Button>
-                    </DialogFooter>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-border">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Pending</p>
-                    <h3 className="text-2xl font-bold mt-1">{pendingCount}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+  const renderView = () => {
+    switch (activeView) {
+      case "Dashboard":
+        return (
+          <>
+            <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8">Provider Dashboard</motion.h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <motion.div variants={itemVariants}>
+                <Card className="shadow-sm border-border border-t-4 border-t-primary h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">Total Submissions</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold">{totalClaims}</div>
+                    <p className="text-xs font-bold text-primary mt-2">All time</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Card className="shadow-sm border-border border-t-4 border-t-success h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">STP Auto-Approval Rate</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold">85%</div>
+                    <p className="text-xs text-muted-foreground mt-2">Target: 90%</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Card className="shadow-sm border-border border-t-4 border-t-warning h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">Pending Pre-Auths</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold">{pendingClaimsCount}</div>
+                    <p className="text-xs font-bold text-warning mt-2">Requires TPA attention</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
 
             <motion.div variants={itemVariants}>
               <Card className="shadow-sm border-border">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Approved (STP)</p>
-                    <h3 className="text-2xl font-bold mt-1 text-success">{approvedCount}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-success-muted flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5 text-success" />
-                  </div>
+                <CardHeader className="flex flex-row items-center justify-between pb-4">
+                  <CardTitle>Recent Claim Submissions</CardTitle>
+                  <Button variant="link" className="text-primary p-0">View All</Button>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Patient / ID</TableHead>
+                        <TableHead>Treatment</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {claims.map((claim) => (
+                        <TableRow key={claim.id}>
+                          <TableCell>
+                            <p className="font-bold">{claim.patientName}</p>
+                            <p className="text-xs text-muted-foreground font-mono">{claim.patientId}</p>
+                          </TableCell>
+                          <TableCell>{claim.treatment}</TableCell>
+                          <TableCell className="font-medium">₹{claim.cost.toLocaleString('en-IN')}</TableCell>
+                          <TableCell>{claim.date}</TableCell>
+                          <TableCell>
+                            {claim.status === 'Auto-Approved' || claim.status === 'Manual-Approved' ? (
+                               <Badge variant="outline" className="bg-success-muted text-success-foreground border-success-border">{claim.status}</Badge>
+                            ) : claim.status === 'Rejected' ? (
+                               <Badge variant="outline" className="bg-error-muted text-error-foreground border-error-border">Rejected</Badge>
+                            ) : (
+                               <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-border">
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Rejected</p>
-                    <h3 className="text-2xl font-bold mt-1 text-error">{rejectedCount}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-error-muted flex items-center justify-center">
-                    <XCircle className="w-5 h-5 text-error" />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
+          </>
+        )
+      case "Submit Claim":
+        return (
           <motion.div variants={itemVariants}>
-            <Card className="shadow-sm border-border">
+            <Card className="max-w-3xl mx-auto shadow-sm">
               <CardHeader>
-                <CardTitle>Recent Patient Submissions</CardTitle>
+                <CardTitle className="text-2xl font-bold">Submit New Claim to STP</CardTitle>
+                <CardDescription>Enter patient and treatment details. The claim will be immediately processed by the AI Engine.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Claim ID</TableHead>
-                      <TableHead>Patient Name</TableHead>
-                      <TableHead>Treatment</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {hospitalClaims.map(claim => (
-                      <TableRow key={claim.id}>
-                        <TableCell className="font-medium font-mono text-xs">{claim.id}</TableCell>
-                        <TableCell>
-                          <div className="font-medium">{claim.patientName}</div>
-                          <div className="text-xs text-muted-foreground">{claim.patientId}</div>
-                        </TableCell>
-                        <TableCell>{claim.treatment}</TableCell>
-                        <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
-                        <TableCell>
-                          {claim.status === 'Pending TPA' || claim.status === 'Flagged' ? (
-                             <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
-                          ) : claim.status === 'Rejected' ? (
-                             <Badge variant="outline" className="bg-error-muted text-error-foreground border-error-border">Rejected</Badge>
-                          ) : (
-                             <Badge variant="outline" className="bg-success-muted text-success-foreground border-success-border">{claim.status}</Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <form onSubmit={handleClaimSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="patientId">Patient ID (e.g. HS-89302)</Label>
+                      <Input id="patientId" value={patientId} onChange={e => setPatientId(e.target.value)} required placeholder="HS-XXXXX" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="patientName">Patient Name</Label>
+                      <Input id="patientName" value={patientName} onChange={e => setPatientName(e.target.value)} required placeholder="Full Name" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="treatment">Procedure / Treatment</Label>
+                      <Input id="treatment" value={treatment} onChange={e => setTreatment(e.target.value)} required placeholder="e.g. Appendectomy" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="amount">Total Amount (₹)</Label>
+                      <Input id="amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} required placeholder="0.00" />
+                    </div>
+                  </div>
+                  
+                  <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted/30">
+                    <FilePlus2 className="w-10 h-10 text-muted-foreground mx-auto mb-4 opacity-50" />
+                    <p className="font-bold text-foreground mb-1">Upload Discharge Summary & Bills</p>
+                    <p className="text-sm text-muted-foreground">Drag & drop files here. Our OCR engine will parse line items automatically.</p>
+                  </div>
+                  
+                  <Button type="submit" size="lg" className="w-full text-lg font-bold h-12 shadow-md">
+                    Process via STP Gateway
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </motion.div>
-          
-        </motion.div>
+        )
+      case "Check Eligibility":
+        return (
+          <motion.div variants={itemVariants} className="max-w-2xl mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle>Verify Patient Eligibility</CardTitle>
+                <CardDescription>Enter Member ID to check active coverage and policy balance.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4 mb-8">
+                  <Input placeholder="e.g. HS-89302" className="flex-1" />
+                  <Button onClick={() => toast.success("Eligibility Verified", { description: "Active Policy: Arogya Sanjeevani" })}>Check</Button>
+                </div>
+                <div className="p-6 border border-success-border bg-success-muted rounded-xl">
+                  <div className="flex items-center gap-3 mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-success" />
+                    <div>
+                      <h3 className="text-xl font-bold text-success-foreground">Active Coverage</h3>
+                      <p className="text-sm text-success-foreground/80">Patient: Vamshi (HS-89302)</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 bg-background p-4 rounded-lg border border-border">
+                    <div><p className="text-xs text-muted-foreground">Plan</p><p className="font-bold">Arogya Sanjeevani</p></div>
+                    <div><p className="text-xs text-muted-foreground">Available Balance</p><p className="font-bold text-success">₹15,00,000</p></div>
+                    <div><p className="text-xs text-muted-foreground">Room Rent Cap</p><p className="font-bold">₹5,000 / Day</p></div>
+                    <div><p className="text-xs text-muted-foreground">Co-Pay</p><p className="font-bold">0%</p></div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )
+      case "Pre-Authorizations":
+        return (
+          <motion.div variants={itemVariants}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Pending Pre-Authorizations</CardTitle>
+                <CardDescription>Track approvals for upcoming planned procedures.</CardDescription>
+              </CardHeader>
+              <CardContent className="py-12">
+                <div className="text-center">
+                  <ShieldCheck className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+                  <p className="text-muted-foreground font-medium text-lg">No pending requests.</p>
+                  <Button variant="outline" className="mt-6" onClick={() => setActiveView("Submit Claim")}>New Pre-Auth Request</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )
+      default:
+        return <div>View under construction</div>
+    }
+  }
+
+  return (
+    <AppLayout title="Provider Portal" navGroups={navGroups} headerContent={headerContent}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="p-8"
+      >
+        {renderView()}
+      </motion.div>
     </AppLayout>
   )
 }
