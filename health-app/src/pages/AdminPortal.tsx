@@ -41,19 +41,19 @@ export default function AdminPortal() {
 
   const headerContent = (
     <>
-      <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-bold border-none">
+      <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1 bg-success-muted text-success-foreground rounded-full text-sm font-bold border-none">
         <Server className="w-4 h-4" /> Systems Operational
       </Badge>
-      <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-purple-600 transition-colors cursor-pointer">
+      <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-primary transition-colors cursor-pointer">
         <Bell className="w-6 h-6" />
       </Button>
-      <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
+      <div className="flex items-center gap-3 border-l border-border pl-6">
         <div className="text-right">
           <p className="text-sm font-bold">System Administrator</p>
-          <p className="text-xs text-slate-500">Root Access</p>
+          <p className="text-xs text-muted-foreground">Root Access</p>
         </div>
         <Avatar>
-          <AvatarFallback className="bg-purple-100 text-purple-700 font-bold">SA</AvatarFallback>
+          <AvatarFallback className="bg-primary/20 text-primary font-bold">SA</AvatarFallback>
         </Avatar>
       </div>
     </>
@@ -91,10 +91,10 @@ export default function AdminPortal() {
         >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 h-full">
+              <Card className="shadow-sm border-border h-full">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Total Claims</p>
+                    <p className="text-sm font-medium text-muted-foreground">Total Claims</p>
                     <h3 className="text-3xl font-bold mt-1">{totalClaims}</h3>
                   </div>
                 </CardContent>
@@ -102,51 +102,51 @@ export default function AdminPortal() {
             </motion.div>
             
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 border-l-4 border-l-green-500 h-full">
+              <Card className="shadow-sm border-border border-l-4 border-l-success h-full">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Auto-Approved</p>
-                    <h3 className="text-3xl font-bold mt-1 text-green-600">{autoApproveRate}%</h3>
+                    <p className="text-sm font-medium text-muted-foreground">Auto-Approved</p>
+                    <h3 className="text-3xl font-bold mt-1 text-success">{autoApproveRate}%</h3>
                   </div>
-                  <CheckCircle2 className="w-8 h-8 text-green-500 opacity-20" />
+                  <CheckCircle2 className="w-8 h-8 text-success opacity-20" />
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 border-l-4 border-l-yellow-500 h-full">
+              <Card className="shadow-sm border-border border-l-4 border-l-warning h-full">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Manual Review</p>
-                    <h3 className="text-3xl font-bold mt-1 text-yellow-600">{manualRate}%</h3>
+                    <p className="text-sm font-medium text-muted-foreground">Manual Review</p>
+                    <h3 className="text-3xl font-bold mt-1 text-warning">{manualRate}%</h3>
                   </div>
-                  <AlertTriangle className="w-8 h-8 text-yellow-500 opacity-20" />
+                  <AlertTriangle className="w-8 h-8 text-warning opacity-20" />
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 border-l-4 border-l-red-500 h-full">
+              <Card className="shadow-sm border-border border-l-4 border-l-error h-full">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Hard Rejected</p>
-                    <h3 className="text-3xl font-bold mt-1 text-red-600">{rejectRate}%</h3>
+                    <p className="text-sm font-medium text-muted-foreground">Hard Rejected</p>
+                    <h3 className="text-3xl font-bold mt-1 text-error">{rejectRate}%</h3>
                   </div>
-                  <ShieldAlert className="w-8 h-8 text-red-500 opacity-20" />
+                  <ShieldAlert className="w-8 h-8 text-error opacity-20" />
                 </CardContent>
               </Card>
             </motion.div>
           </div>
 
           <motion.div variants={itemVariants}>
-            <Card className="shadow-sm border-slate-200">
-              <CardHeader className="border-b border-slate-100 pb-4 bg-slate-50/50">
+            <Card className="shadow-sm border-border">
+              <CardHeader className="border-b border-border pb-4 bg-muted/50">
                 <CardTitle>Live AI Adjudication Stream</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                    <TableRow className="bg-muted hover:bg-muted">
                       <TableHead className="w-[100px]">Claim ID</TableHead>
                       <TableHead>Algorithm Score</TableHead>
                       <TableHead>Rule Triggered</TableHead>
@@ -161,36 +161,36 @@ export default function AdminPortal() {
                         <TableCell className="font-mono text-xs">{claim.id}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
+                            <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
                               <div className="h-full" style={{
                                 width: `${claim.score}%`,
-                                backgroundColor: (claim.score || 0) > 80 ? '#22c55e' : (claim.score || 0) > 40 ? '#eab308' : '#ef4444'
+                                backgroundColor: (claim.score || 0) > 80 ? 'hsl(var(--success))' : (claim.score || 0) > 40 ? 'hsl(var(--warning))' : 'hsl(var(--error))'
                               }}></div>
                             </div>
-                            <span className="text-xs text-slate-500">{claim.score}%</span>
+                            <span className="text-xs text-muted-foreground">{claim.score}%</span>
                           </div>
                         </TableCell>
-                        <TableCell className={`text-sm font-medium ${(claim.score || 0) < 50 ? 'text-red-500' : 'text-slate-500'}`}>
+                        <TableCell className={`text-sm font-medium ${(claim.score || 0) < 50 ? 'text-error' : 'text-muted-foreground'}`}>
                           {claim.ruleTriggered}
                         </TableCell>
                         <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
                         <TableCell>
                            {claim.status === 'Auto-Approved' || claim.status === 'Manual-Approved' ? (
-                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-success-muted text-success-foreground border-success-border">{claim.status}</Badge>
                           ) : claim.status === 'Rejected' ? (
-                             <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
+                             <Badge variant="outline" className="bg-error-muted text-error-foreground border-error-border">Rejected</Badge>
                           ) : (
-                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
                           )}
                         </TableCell>
                         <TableCell>
                           {claim.status === 'Flagged' ? (
                             <div className="flex gap-2">
-                              <Button size="sm" onClick={() => handleResolve(claim.id, 'Approve')} className="bg-green-600 hover:bg-green-700 text-white cursor-pointer">Approve</Button>
+                              <Button size="sm" onClick={() => handleResolve(claim.id, 'Approve')} className="bg-success hover:bg-success/90 text-white cursor-pointer">Approve</Button>
                               <Button size="sm" onClick={() => handleResolve(claim.id, 'Reject')} variant="destructive" className="cursor-pointer">Reject</Button>
                             </div>
                           ) : (
-                            <Button variant="ghost" size="sm" className="text-purple-600" disabled>Resolved</Button>
+                            <Button variant="ghost" size="sm" className="text-primary" disabled>Resolved</Button>
                           )}
                         </TableCell>
                       </TableRow>

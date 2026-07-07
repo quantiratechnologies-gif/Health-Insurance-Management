@@ -79,19 +79,19 @@ export default function HospitalPortal() {
   const headerContent = (
     <>
       <div className="relative">
-        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-        <Input className="pl-10 w-64 bg-slate-50 border-slate-200 rounded-full" placeholder="Search patient ID..." />
+        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Input className="pl-10 w-64 bg-muted border-border rounded-full" placeholder="Search patient ID..." />
       </div>
-      <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-primary transition-colors cursor-pointer">
+      <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-primary transition-colors cursor-pointer">
         <Bell className="w-6 h-6" />
       </Button>
-      <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
+      <div className="flex items-center gap-3 border-l border-border pl-6">
         <div className="text-right">
           <p className="text-sm font-bold">Billing Dept</p>
-          <p className="text-xs text-slate-500">ID: PRV-8492</p>
+          <p className="text-xs text-muted-foreground">ID: PRV-8492</p>
         </div>
         <Avatar>
-          <AvatarFallback className="bg-blue-100 text-blue-700 font-bold">AH</AvatarFallback>
+          <AvatarFallback className="bg-primary/20 text-primary font-bold">AH</AvatarFallback>
         </Avatar>
       </div>
     </>
@@ -121,11 +121,11 @@ export default function HospitalPortal() {
           className="flex-1 overflow-auto p-8"
         >
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-slate-800">Apollo Hospitals, Jubilee Hills</h2>
+            <h2 className="text-xl font-bold text-foreground">Apollo Hospitals, Jubilee Hills</h2>
             
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"><PlusCircle className="w-4 h-4 mr-2" /> New Request</Button>
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"><PlusCircle className="w-4 h-4 mr-2" /> New Request</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -199,42 +199,42 @@ export default function HospitalPortal() {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200">
+              <Card className="shadow-sm border-border">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Pending</p>
+                    <p className="text-sm font-medium text-muted-foreground">Pending</p>
                     <h3 className="text-2xl font-bold mt-1">{pendingCount}</h3>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-slate-600" />
+                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200">
+              <Card className="shadow-sm border-border">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Approved (STP)</p>
-                    <h3 className="text-2xl font-bold mt-1 text-green-600">{approvedCount}</h3>
+                    <p className="text-sm font-medium text-muted-foreground">Approved (STP)</p>
+                    <h3 className="text-2xl font-bold mt-1 text-success">{approvedCount}</h3>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <div className="w-10 h-10 rounded-full bg-success-muted flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5 text-success" />
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200">
+              <Card className="shadow-sm border-border">
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Rejected</p>
-                    <h3 className="text-2xl font-bold mt-1 text-red-600">{rejectedCount}</h3>
+                    <p className="text-sm font-medium text-muted-foreground">Rejected</p>
+                    <h3 className="text-2xl font-bold mt-1 text-error">{rejectedCount}</h3>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <XCircle className="w-5 h-5 text-red-600" />
+                  <div className="w-10 h-10 rounded-full bg-error-muted flex items-center justify-center">
+                    <XCircle className="w-5 h-5 text-error" />
                   </div>
                 </CardContent>
               </Card>
@@ -242,7 +242,7 @@ export default function HospitalPortal() {
           </div>
 
           <motion.div variants={itemVariants}>
-            <Card className="shadow-sm border-slate-200">
+            <Card className="shadow-sm border-border">
               <CardHeader>
                 <CardTitle>Recent Patient Submissions</CardTitle>
               </CardHeader>
@@ -263,17 +263,17 @@ export default function HospitalPortal() {
                         <TableCell className="font-medium font-mono text-xs">{claim.id}</TableCell>
                         <TableCell>
                           <div className="font-medium">{claim.patientName}</div>
-                          <div className="text-xs text-slate-500">{claim.patientId}</div>
+                          <div className="text-xs text-muted-foreground">{claim.patientId}</div>
                         </TableCell>
                         <TableCell>{claim.treatment}</TableCell>
                         <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
                         <TableCell>
                           {claim.status === 'Pending TPA' || claim.status === 'Flagged' ? (
-                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
                           ) : claim.status === 'Rejected' ? (
-                             <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
+                             <Badge variant="outline" className="bg-error-muted text-error-foreground border-error-border">Rejected</Badge>
                           ) : (
-                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-success-muted text-success-foreground border-success-border">{claim.status}</Badge>
                           )}
                         </TableCell>
                       </TableRow>

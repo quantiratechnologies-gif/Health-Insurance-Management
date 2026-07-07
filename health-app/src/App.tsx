@@ -41,10 +41,10 @@ function LoginScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 relative overflow-hidden">
       {/* Premium Background Gradients */}
       <div className="absolute top-0 left-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
@@ -54,7 +54,7 @@ function LoginScreen() {
         onClick={() => navigate('/knowledge-base')}
       >
         <Logo className="h-10 w-auto" />
-        <p className="text-slate-500 mt-3 font-medium tracking-wide text-sm">UNIFIED PLATFORM ACCESS</p>
+        <p className="text-muted-foreground mt-3 font-medium tracking-wide text-sm">UNIFIED PLATFORM ACCESS</p>
       </motion.div>
 
       <motion.div 
@@ -64,8 +64,8 @@ function LoginScreen() {
         className="w-full max-w-[420px] z-10"
       >
         <Tabs defaultValue="patient" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6 p-1 bg-white/50 backdrop-blur-md border border-slate-200/50 rounded-xl shadow-sm">
-            <TabsTrigger value="patient" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><User className="w-4 h-4" /> Patient</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-6 p-1 bg-background/50 backdrop-blur-md border border-border/50 rounded-xl shadow-sm">
+            <TabsTrigger value="patient" className="flex gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"><User className="w-4 h-4" /> Patient</TabsTrigger>
             <TabsTrigger value="hospital" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Building2 className="w-4 h-4" /> Provider</TabsTrigger>
             <TabsTrigger value="admin" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
           </TabsList>
@@ -143,13 +143,13 @@ function LoginScreen() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="admin-password">Password</Label>
-                      <a href="#" className="text-xs text-slate-500 font-medium hover:underline">SSO Recovery</a>
+                      <a href="#" className="text-xs text-muted-foreground font-medium hover:underline">SSO Recovery</a>
                     </div>
                     <Input id="admin-password" type="password" required className="bg-white" />
                   </div>
                 </CardContent>
                 <CardFooter className="pt-2 pb-6">
-                  <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white" disabled={isLoading}>
+                  <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground" disabled={isLoading}>
                     {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Secure Admin Login"}
                   </Button>
                 </CardFooter>
@@ -165,10 +165,10 @@ function LoginScreen() {
         transition={{ duration: 0.5, delay: 0.3 }}
         className="mt-8 text-center z-10"
       >
-        <Button variant="link" onClick={() => navigate('/knowledge-base')} className="text-slate-500 font-medium">
+        <Button variant="link" onClick={() => navigate('/knowledge-base')} className="text-muted-foreground font-medium">
           Explore Knowledge Base &rarr;
         </Button>
-        <div className="text-sm text-slate-400 mt-2 font-medium">
+        <div className="text-sm text-muted-foreground mt-2 font-medium">
           &copy; 2026 HealthSure TPA Systems.
         </div>
       </motion.div>

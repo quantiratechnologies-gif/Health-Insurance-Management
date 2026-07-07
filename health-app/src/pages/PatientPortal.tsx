@@ -44,12 +44,12 @@ export default function PatientPortal() {
   const headerContent = (
     <>
       <div className="relative">
-        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-        <Input type="text" placeholder="Search..." className="pl-10 w-64 bg-slate-50 border-slate-200" />
+        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Input type="text" placeholder="Search..." className="pl-10 w-64 bg-muted border-border" />
       </div>
-      <Button variant="ghost" size="icon" className="relative text-slate-500 hover:bg-slate-50 rounded-full transition-colors cursor-pointer">
+      <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:bg-muted rounded-full transition-colors cursor-pointer">
         <Bell className="w-5 h-5" />
-        <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+        <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full border-2 border-white"></span>
       </Button>
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" />
@@ -88,24 +88,24 @@ export default function PatientPortal() {
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 bg-gradient-to-br from-primary to-blue-700 text-white border-0 h-full">
+              <Card className="shadow-sm border-border bg-gradient-to-br from-primary to-secondary text-primary-foreground border-0 h-full">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-blue-100 flex items-center justify-between">
+                  <CardTitle className="text-sm font-medium text-primary-foreground/90 flex items-center justify-between">
                     Active Policy
                     <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 border-0">Primary</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold mb-1">{policy?.planName || 'N/A'}</div>
-                  <p className="text-sm text-blue-100 mb-4">Valid till Dec 31, 2027</p>
+                  <p className="text-sm text-primary-foreground/80 mb-4">Valid till Dec 31, 2027</p>
                   
                   <div className="space-y-2 pt-2 border-t border-white/20">
                     <div className="flex justify-between text-sm">
-                      <span className="text-blue-100">Available Balance</span>
+                      <span className="text-primary-foreground/80">Available Balance</span>
                       <span className="font-bold">₹{policy?.availableBalance.toLocaleString('en-IN') || '0'}</span>
                     </div>
                     <Progress value={progressPercentage} className="h-2 bg-white/20 [&>div]:bg-white" />
-                    <div className="text-right text-xs text-blue-100">
+                    <div className="text-right text-xs text-primary-foreground/80">
                       of ₹{policy?.totalSumInsured.toLocaleString('en-IN') || '0'} Limit
                     </div>
                   </div>
@@ -114,31 +114,31 @@ export default function PatientPortal() {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 h-full">
+              <Card className="shadow-sm border-border h-full">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-slate-500 flex items-center justify-between">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                     Total Claims
-                    <Activity className="w-4 h-4 text-slate-400" />
+                    <Activity className="w-4 h-4 text-muted-foreground" />
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-slate-900">{userClaims.length}</div>
-                  <p className="text-sm text-slate-500 mt-1">Submitted this year</p>
+                  <div className="text-3xl font-bold text-foreground">{userClaims.length}</div>
+                  <p className="text-sm text-muted-foreground mt-1">Submitted this year</p>
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="shadow-sm border-slate-200 h-full">
+              <Card className="shadow-sm border-border h-full">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-slate-500 flex items-center justify-between">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                     Pending Actions
-                    <Bell className="w-4 h-4 text-orange-500" />
+                    <Bell className="w-4 h-4 text-warning" />
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-slate-900">0</div>
-                  <p className="text-sm text-slate-500 mt-1">You are all caught up!</p>
+                  <div className="text-3xl font-bold text-foreground">0</div>
+                  <p className="text-sm text-muted-foreground mt-1">You are all caught up!</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -146,7 +146,7 @@ export default function PatientPortal() {
 
           {/* Recent Claims Table */}
           <motion.div variants={itemVariants}>
-            <Card className="shadow-sm border-slate-200">
+            <Card className="shadow-sm border-border">
               <CardHeader>
                 <CardTitle>Recent Claims History</CardTitle>
               </CardHeader>
@@ -170,11 +170,11 @@ export default function PatientPortal() {
                         <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
                         <TableCell>
                            {claim.status === 'Auto-Approved' || claim.status === 'Manual-Approved' ? (
-                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-success-muted text-success-foreground border-success-border">{claim.status}</Badge>
                           ) : claim.status === 'Rejected' ? (
-                             <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
+                             <Badge variant="outline" className="bg-error-muted text-error-foreground border-error-border">Rejected</Badge>
                           ) : (
-                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
+                             <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
                           )}
                         </TableCell>
                       </TableRow>
