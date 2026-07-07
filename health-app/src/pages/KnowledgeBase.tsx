@@ -19,13 +19,13 @@ export default function KnowledgeBase() {
     <AppLayout title="Knowledge Base" navGroups={navGroups}>
       <ScrollArea className="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-8 h-[calc(100vh-4rem)]">
         <Tabs defaultValue="intro" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-8 h-auto p-1 bg-muted/50">
-            <TabsTrigger value="intro" className="py-2.5">Introduction</TabsTrigger>
-            <TabsTrigger value="types" className="py-2.5">Insurance Types</TabsTrigger>
-            <TabsTrigger value="flows" className="py-2.5">Claims Flows</TabsTrigger>
-            <TabsTrigger value="decision" className="py-2.5">STP Logic</TabsTrigger>
-            <TabsTrigger value="cases" className="py-2.5">Case Studies</TabsTrigger>
-            <TabsTrigger value="tpa" className="py-2.5">TPA Functions</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-8">
+            <TabsTrigger value="intro">Introduction</TabsTrigger>
+            <TabsTrigger value="types">Insurance Types</TabsTrigger>
+            <TabsTrigger value="flows">Claims Flows</TabsTrigger>
+            <TabsTrigger value="decision">STP Logic</TabsTrigger>
+            <TabsTrigger value="cases">Case Studies</TabsTrigger>
+            <TabsTrigger value="tpa">TPA Functions</TabsTrigger>
           </TabsList>
           
           {/* Introduction Tab */}
@@ -69,7 +69,7 @@ export default function KnowledgeBase() {
                   </div>
                   <Card className="bg-white/10 border-white/20">
                     <CardContent className="p-4">
-                      <p className="font-bold text-sm mb-1 text-yellow-300">Tax Benefits (Section 80D)</p>
+                      <p className="font-bold text-sm mb-1 text-yellow-700 dark:text-yellow-300">Tax Benefits (Section 80D)</p>
                       <p className="text-xs text-primary-foreground/90">Avail up to <strong>₹25,000/-</strong> standard deduction. Benefit increases to <strong>₹50,000/-</strong> if the insured or family members are above 60 years of age.</p>
                     </CardContent>
                   </Card>

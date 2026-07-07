@@ -65,11 +65,11 @@ function LoginScreen() {
         className="w-full max-w-[420px] z-10"
       >
         <Tabs defaultValue="patient" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6 p-1 bg-background/50 backdrop-blur-md border border-border/50 rounded-xl shadow-sm">
-            <TabsTrigger value="patient" className="flex gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"><User className="w-4 h-4" /> Patient</TabsTrigger>
-            <TabsTrigger value="hospital" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Building2 className="w-4 h-4" /> Provider</TabsTrigger>
-            <TabsTrigger value="tpa" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Activity className="w-4 h-4" /> TPA</TabsTrigger>
-            <TabsTrigger value="admin" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 mb-6">
+            <TabsTrigger value="patient" className="flex gap-2"><User className="w-4 h-4" /> Patient</TabsTrigger>
+            <TabsTrigger value="hospital" className="flex gap-2"><Building2 className="w-4 h-4" /> Provider</TabsTrigger>
+            <TabsTrigger value="tpa" className="flex gap-2"><Activity className="w-4 h-4" /> TPA</TabsTrigger>
+            <TabsTrigger value="admin" className="flex gap-2"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
           </TabsList>
           
           <TabsContent value="patient">

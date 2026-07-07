@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export type ClaimStatus = 'Pending TPA' | 'Auto-Approved' | 'Flagged' | 'Rejected' | 'Manual-Approved'
 
@@ -31,7 +32,7 @@ interface AppState {
   resolveClaim: (id: string, action: 'Approve' | 'Reject') => void
 }
 
-export const useStore = create<AppState>((set) => ({
+export const useStore = create<AppState>()(persist((set) => ({
   policies: [
     {
       id: 'HS-89302',
@@ -155,4 +156,4 @@ export const useStore = create<AppState>((set) => ({
 
     return { claims: updatedClaims, policies: updatedPolicies }
   })
-}))
+}), { name: 'health-insurance-storage' }))

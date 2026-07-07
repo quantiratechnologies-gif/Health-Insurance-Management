@@ -152,8 +152,8 @@ const NAV_GROUPS: NavGroup[] = [
 function statusBadge(status: LogStatus) {
   const map: Record<LogStatus, { cls: string; label: string }> = {
     Success: { cls: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30", label: "Success" },
-    Warning: { cls: "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30", label: "Warning" },
-    Error: { cls: "bg-red-500/20 text-red-300 border border-red-500/30", label: "Error" },
+    Warning: { cls: "bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-500/30", label: "Warning" },
+    Error: { cls: "bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30", label: "Error" },
     Info: { cls: "bg-slate-500/20 text-foreground border border-slate-500/30", label: "Info" },
   };
   const { cls, label } = map[status];
@@ -229,8 +229,8 @@ function PlatformDashboard() {
       {/* Live Clock */}
       <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-6 flex items-center gap-6">
         <div>
-          <p className="text-xs text-indigo-600 dark:text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-1">System Clock</p>
-          <p className="font-mono text-5xl font-bold text-indigo-300 tabular-nums">{clockStr}</p>
+          <p className="text-xs text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-1">System Clock</p>
+          <p className="font-mono text-5xl font-bold text-indigo-700 dark:text-indigo-300 tabular-nums">{clockStr}</p>
           <p className="text-sm text-muted-foreground mt-1">{dateStr}</p>
         </div>
         <div className="ml-auto flex flex-col items-end gap-1">
@@ -245,7 +245,7 @@ function PlatformDashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard title="System Uptime" value="99.99%" sub="Last 30 days" accent="text-emerald-600 dark:text-emerald-400" delay={0.05} />
-        <KPICard title="Active TPA Sessions" value="42" sub="Current live sessions" accent="text-sky-400" delay={0.1} />
+        <KPICard title="Active TPA Sessions" value="42" sub="Current live sessions" accent="text-sky-700 dark:text-sky-400" delay={0.1} />
         <KPICard title="STP Avg Processing" value="1.2s" sub="Straight-through processing" accent="text-violet-600 dark:text-violet-400" delay={0.15} />
         <KPICard title="API Health" value="100%" sub="All endpoints green" accent="text-emerald-600 dark:text-emerald-400" delay={0.2} />
       </div>
@@ -365,7 +365,7 @@ function RuleEngineSettings() {
 
         <Button
           onClick={() => setOpen(true)}
-          className="w-full bg-indigo-600 hover:bg-indigo-500 text-foreground font-semibold mt-2"
+          className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold mt-2"
         >
           Save Configuration
         </Button>
@@ -382,15 +382,15 @@ function RuleEngineSettings() {
           <div className="rounded-xl bg-muted/50 border border-border p-4 space-y-2 text-sm font-mono">
             <div className="flex justify-between">
               <span className="text-muted-foreground">auto_approval_threshold</span>
-              <span className="text-indigo-300">₹{autoApproval.toLocaleString()}</span>
+              <span className="text-indigo-700 dark:text-indigo-300">₹{autoApproval.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">risk_score_threshold</span>
-              <span className="text-yellow-300">{riskThreshold}</span>
+              <span className="text-yellow-700 dark:text-yellow-300">{riskThreshold}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">copay_override_pct</span>
-              <span className="text-sky-600 dark:text-sky-400">{coPay}%</span>
+              <span className="text-sky-600 dark:text-sky-700 dark:text-sky-400">{coPay}%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">network_check_enabled</span>
@@ -477,7 +477,7 @@ function PlatformAnalytics() {
         <div className="flex items-end gap-3 h-40">
           {MONTHLY_VOLUME.map((d, i) => (
             <div key={d.month} className="flex flex-col items-center gap-2 flex-1">
-              <span className="text-xs text-sky-600 dark:text-sky-400 font-semibold">{d.value}</span>
+              <span className="text-xs text-sky-600 dark:text-sky-700 dark:text-sky-400 font-semibold">{d.value}</span>
               <motion.div
                 initial={{ height: 0 }}
                 animate={{ height: `${(d.value / maxVol) * 100}%` }}
@@ -618,7 +618,7 @@ function ProviderApprovals() {
                 <div className="rounded-xl bg-card border border-border p-4 font-mono text-sm space-y-1">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">username</span>
-                    <span className="text-indigo-300">{creds.username}</span>
+                    <span className="text-indigo-700 dark:text-indigo-300">{creds.username}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">password</span>
@@ -757,14 +757,14 @@ function TPAAccounts() {
               >
                 <td className="px-4 py-3 text-foreground font-medium">{u.name}</td>
                 <td className="px-4 py-3 text-muted-foreground text-xs">{u.role}</td>
-                <td className="px-4 py-3 text-sky-600 dark:text-sky-400 font-mono">{u.claimsProcessed}</td>
+                <td className="px-4 py-3 text-sky-600 dark:text-sky-700 dark:text-sky-400 font-mono">{u.claimsProcessed}</td>
                 <td className="px-4 py-3 text-muted-foreground text-xs font-mono">{u.lastActive}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                       u.status === "Active"
                         ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                        : "bg-red-500/20 text-red-300 border border-red-500/30"
+                        : "bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30"
                     }`}
                   >
                     {u.status}
@@ -792,7 +792,7 @@ function TPAAccounts() {
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
         <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-indigo-600 dark:text-indigo-600 dark:text-indigo-400">Add TPA User</DialogTitle>
+            <DialogTitle className="text-indigo-600 dark:text-indigo-400">Add TPA User</DialogTitle>
             <DialogDescription className="text-muted-foreground">
               Create a new TPA adjudicator account.
             </DialogDescription>
@@ -920,7 +920,7 @@ function SystemAuditLogs() {
               onClick={() => setFilter(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 filter === t
-                  ? "bg-indigo-600 text-foreground"
+                  ? "bg-indigo-600 text-white"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
