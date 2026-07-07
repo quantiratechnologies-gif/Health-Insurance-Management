@@ -94,12 +94,12 @@ export function AppLayout({
                       <SidebarMenuItem key={idx}>
                         <SidebarMenuButton
                           asChild
-                          onClick={link.onClick || (link.id && onNavChange ? () => onNavChange(link.id!) : (link.id && onNavigate ? () => onNavigate(link.id!) : undefined))}
                           isActive={link.active !== undefined ? link.active : (activeItem === link.id)}
                           tooltip={link.label}
                           className="h-9 rounded-lg gap-3 px-3 text-sm font-medium transition-all duration-150"
                         >
                           <button 
+                            onClick={link.onClick || (link.id && onNavChange ? () => onNavChange(link.id!) : (link.id && onNavigate ? () => onNavigate(link.id!) : undefined))}
                             className="flex items-center w-full cursor-pointer"
                             style={{
                               color: (link.active || activeItem === link.id) 
