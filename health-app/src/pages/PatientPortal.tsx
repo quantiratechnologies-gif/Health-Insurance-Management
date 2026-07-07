@@ -1,5 +1,5 @@
-import { FileText, Activity, CreditCard, Search, Bell, Settings } from "lucide-react"
-import { AppLayout, NavLink } from "../components/AppLayout"
+import { Activity, CreditCard, Search, Bell, Home, Shield, Heart } from "lucide-react"
+import { AppLayout, NavGroup } from "../components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -17,11 +17,28 @@ export default function PatientPortal() {
   const policy = policies.find(p => p.id === currentUserId)
   const userClaims = claims.filter(c => c.patientId === currentUserId)
 
-  const navLinks: NavLink[] = [
-    { label: "Dashboard", icon: Activity, active: true },
-    { label: "My Policies", icon: FileText },
-    { label: "Track Claims", icon: CreditCard },
-    { label: "Settings", icon: Settings },
+  const navGroups: NavGroup[] = [
+    {
+      title: "MAIN MENU",
+      items: [
+        { label: "Dashboard", icon: Home, active: true },
+        { label: "My Policies", icon: Shield },
+      ]
+    },
+    {
+      title: "CLAIMS MANAGEMENT",
+      items: [
+        { label: "Submit New Claim", icon: CreditCard },
+        { label: "Claim Tracker", icon: Activity }
+      ]
+    },
+    {
+      title: "NETWORK & HEALTH",
+      items: [
+        { label: "Network Hospitals", icon: Heart },
+        { label: "Health Locker (ABDM)", icon: Shield }
+      ]
+    }
   ]
 
   const headerContent = (
@@ -59,7 +76,7 @@ export default function PatientPortal() {
     : 0
 
   return (
-    <AppLayout title="Patient Dashboard" navLinks={navLinks} headerContent={headerContent}>
+    <AppLayout title="Patient Portal" navGroups={navGroups} headerContent={headerContent}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"

@@ -3,15 +3,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { AppLayout, NavLink } from "../components/AppLayout"
+import { AppLayout, NavGroup } from "../components/AppLayout"
 
 export default function KnowledgeBase() {
-  const navLinks: NavLink[] = [
-    { label: "Knowledge Base", icon: FileText, active: true }
+  const navGroups: NavGroup[] = [
+    {
+      title: "DOCUMENTATION",
+      items: [
+        { label: "Knowledge Base", icon: FileText, active: true }
+      ]
+    }
   ]
 
   return (
-    <AppLayout title="Knowledge Base" navLinks={navLinks}>
+    <AppLayout title="Knowledge Base" navGroups={navGroups}>
       <ScrollArea className="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-8 h-[calc(100vh-4rem)]">
         <Tabs defaultValue="intro" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-8 h-auto p-1 bg-slate-200/50">

@@ -1,5 +1,5 @@
 import { Users, PlusCircle, FileCheck, CheckCircle2, XCircle, Clock, Search, Bell } from "lucide-react"
-import { AppLayout, NavLink } from "../components/AppLayout"
+import { AppLayout, NavGroup } from "../components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -59,9 +59,21 @@ export default function HospitalPortal() {
   const approvedCount = hospitalClaims.filter(c => c.status === 'Auto-Approved' || c.status === 'Manual-Approved').length
   const rejectedCount = hospitalClaims.filter(c => c.status === 'Rejected').length
 
-  const navLinks: NavLink[] = [
-    { label: "Dashboard", icon: Users, active: true },
-    { label: "Verify Eligibility", icon: FileCheck },
+  const navGroups: NavGroup[] = [
+    {
+      title: "NETWORK TOOLS",
+      items: [
+        { label: "Dashboard", icon: Users, active: true },
+        { label: "Check Eligibility", icon: FileCheck },
+      ]
+    },
+    {
+      title: "CLAIMS & AUTH",
+      items: [
+        { label: "Submit Claim", icon: FileCheck },
+        { label: "Pre-Authorizations", icon: Users }
+      ]
+    }
   ]
 
   const headerContent = (
@@ -101,7 +113,7 @@ export default function HospitalPortal() {
   }
 
   return (
-    <AppLayout title="Provider Hub" navLinks={navLinks} headerContent={headerContent}>
+    <AppLayout title="Provider Portal" navGroups={navGroups} headerContent={headerContent}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"

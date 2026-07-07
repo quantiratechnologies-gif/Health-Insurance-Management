@@ -1,5 +1,5 @@
-import { ShieldAlert, BarChart3, Server, CheckCircle2, AlertTriangle, Bell } from "lucide-react"
-import { AppLayout, NavLink } from "../components/AppLayout"
+import { ShieldAlert, Server, CheckCircle2, AlertTriangle, Bell, Activity, Users, Database } from "lucide-react"
+import { AppLayout, NavGroup } from "../components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -20,9 +20,23 @@ export default function AdminPortal() {
   const hardRejected = claims.filter(c => c.status === 'Rejected').length
   const rejectRate = totalClaims > 0 ? Math.round((hardRejected / totalClaims) * 100) : 0
 
-  const navLinks: NavLink[] = [
-    { label: "STP Engine", icon: BarChart3, active: true },
-    { label: "Fraud Detection", icon: ShieldAlert },
+  const navGroups: NavGroup[] = [
+    {
+      title: "OPERATIONS",
+      items: [
+        { label: "Dashboard", icon: Activity, active: true },
+        { label: "Provider Network", icon: ShieldAlert },
+        { label: "Member Directory", icon: Users },
+        { label: "Fraud Engine", icon: AlertTriangle }
+      ]
+    },
+    {
+      title: "SYSTEM",
+      items: [
+        { label: "Audit Logs", icon: Activity },
+        { label: "Rule Engine", icon: Database },
+      ]
+    }
   ]
 
   const headerContent = (
@@ -68,7 +82,7 @@ export default function AdminPortal() {
   }
 
   return (
-    <AppLayout title="Straight-Through Processing Engine" navLinks={navLinks} headerContent={headerContent}>
+    <AppLayout title="Admin Portal" navGroups={navGroups} headerContent={headerContent}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"
