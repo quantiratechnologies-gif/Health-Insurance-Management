@@ -44,7 +44,8 @@ interface AppLayoutProps {
 
 export function AppLayout({ 
   children, title, portalTitle, portalLabel, navGroups, headerContent, 
-  userName, userLabel, userRole, userSub
+  userName, userLabel, userRole, userSub,
+  activeItem, onNavChange, onNavigate
 }: AppLayoutProps) {
   const displayTitle = portalTitle || title || 'Portal'
   const displayUser = userName || userLabel
@@ -53,8 +54,7 @@ export function AppLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex w-full h-screen bg-background overflow-hidden">
-        <Sidebar className="border-r-0">
+      <Sidebar className="border-r-0">
 
           {/* Sidebar Header — Logo + Portal Name */}
           <SidebarHeader className="p-5 pb-4" style={{ background: 'hsl(var(--sidebar-background))' }}>
@@ -94,18 +94,18 @@ export function AppLayout({
                       <SidebarMenuItem key={idx}>
                         <SidebarMenuButton
                           asChild
-                          onClick={link.onClick}
-                          isActive={link.active}
+                          onClick={link.onClick || (link.id && onNavChange ? () => onNavChange(link.id!) : (link.id && onNavigate ? () => onNavigate(link.id!) : undefined))}
+                          isActive={link.active !== undefined ? link.active : (activeItem === link.id)}
                           tooltip={link.label}
                           className="h-9 rounded-lg gap-3 px-3 text-sm font-medium transition-all duration-150"
                         >
                           <button 
                             className="flex items-center w-full cursor-pointer"
                             style={{
-                              color: link.active 
+                              color: (link.active || activeItem === link.id) 
                                 ? 'hsl(var(--sidebar-primary))' 
                                 : 'hsl(var(--sidebar-foreground) / 0.75)',
-                              background: link.active 
+                              background: (link.active || activeItem === link.id)
                                 ? 'hsl(var(--primary) / 0.15)' 
                                 : 'transparent',
                             }}
@@ -113,21 +113,21 @@ export function AppLayout({
                             <link.icon 
                               className="w-4 h-4 shrink-0" 
                               aria-hidden="true"
-                              style={{ color: link.active ? 'hsl(var(--sidebar-primary))' : 'hsl(var(--sidebar-foreground) / 0.6)' }}
+                              style={{ color: (link.active || activeItem === link.id) ? 'hsl(var(--sidebar-primary))' : 'hsl(var(--sidebar-foreground) / 0.6)' }}
                             />
                             <span className="flex-1 text-left">{link.label}</span>
                             {link.badge !== undefined && (
                               <span 
                                 className="text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
                                 style={{
-                                  background: link.active ? 'hsl(var(--primary) / 0.25)' : 'hsl(var(--sidebar-accent))',
-                                  color: link.active ? 'hsl(var(--sidebar-primary))' : 'hsl(var(--sidebar-foreground) / 0.6)',
+                                  background: (link.active || activeItem === link.id) ? 'hsl(var(--primary) / 0.25)' : 'hsl(var(--sidebar-accent))',
+                                  color: (link.active || activeItem === link.id) ? 'hsl(var(--sidebar-primary))' : 'hsl(var(--sidebar-foreground) / 0.6)',
                                 }}
                               >
                                 {link.badge}
                               </span>
                             )}
-                            {link.active && (
+                            {(link.active || activeItem === link.id) && (
                               <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-60" aria-hidden="true" />
                             )}
                           </button>
@@ -204,7 +204,6 @@ export function AppLayout({
             {children}
           </main>
         </SidebarInset>
-      </div>
     </SidebarProvider>
   )
 }
