@@ -1,0 +1,527 @@
+import os
+
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSure STP | Master Knowledge Base</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"DM Sans"', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        green: {
+                            50: '#eefcf4', 100: '#d5f8e1', 200: '#aef0c8', 300: '#7ae3a7', 400: '#46cf83', 
+                            500: '#22b365', 600: '#15904f', 700: '#05A357', 800: '#115b34', 900: '#0f4b2c'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background-color: #F6F6F7; color: #1D1D1F; scroll-behavior: smooth; }
+        .u-card { background: #FFFFFF; border-radius: 16px; border: 1px solid #E2E2E5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.25s ease; }
+        .u-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); border-color: #05A357; }
+        .u-tag { display: inline-flex; align-items: center; padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 100px; white-space: nowrap; }
+        .u-tag-green { background: rgba(5,163,87,0.1); color: #05A357; }
+        .u-tag-red { background: rgba(214,48,49,0.1); color: #D63031; }
+        
+        /* ScrollSpy specific */
+        .sidebar-link { display: flex; align-items: center; padding: 10px 16px; color: #666; font-weight: 500; border-radius: 8px; transition: all 0.2s ease; margin-bottom: 4px; }
+        .sidebar-link:hover { background: #e2e8f0; color: #111; }
+        .sidebar-link.active { background: rgba(5,163,87,0.1); color: #05A357; font-weight: 700; }
+        
+        /* Timeline */
+        .u-timeline-item { position: relative; padding-left: 32px; padding-bottom: 24px; }
+        .u-timeline-dot { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #05A357; border: 2px solid #fff; box-shadow: 0 0 0 3px rgba(5,163,87,0.2); }
+        .u-timeline-line { position: absolute; left: 5px; top: 16px; bottom: 0; width: 2px; background: #E2E2E5; }
+        .u-timeline-item:last-child .u-timeline-line { display: none; }
+        
+        /* Tabs */
+        .tab-btn { padding: 12px 24px; font-weight: 600; color: #666; border-bottom: 3px solid transparent; transition: all 0.2s ease; cursor: pointer; }
+        .tab-btn:hover { color: #111; }
+        .tab-btn.active { color: #05A357; border-bottom-color: #05A357; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar / TOC -->
+    <aside class="w-72 bg-white border-r border-gray-200 flex flex-col h-full overflow-y-auto shrink-0 p-6 shadow-lg z-10">
+        <div class="flex items-center gap-3 mb-8 cursor-pointer" onclick="window.location.href='index.html'">
+            <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-green-700"></i>
+            </div>
+            <span class="font-bold text-gray-900">Back to Hub</span>
+        </div>
+        
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Table of Contents</h3>
+        <nav class="flex-1" id="toc-nav">
+            <a href="#intro" class="sidebar-link active"><i class="fa-solid fa-book-open w-6"></i> Introduction & Benefits</a>
+            <a href="#types" class="sidebar-link"><i class="fa-solid fa-layer-group w-6"></i> Types of Insurance</a>
+            <a href="#claims" class="sidebar-link"><i class="fa-solid fa-file-medical w-6"></i> Claims Processing</a>
+            <a href="#rejections" class="sidebar-link"><i class="fa-solid fa-triangle-exclamation w-6"></i> Rejections & Appeals</a>
+            <a href="#cases" class="sidebar-link"><i class="fa-solid fa-scale-balanced w-6"></i> Case Studies</a>
+            <a href="#tpa" class="sidebar-link"><i class="fa-solid fa-sitemap w-6"></i> TPA Functions</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-10 relative scroll-smooth" id="main-scroll">
+        <div class="max-w-5xl mx-auto pb-32">
+            
+            <!-- HEADER -->
+            <div class="mb-12">
+                <div class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-wide">
+                    <i class="fa-solid fa-graduation-cap"></i> Educational Master Guide
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">Health Insurance<br><span class="text-green-700">Comprehensive Knowledge Base</span></h1>
+                <p class="text-lg text-gray-500">The complete definitive guide covering policies, claim workflows, decision logic, and TPA interactions.</p>
+            </div>
+
+            <!-- 1. INTRO & BENEFITS -->
+            <section id="intro" class="mb-16 scroll-mt-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="u-card p-8 bg-gradient-to-br from-white to-gray-50">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-handshake text-blue-600 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">What is Health Insurance?</h2>
+                        <p class="text-gray-600 mb-4">It is a financial tool that provides coverage for medical expenses. It acts as a formal contract between the <strong>Insured</strong> and the <strong>Insurer</strong>.</p>
+                        <h4 class="font-bold text-gray-800 mb-2">Key Medical Expenses Covered:</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Cost of Medicines & Prescription Drugs</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Surgery & Day Care Treatments</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Room Rent (ICU & Standard)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Doctors Consultation</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Ambulance Charges</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="u-card p-8 bg-green-700 text-white shadow-xl relative overflow-hidden">
+                        <i class="fa-solid fa-percent absolute -right-10 -bottom-10 text-9xl text-white opacity-10"></i>
+                        <h2 class="text-2xl font-bold mb-4 relative z-10">Core Benefits</h2>
+                        <ul class="space-y-4 relative z-10">
+                            <li class="flex items-start gap-3"><div class="mt-1 bg-white/20 p-1.5 rounded"><i class="fa-solid fa-chart-line text-xs w-3 text-center"></i></div><div><strong>Deal with Rising Medical Costs</strong><p class="text-green-100 text-sm">Protection against medical inflation.</p></div></li>
+                            <li class="flex items-start gap-3"><div class="mt-1 bg-white/20 p-1.5 rounded"><i class="fa-solid fa-bolt text-xs w-3 text-center"></i></div><div><strong>Easy Cashless Claims</strong><p class="text-green-100 text-sm">Direct settlement with network hospitals.</p></div></li>
+                            <li class="flex items-start gap-3"><div class="mt-1 bg-white/20 p-1.5 rounded"><i class="fa-solid fa-heart-pulse text-xs w-3 text-center"></i></div><div><strong>Critical Illness Cover</strong><p class="text-green-100 text-sm">Lump sum payouts for severe diseases.</p></div></li>
+                        </ul>
+                        <div class="mt-6 p-4 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20 relative z-10">
+                            <p class="font-bold text-sm mb-1"><i class="fa-solid fa-file-invoice-dollar text-yellow-300"></i> Tax Benefits (Section 80D)</p>
+                            <p class="text-xs text-green-50">Avail up to <strong>₹25,000/-</strong> standard deduction. Benefit increases to <strong>₹50,000/-</strong> if the insured or family members are above 60 years of age.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. TYPES OF INSURANCE -->
+            <section id="types" class="mb-16 scroll-mt-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-4"><i class="fa-solid fa-layer-group text-green-700 mr-2"></i> Types of Health Insurance</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-user"></i></div>
+                        <h3 class="font-bold text-lg mb-2">1. Individual Insurance</h3>
+                        <p class="text-sm text-gray-500 mb-3">Covers a single person (Age 18-65).</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• Covers Hospitalization</li>
+                            <li>• Includes Surgery & Room Rent</li>
+                            <li>• Covers Day care treatment</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-users"></i></div>
+                        <h3 class="font-bold text-lg mb-2">2. Family Floater</h3>
+                        <p class="text-sm text-gray-500 mb-3">Single plan covers the entire family.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• Sum insured is shared</li>
+                            <li>• Covers listed beneficiaries</li>
+                            <li>• Cost-effective for families</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6 border-l-4 border-l-red-500">
+                        <div class="w-10 h-10 rounded bg-red-100 text-red-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-heart-crack"></i></div>
+                        <h3 class="font-bold text-lg mb-2">3. Critical Illness</h3>
+                        <p class="text-sm text-gray-500 mb-3">For diseases like Heart, Kidney, Cancer, Stroke.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• Requires min 30-day survival period</li>
+                            <li>• Pays a Lumpsum amount</li>
+                            <li>• Policy cancels after payout</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-orange-100 text-orange-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-person-cane"></i></div>
+                        <h3 class="font-bold text-lg mb-2">4. Senior Citizen</h3>
+                        <p class="text-sm text-gray-500 mb-3">Designed for individuals above 60 years.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• High medical cost protection</li>
+                            <li>• Covers hospitalization & domiciliary</li>
+                            <li>• Mitigates age-related financial stress</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-teal-100 text-teal-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-building-user"></i></div>
+                        <h3 class="font-bold text-lg mb-2">5. Group Health</h3>
+                        <p class="text-sm text-gray-500 mb-3">Provided by companies for employees.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• No waiting period for pre-existing</li>
+                            <li>• Option to add family members</li>
+                            <li>• High organizational value</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-yellow-100 text-yellow-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-arrow-up-right-dots"></i></div>
+                        <h3 class="font-bold text-lg mb-2">6. Top-Up Plan</h3>
+                        <p class="text-sm text-gray-500 mb-3">Coverage over and above existing policy.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• Used when base Sum Assured exhausts</li>
+                            <li>• Covers extensive hospitalization</li>
+                        </ul>
+                    </div>
+
+                    <div class="u-card p-6">
+                        <div class="w-10 h-10 rounded bg-pink-100 text-pink-600 flex items-center justify-center text-lg mb-4"><i class="fa-solid fa-baby"></i></div>
+                        <h3 class="font-bold text-lg mb-2">7. Maternity Plan</h3>
+                        <p class="text-sm text-gray-500 mb-3">Specialized delivery & care coverage.</p>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• Covers Normal & C-section</li>
+                            <li>• Pre & post-natal care</li>
+                            <li>• New born expenses & vaccines</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. CLAIMS PROCESSING -->
+            <section id="claims" class="mb-16 scroll-mt-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-4"><i class="fa-solid fa-file-medical text-green-700 mr-2"></i> Claims Processing & Workflows</h2>
+                <p class="text-gray-600 mb-6">A claim is raised when the insured requires money for treatment of a minor/major illness, accident, injury, or other medical conditions.</p>
+
+                <!-- Documents Required Box -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8 flex flex-col md:flex-row gap-8">
+                    <div class="shrink-0">
+                        <div class="w-16 h-16 bg-white rounded-full shadow flex items-center justify-center text-2xl text-blue-600 mb-2"><i class="fa-solid fa-folder-open"></i></div>
+                        <h4 class="font-bold text-gray-900">Required Docs</h4>
+                    </div>
+                    <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-medium text-gray-700">
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Policy Document</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Identity Proof</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Medical Report</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Medical Bills</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Ambulance Bills</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Discharge Papers</div>
+                        <div class="flex items-center gap-2 col-span-2"><i class="fa-regular fa-square-check text-green-500"></i> Other relevant costs</div>
+                    </div>
+                </div>
+
+                <!-- Type Comparison -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <div class="border border-green-200 bg-green-50/50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold text-green-800 mb-3"><i class="fa-solid fa-credit-card mr-2"></i>Cashless Claim</h3>
+                        <p class="text-sm text-gray-700 mb-2">Insured directly goes to a network hospital.</p>
+                        <p class="text-sm text-gray-700">The insurer deals with the hospital directly and covers expenses up to the policy limit. No out-of-pocket payment required for covered items.</p>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50/50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold text-blue-800 mb-3"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Reimbursement Claim</h3>
+                        <p class="text-sm text-gray-700 mb-2">Insured pays upfront at a non-network hospital.</p>
+                        <p class="text-sm text-gray-700">Insured raises a claim by submitting all actual expense documents. It is a time-taking verification process before funds are returned.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Flowcharts -->
+                <div class="u-card overflow-hidden">
+                    <div class="flex border-b bg-gray-50 px-2 pt-2">
+                        <button class="tab-btn active" onclick="switchTab(this, 'flow-cashless')">Cashless Flow</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'flow-reimbursement')">Reimbursement Flow</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'flow-decision')">Claim Decision Logic</button>
+                    </div>
+                    <div class="p-8 bg-white">
+                        
+                        <!-- Cashless Tab -->
+                        <div id="flow-cashless" class="tab-content active">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg mb-4">Cashless Claim Process</h4>
+                                    <ol class="space-y-3 text-sm text-gray-600 list-decimal list-inside">
+                                        <li><strong>Hospitalization</strong> at Network Hospital.</li>
+                                        <li><strong>Intimation</strong> to Insurance desk.</li>
+                                        <li><strong>Pre-Authorization Request</strong> sent to TPA/Insurer.</li>
+                                        <li><strong>Verification</strong> by TPA/Insurer.</li>
+                                        <li><strong>Approved/Rejected</strong>. If approved...</li>
+                                        <li><strong>Treatment</strong> proceeds.</li>
+                                        <li><strong>Discharge</strong>.</li>
+                                        <li><strong>Bill & Claim</strong> sent to Insurer.</li>
+                                        <li><strong>Claim Verification</strong>.</li>
+                                        <li><strong>Claim Approved</strong> and Settled directly with hospital.</li>
+                                    </ol>
+                                </div>
+                                <div class="bg-gray-100 rounded-xl p-4 border border-gray-200 flex justify-center">
+                                    <img src="file:///Users/Jayapalreddy/.gemini/antigravity/brain/f06dc75a-1113-4182-b4ec-6d419eea9adb/media__1783394750772.png" alt="Cashless Flowchart" class="max-w-full h-auto rounded shadow-sm hover:scale-105 transition-transform duration-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reimbursement Tab -->
+                        <div id="flow-reimbursement" class="tab-content">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg mb-4">Reimbursement Claim Process</h4>
+                                    <ol class="space-y-3 text-sm text-gray-600 list-decimal list-inside">
+                                        <li><strong>Hospitalization</strong> (Usually Non-Network).</li>
+                                        <li><strong>Treatment</strong> paid by patient.</li>
+                                        <li><strong>Discharge</strong> from hospital.</li>
+                                        <li><strong>Claim Intimation</strong> to Insurer.</li>
+                                        <li><strong>Document Collection</strong> (all original bills).</li>
+                                        <li><strong>Claim Submission</strong>.</li>
+                                        <li><strong>Verification</strong> by Insurer/TPA.</li>
+                                        <li><strong>Claim Approved or Rejected</strong>.</li>
+                                        <li><strong>Reimbursement</strong> amount transferred to patient account (Claim Settled).</li>
+                                    </ol>
+                                </div>
+                                <div class="bg-gray-100 rounded-xl p-4 border border-gray-200 flex justify-center">
+                                    <img src="file:///Users/Jayapalreddy/.gemini/antigravity/brain/f06dc75a-1113-4182-b4ec-6d419eea9adb/media__1783394761780.png" alt="Reimbursement Flowchart" class="max-w-full h-auto rounded shadow-sm hover:scale-105 transition-transform duration-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Decision Tab -->
+                        <div id="flow-decision" class="tab-content">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h4 class="font-bold text-lg mb-4">STP / TPA Decision Logic</h4>
+                                    <ul class="space-y-4 text-sm text-gray-600">
+                                        <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-green-500 mt-1"></i> <div><strong>1. Policy Validity Check:</strong><br>Is the policy Active or Expired? If invalid &rarr; <span class="text-red-500 font-bold">Reject</span>.</div></li>
+                                        <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-green-500 mt-1"></i> <div><strong>2. Coverage Check:</strong><br>Is the treatment covered under the specific plan terms? If not covered &rarr; <span class="text-red-500 font-bold">Reject</span>.</div></li>
+                                        <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-green-500 mt-1"></i> <div><strong>3. Medical Necessity Check:</strong><br>Was the hospitalization medically required? If cosmetic/unnecessary &rarr; <span class="text-red-500 font-bold">Reject</span>.</div></li>
+                                        <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-green-500 mt-1"></i> <div><strong>4. Final Approval:</strong><br>Approve claim & settle. Issue payment.</div></li>
+                                    </ul>
+                                </div>
+                                <div class="bg-gray-100 rounded-xl p-4 border border-gray-200 flex justify-center">
+                                    <img src="file:///Users/Jayapalreddy/.gemini/antigravity/brain/f06dc75a-1113-4182-b4ec-6d419eea9adb/media__1783394779101.png" alt="Claim Decision Logic" class="max-w-full h-auto rounded shadow-sm hover:scale-105 transition-transform duration-300">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. REJECTIONS -->
+            <section id="rejections" class="mb-16 scroll-mt-10">
+                <div class="bg-red-50 border-l-4 border-l-red-600 rounded-r-xl p-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl text-red-600"></i>
+                        <h2 class="text-2xl font-extrabold text-red-900">Common Reasons for Claim Rejection</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Policy not active / Lapsed policy</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Incomplete or incorrect documents</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Waiting period not completed</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Late claim intimation</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Pre-existing disease not disclosed</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Not related to illness</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Treatment not covered under policy</span></div>
+                        <div class="flex items-start gap-2"><i class="fa-solid fa-xmark text-red-500 mt-1"></i> <span class="font-medium text-red-900">Non-medical / Cosmetic treatment</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. CASE STUDIES -->
+            <section id="cases" class="mb-16 scroll-mt-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-4"><i class="fa-solid fa-scale-balanced text-green-700 mr-2"></i> Interactive Case Studies</h2>
+                
+                <div class="flex flex-col lg:flex-row gap-6 mb-8">
+                    <!-- Approval Case -->
+                    <div class="u-card flex-1 border-t-4 border-t-green-500 overflow-hidden">
+                        <div class="bg-green-50 p-4 border-b border-green-100 flex justify-between items-center">
+                            <h3 class="font-bold text-green-900 text-lg">Case 1: Approval</h3>
+                            <span class="u-tag u-tag-green">CASHLESS</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 text-xs text-gray-600 mb-6 gap-y-2">
+                                <div><strong>Patient:</strong> Vempati Vamshi Krishna (28)</div>
+                                <div><strong>Insurer:</strong> Star Health Insurance</div>
+                                <div><strong>Policy:</strong> Individual (₹10L)</div>
+                                <div><strong>Active:</strong> 2024 to 2027</div>
+                                <div><strong>Hospital:</strong> Yashoda, Hyderabad</div>
+                                <div><strong>Condition:</strong> Inguinal Hernia</div>
+                            </div>
+                            
+                            <h4 class="font-bold text-sm text-gray-900 mb-3 border-b pb-1">Why was it approved?</h4>
+                            <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-green-500"></i> Policy is Active (Within 08/06/2024 - 07/06/2027)</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-green-500"></i> Waiting period completed (24 Months)</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-green-500"></i> Hernia is a covered medical condition</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-green-500"></i> Yashoda is a Network Hospital</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-green-500"></i> Medical Necessity Established</li>
+                            </ul>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-xs font-bold text-gray-500 uppercase mb-2">Settlement Breakdown</p>
+                                <div class="flex justify-between text-sm mb-1"><span>Total Hospital Bill</span> <strong>₹3,50,000</strong></div>
+                                <div class="flex justify-between text-sm text-green-700 font-bold mb-1"><span>Insurance Payout</span> <strong>₹3,20,000</strong></div>
+                                <div class="flex justify-between text-sm text-orange-600"><span>Patient Co-pay</span> <strong>₹30,000</strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reject Case -->
+                    <div class="u-card flex-1 border-t-4 border-t-red-500 overflow-hidden">
+                        <div class="bg-red-50 p-4 border-b border-red-100 flex justify-between items-center">
+                            <h3 class="font-bold text-red-900 text-lg">Case 2: Rejection</h3>
+                            <span class="u-tag u-tag-red">REIMBURSEMENT</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 text-xs text-gray-600 mb-6 gap-y-2">
+                                <div><strong>Patient:</strong> Vempati Vamshi Krishna (28)</div>
+                                <div><strong>Insurer:</strong> Star Health Insurance</div>
+                                <div><strong>Policy:</strong> Individual (₹10L)</div>
+                                <div><strong class="text-red-600">Active:</strong> 08/06/2025 to 2027</div>
+                                <div><strong>Hospital:</strong> Yashoda (Non-Network)</div>
+                                <div><strong>Condition:</strong> Inguinal Hernia</div>
+                            </div>
+                            
+                            <h4 class="font-bold text-sm text-gray-900 mb-3 border-b pb-1">Why was it rejected?</h4>
+                            <div class="bg-red-50 border border-red-200 text-red-800 p-3 rounded text-xs font-medium mb-6">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> <strong>Critical Failure:</strong> Waiting period not completed. 
+                                <br><br>The policy started on 08/06/2025 and the claim date is 15/06/2026. Only 12 months have passed, but Hernia requires a <strong>24 Month</strong> waiting period.
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-xs font-bold text-gray-500 uppercase mb-2">Settlement Breakdown</p>
+                                <div class="flex justify-between text-sm mb-1"><span>Total Hospital Bill</span> <strong>₹3,50,000</strong></div>
+                                <div class="flex justify-between text-sm text-red-600 font-bold mb-1"><span>Insurance Payout</span> <strong>₹0</strong></div>
+                                <div class="flex justify-between text-sm text-gray-900 font-bold"><span>Patient Liability</span> <strong>₹3,50,000</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appeals Accordion -->
+                <div class="u-card p-6">
+                    <h3 class="font-bold text-lg text-gray-900 mb-4"><i class="fa-solid fa-envelope-open-text text-blue-600 mr-2"></i> How a Rejected Claim Can Be Approved</h3>
+                    <p class="text-sm text-gray-600 mb-4">If a claim is rejected due to administrative errors or missing data, it can be appealed by taking the following actions:</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 bg-gray-50 p-3 rounded border border-gray-100"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">1</div><p class="text-sm text-gray-700"><strong>Submit missing documents</strong> like discharge summary, original bills, or lab reports.</p></li>
+                        <li class="flex items-start gap-3 bg-gray-50 p-3 rounded border border-gray-100"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">2</div><p class="text-sm text-gray-700"><strong>Verify details:</strong> Ensure all customer demographic and policy details match correctly.</p></li>
+                        <li class="flex items-start gap-3 bg-gray-50 p-3 rounded border border-gray-100"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">3</div><p class="text-sm text-gray-700"><strong>Doctor Justification:</strong> Provide additional clinical notes proving medical necessity.</p></li>
+                        <li class="flex items-start gap-3 bg-gray-50 p-3 rounded border border-gray-100"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">4</div><p class="text-sm text-gray-700"><strong>Correct Billing:</strong> Have the hospital correct billing mistakes and resubmit the claim.</p></li>
+                        <li class="flex items-start gap-3 bg-gray-50 p-3 rounded border border-gray-100"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">5</div><p class="text-sm text-gray-700"><strong>Pre-existing Clarification:</strong> Provide previous medical records to clarify pre-existing condition timelines.</p></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 6. TPA SECTION -->
+            <section id="tpa" class="mb-16 scroll-mt-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-4"><i class="fa-solid fa-sitemap text-green-700 mr-2"></i> Third Party Administrator (TPA)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="bg-blue-50 text-blue-900 p-6 rounded-xl border border-blue-100 mb-6 font-medium text-sm">
+                            <i class="fa-solid fa-circle-info mr-2"></i> A TPA is an organization authorized by insurance companies to manage and process health insurance claims on their behalf. They act as the vital intermediary between the Policyholder, the Hospital, and the Insurance Company.
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-4">Core Functions of a TPA</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Receives Pre-Authorization requests from Hospitals.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Verifies policy details, coverage, and patient eligibility.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Reviews present and past medical records and documents.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Assists insurer in evaluating claims.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Maintains relationships with network hospitals.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Facilitates seamless cashless treatment.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-500 mt-0.5"></i> Helps policy holder with claim-related queries & status updates.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="u-card p-8 bg-gray-50">
+                        <h4 class="font-bold text-gray-900 mb-6 text-center">The Flow of TPA Operations</h4>
+                        <div class="relative pt-2 pl-2">
+                            <div class="u-timeline-item">
+                                <div class="u-timeline-dot"></div>
+                                <div class="u-timeline-line"></div>
+                                <div class="text-sm font-bold text-gray-900">Hospital Request</div>
+                                <div class="text-xs text-gray-500 mt-1">Hospital sends Pre-Authorization request to TPA.</div>
+                            </div>
+                            <div class="u-timeline-item">
+                                <div class="u-timeline-dot" style="background:#2563EB;"></div>
+                                <div class="u-timeline-line"></div>
+                                <div class="text-sm font-bold text-gray-900">TPA Verification</div>
+                                <div class="text-xs text-gray-500 mt-1">TPA verifies policy holder details and waiting periods.</div>
+                            </div>
+                            <div class="u-timeline-item">
+                                <div class="u-timeline-dot" style="background:#8B5CF6;"></div>
+                                <div class="u-timeline-line"></div>
+                                <div class="text-sm font-bold text-gray-900">Forward to Insurer</div>
+                                <div class="text-xs text-gray-500 mt-1">TPA forwards the compiled submission to the Insurance Company.</div>
+                            </div>
+                            <div class="u-timeline-item">
+                                <div class="u-timeline-dot" style="background:#F59E0B;"></div>
+                                <div class="u-timeline-line"></div>
+                                <div class="text-sm font-bold text-gray-900">Insurer Decision</div>
+                                <div class="text-xs text-gray-500 mt-1">Insurance company approves or rejects the claim based on policy rules.</div>
+                            </div>
+                            <div class="u-timeline-item">
+                                <div class="u-timeline-dot" style="background:#05A357;"></div>
+                                <div class="u-timeline-line"></div>
+                                <div class="text-sm font-bold text-gray-900">Final Communication</div>
+                                <div class="text-xs text-gray-500 mt-1">TPA communicates the final decision back to the Hospital and Patient.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <script>
+        // Tab switching logic
+        function switchTab(btn, targetId) {
+            // Remove active classes
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            // Add active to current
+            btn.classList.add('active');
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        // ScrollSpy logic
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sidebar-link');
+        const mainScroll = document.getElementById('main-scroll');
+
+        mainScroll.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (mainScroll.scrollTop >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+"""
+
+with open('/Users/Jayapalreddy/Downloads/Health-Insurance-Management/Knowledge_Base.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Knowledge Base HTML generated successfully.")
