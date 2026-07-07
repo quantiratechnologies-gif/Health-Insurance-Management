@@ -1,141 +1,104 @@
-import { ShieldHalf, FileText, Activity, CreditCard, LogOut, Search, Bell, Settings } from "lucide-react"
-import { Logo } from "../components/Logo"
+import { FileText, Activity, CreditCard, Search, Bell, Settings } from "lucide-react"
+import { AppLayout, NavLink } from "../components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useNavigate } from "react-router-dom"
 import { useStore } from "../store/useStore"
 
 export default function PatientPortal() {
-  const navigate = useNavigate()
   const { policies, claims } = useStore()
   
   const currentUserId = 'HS-89302'
   const policy = policies.find(p => p.id === currentUserId)
   const userClaims = claims.filter(c => c.patientId === currentUserId)
 
+  const navLinks: NavLink[] = [
+    { label: "Dashboard", icon: Activity, active: true },
+    { label: "My Policies", icon: FileText },
+    { label: "Track Claims", icon: CreditCard },
+    { label: "Settings", icon: Settings },
+  ]
+
+  const headerContent = (
+    <>
+      <div className="relative">
+        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Input type="text" placeholder="Search..." className="pl-10 w-64 bg-slate-50 border-slate-200" />
+      </div>
+      <button className="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors cursor-pointer">
+        <Bell className="w-5 h-5" />
+        <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+      </button>
+      <Avatar>
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>VK</AvatarFallback>
+      </Avatar>
+    </>
+  )
+
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900">
-      
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
-        <div className="p-6 flex items-center gap-3">
-          <Logo className="h-6 w-auto" />
-        </div>
-        
-        <nav className="flex-1 px-4 space-y-2 mt-4">
-          <a href="#" className="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl font-medium">
-            <Activity className="w-5 h-5" /> Dashboard
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-colors">
-            <FileText className="w-5 h-5" /> My Policies
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-colors">
-            <CreditCard className="w-5 h-5" /> Track Claims
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-colors">
-            <Settings className="w-5 h-5" /> Settings
-          </a>
-        </nav>
-        
-        <div className="p-4 mt-auto border-t border-slate-200">
-          <Button variant="ghost" className="w-full justify-start text-slate-500 hover:text-destructive" onClick={() => navigate('/')}>
-            <LogOut className="w-5 h-5 mr-3" /> Sign Out
-          </Button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        
-        {/* Header */}
-        <header className="h-20 bg-white border-b border-slate-200 px-8 flex items-center justify-between shrink-0">
-          <h1 className="text-2xl font-bold">Good morning, Vamshi 👋</h1>
+    <AppLayout title="Patient Dashboard" navLinks={navLinks} headerContent={headerContent}>
+        <div className="p-8 space-y-8">
           
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <Input className="pl-10 w-64 bg-slate-50 border-slate-200 rounded-full" placeholder="Search claims or policies..." />
-            </div>
-            <button className="relative p-2 text-slate-400 hover:text-primary transition-colors">
-              <Bell className="w-6 h-6" />
-            </button>
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
-              <div className="text-right">
-                <p className="text-sm font-bold">{policy?.patientName}</p>
-                <p className="text-xs text-slate-500">Member ID: {policy?.id}</p>
-              </div>
-              <Avatar>
-                <AvatarImage src="https://ui.shadcn.com/avatars/02.png" />
-                <AvatarFallback>VK</AvatarFallback>
-              </Avatar>
-            </div>
-          </div>
-        </header>
+          <h2 className="text-2xl font-bold">Good morning, Vamshi 👋</h2>
 
-        {/* Dashboard Content */}
-        <div className="flex-1 overflow-auto p-8">
-          
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="shadow-sm border-slate-200">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-slate-500">Active Policy</p>
-                    <h3 className="text-xl font-bold mt-1">{policy?.planName}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    <ShieldHalf className="w-5 h-5" />
-                  </div>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="shadow-sm border-slate-200 bg-gradient-to-br from-primary to-blue-700 text-white border-0">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-blue-100 flex items-center justify-between">
+                  Active Policy
+                  <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 border-0">Primary</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold mb-1">{policy?.planName || 'N/A'}</div>
+                <p className="text-sm text-blue-100 mb-4">Valid till Dec 31, 2027</p>
+                <div className="pt-4 border-t border-white/20 flex justify-between items-center text-sm">
+                  <span>Coverage Limit</span>
+                  <span className="font-bold text-lg">₹{policy?.totalSumInsured.toLocaleString('en-IN') || '0'}</span>
                 </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 border-none">Active • Renews in 45 days</Badge>
               </CardContent>
             </Card>
 
             <Card className="shadow-sm border-slate-200">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-slate-500">Total Sum Insured</p>
-                    <h3 className="text-xl font-bold mt-1">₹{policy?.totalSumInsured.toLocaleString('en-IN')}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                    <CreditCard className="w-5 h-5" />
-                  </div>
-                </div>
-                <p className="text-sm text-slate-500 font-bold text-primary">₹{policy?.availableBalance.toLocaleString('en-IN')} balance remaining</p>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-slate-500 flex items-center justify-between">
+                  Total Claims
+                  <Activity className="w-4 h-4 text-slate-400" />
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-slate-900">{userClaims.length}</div>
+                <p className="text-sm text-slate-500 mt-1">Submitted this year</p>
               </CardContent>
             </Card>
 
-            <Card className="shadow-sm border-slate-200 bg-primary text-white">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-primary-foreground/80">Total Claims This Year</p>
-                    <h3 className="text-3xl font-bold mt-1">{userClaims.length}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
-                    <Activity className="w-5 h-5" />
-                  </div>
-                </div>
-                <Button variant="secondary" size="sm" className="w-full bg-white text-primary hover:bg-slate-50">File a New Claim</Button>
+            <Card className="shadow-sm border-slate-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-slate-500 flex items-center justify-between">
+                  Pending Actions
+                  <Bell className="w-4 h-4 text-orange-500" />
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-slate-900">0</div>
+                <p className="text-sm text-slate-500 mt-1">You are all caught up!</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Recent Claims Table */}
           <Card className="shadow-sm border-slate-200">
-            <CardHeader className="border-b border-slate-100 pb-4">
-              <CardTitle>Recent Claims</CardTitle>
+            <CardHeader>
+              <CardTitle>Recent Claims History</CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
+            <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-slate-50 hover:bg-slate-50">
+                  <TableRow>
                     <TableHead className="w-[100px]">Claim ID</TableHead>
                     <TableHead>Hospital</TableHead>
                     <TableHead>Date</TableHead>
@@ -167,7 +130,6 @@ export default function PatientPortal() {
           </Card>
           
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

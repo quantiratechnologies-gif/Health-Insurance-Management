@@ -1,32 +1,18 @@
-import { FileText, CheckCircle2, ShieldAlert, ArrowLeft, Users, User, HeartPulse, ShieldHalf, Baby, Building2, TrendingUp, Scale, Settings } from "lucide-react"
-import { Logo } from "../components/Logo"
+import { FileText, CheckCircle2, ShieldAlert, Users, User, HeartPulse, ShieldHalf, Baby, Building2, TrendingUp, Scale, Settings } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useNavigate } from "react-router-dom"
+import { AppLayout, NavLink } from "../components/AppLayout"
 
 export default function KnowledgeBase() {
-  const navigate = useNavigate()
+  const navLinks: NavLink[] = [
+    { label: "Knowledge Base", icon: FileText, active: true }
+  ]
 
   return (
-    <div className="h-screen bg-slate-50 text-slate-900 flex flex-col items-center">
-      
-      {/* Header */}
-      <div className="w-full bg-white border-b border-slate-200 shrink-0">
-        <div className="max-w-6xl mx-auto px-4 h-20 flex justify-between items-center">
-          <Button variant="ghost" className="text-slate-500 hover:text-slate-900" onClick={() => navigate('/')}>
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Hub
-          </Button>
-          <div className="flex items-center gap-3">
-            <Logo className="h-6 w-auto" />
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 border-l border-slate-200 pl-3 ml-1">Knowledge Base</h1>
-          </div>
-        </div>
-      </div>
-
-      <ScrollArea className="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-8">
+    <AppLayout title="Knowledge Base" navLinks={navLinks}>
+      <ScrollArea className="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-8 h-[calc(100vh-4rem)]">
         <Tabs defaultValue="intro" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-8 h-auto p-1 bg-slate-200/50">
             <TabsTrigger value="intro" className="py-2.5">Introduction</TabsTrigger>
@@ -399,6 +385,6 @@ export default function KnowledgeBase() {
 
         </Tabs>
       </ScrollArea>
-    </div>
+    </AppLayout>
   )
 }
