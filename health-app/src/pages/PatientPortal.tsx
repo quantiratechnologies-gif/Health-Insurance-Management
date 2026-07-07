@@ -142,7 +142,7 @@ function DashboardView({ claims }: { claims: any[] }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Policy card */}
         <Card className="col-span-1 border-0 shadow-md overflow-hidden">
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 text-white">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 text-foreground">
             <p className="text-xs font-semibold uppercase tracking-widest opacity-80">Active Policy</p>
             <h2 className="text-xl font-bold mt-1">Family Floater Gold</h2>
             <p className="text-xs opacity-70 mt-0.5">Policy No: HLTH-2024-98302</p>
@@ -171,7 +171,7 @@ function DashboardView({ claims }: { claims: any[] }) {
         <Card className="border-0 shadow-md flex flex-col justify-between">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase tracking-widest">Upcoming Renewals</CardDescription>
-            <CardTitle className="text-4xl font-extrabold text-amber-500">1</CardTitle>
+            <CardTitle className="text-4xl font-extrabold text-amber-600 dark:text-amber-500">1</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-500">Due in Dec 2027</p>
@@ -182,7 +182,7 @@ function DashboardView({ claims }: { claims: any[] }) {
 
       {/* Quick action */}
       <div className="flex items-center gap-3">
-        <Button onClick={() => setPreAuthOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+        <Button onClick={() => setPreAuthOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2">
           <CreditCard className="w-4 h-4" /> Request Pre-Auth
         </Button>
       </div>
@@ -246,7 +246,7 @@ function DashboardView({ claims }: { claims: any[] }) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setPreAuthOpen(false)}>Cancel</Button>
-            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-white">Submit Request</Button>
+            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-foreground">Submit Request</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -270,10 +270,10 @@ function MyPoliciesView() {
       </div>
 
       <Card className="border-0 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 p-6 text-white">
+        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 p-6 text-foreground">
           <div className="flex items-center justify-between">
             <div>
-              <Badge className="bg-white/20 text-white border-white/30 mb-2">Active</Badge>
+              <Badge className="bg-white/20 text-foreground border-white/30 mb-2">Active</Badge>
               <h2 className="text-2xl font-bold">Family Floater Gold</h2>
               <p className="text-xs opacity-80 mt-0.5">Policy No: HLTH-2024-98302 | UIN: IRDAI-HLT-2024</p>
             </div>
@@ -339,7 +339,7 @@ function MyPoliciesView() {
             </Button>
             <Button
               onClick={() => setRenewOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+              className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Renew Policy
             </Button>
@@ -363,7 +363,7 @@ function MyPoliciesView() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setRenewOpen(false)}>Cancel</Button>
             <Button
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-foreground"
               onClick={() => {
                 setRenewOpen(false);
                 toast.success('Policy renewal initiated! You will receive a payment link via email.');
@@ -487,7 +487,7 @@ function SubmitClaimView() {
             )}
           </div>
 
-          <Button onClick={handleSubmit} className="w-full bg-blue-600 hover:bg-blue-700 text-white h-11 text-sm font-semibold gap-2">
+          <Button onClick={handleSubmit} className="w-full bg-blue-600 hover:bg-blue-700 text-foreground h-11 text-sm font-semibold gap-2">
             <Send className="w-4 h-4" /> Submit Claim
           </Button>
         </CardContent>
@@ -511,7 +511,7 @@ function SubmitClaimView() {
           </DialogHeader>
           <DialogFooter className="justify-center mt-2">
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-foreground"
               onClick={() => {
                 setSuccessOpen(false);
                 setForm({ hospitalName: '', claimType: 'Hospitalization', admissionDate: '', dischargeDate: '', billAmount: '', icdCode: '', notes: '' });
@@ -661,7 +661,7 @@ function NetworkHospitalsView() {
               </CardHeader>
               <CardContent className="flex-1 space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-gray-500">
-                  <Heart className="w-3.5 h-3.5 text-red-400" />
+                  <Heart className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
                   <span>{h.location}</span>
                 </div>
                 {h.cashless && (
@@ -669,7 +669,7 @@ function NetworkHospitalsView() {
                 )}
                 <Button
                   size="sm"
-                  className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-foreground text-xs"
                   onClick={() => setPreAuthHosp(h.name)}
                 >
                   Request Pre-Auth
@@ -706,7 +706,7 @@ function NetworkHospitalsView() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setPreAuthHosp(null)}>Cancel</Button>
-            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-white">Submit</Button>
+            <Button onClick={handlePreAuth} className="bg-blue-600 hover:bg-blue-700 text-foreground">Submit</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -736,7 +736,7 @@ function HealthLockerView() {
       </div>
 
       {/* ABDM Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-teal-500 to-green-500 p-6 text-white flex items-center justify-between flex-wrap gap-4 shadow-lg">
+      <div className="rounded-2xl bg-gradient-to-r from-teal-500 to-green-500 p-6 text-foreground flex items-center justify-between flex-wrap gap-4 shadow-lg">
         <div>
           <p className="font-bold text-lg flex items-center gap-2"><Lock className="w-5 h-5" /> ABDM Health Locker</p>
           <p className="text-sm opacity-80 mt-0.5">ABHA ID: 12-3456-7890-1234 · Linked &amp; Verified</p>
@@ -818,7 +818,7 @@ function HealthLockerView() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setViewDoc(null)}>Close</Button>
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+              className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2"
               onClick={() => { toast.success('Document downloaded'); setViewDoc(null); }}
             >
               <Download className="w-4 h-4" /> Download
@@ -861,7 +861,7 @@ function SupportView() {
       </div>
 
       {/* Emergency banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 p-5 text-white flex items-center gap-4 shadow-lg">
+      <div className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 p-5 text-foreground flex items-center gap-4 shadow-lg">
         <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
           <Phone className="w-6 h-6" />
         </div>
@@ -876,7 +876,7 @@ function SupportView() {
         {/* Grievance form */}
         <Card className="border-0 shadow-md">
           <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2"><AlertCircle className="w-4 h-4 text-amber-500" /> Raise a Grievance</CardTitle>
+            <CardTitle className="text-base flex items-center gap-2"><AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-500" /> Raise a Grievance</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
@@ -901,7 +901,7 @@ function SupportView() {
                 onChange={e => setGrievanceText(e.target.value)}
               />
             </div>
-            <Button onClick={handleGrievance} className="w-full bg-amber-500 hover:bg-amber-600 text-white gap-2">
+            <Button onClick={handleGrievance} className="w-full bg-amber-500 hover:bg-amber-600 text-foreground gap-2">
               <Send className="w-4 h-4" /> Submit Grievance
             </Button>
           </CardContent>
@@ -918,7 +918,7 @@ function SupportView() {
               <div className="space-y-2">
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${msg.from === 'user' ? 'bg-blue-600 text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'}`}>
+                    <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${msg.from === 'user' ? 'bg-blue-600 text-foreground rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'}`}>
                       {msg.text}
                     </div>
                   </div>
@@ -933,7 +933,7 @@ function SupportView() {
                 onKeyDown={e => e.key === 'Enter' && handleChat()}
                 className="flex-1"
               />
-              <Button size="icon" onClick={handleChat} className="bg-blue-600 hover:bg-blue-700 text-white shrink-0">
+              <Button size="icon" onClick={handleChat} className="bg-blue-600 hover:bg-blue-700 text-foreground shrink-0">
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>

@@ -213,7 +213,7 @@ const DashboardView = ({ pendingClaims, allClaims, resolveClaim }: ViewProps) =>
     .reduce((sum: number, c: Claim) => sum + (c.cost ?? 0), 0);
 
   const kpis = [
-    { label: 'Pending Queue', value: pendingClaims.length, icon: Clock, color: 'text-yellow-400' },
+    { label: 'Pending Queue', value: pendingClaims.length, icon: Clock, color: 'text-yellow-600 dark:text-yellow-400' },
     { label: 'Processed Today', value: totalProcessed, icon: CheckCircle, color: 'text-green-400' },
     { label: 'Amount Saved', value: formatRupees(amountSaved || 3400000), icon: TrendingDown, color: 'text-blue-400' },
     { label: 'Avg Decision', value: '2.4 min', icon: Brain, color: 'text-purple-400' },

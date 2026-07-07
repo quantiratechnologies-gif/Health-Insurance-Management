@@ -48,9 +48,9 @@ export default function KnowledgeBase() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-primary text-white">
+              <Card className="bg-primary text-foreground">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-white">Core Benefits</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">Core Benefits</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">

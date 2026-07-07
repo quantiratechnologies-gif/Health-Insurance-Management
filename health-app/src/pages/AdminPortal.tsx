@@ -151,10 +151,10 @@ const NAV_GROUPS: NavGroup[] = [
 
 function statusBadge(status: LogStatus) {
   const map: Record<LogStatus, { cls: string; label: string }> = {
-    Success: { cls: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30", label: "Success" },
+    Success: { cls: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30", label: "Success" },
     Warning: { cls: "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30", label: "Warning" },
     Error: { cls: "bg-red-500/20 text-red-300 border border-red-500/30", label: "Error" },
-    Info: { cls: "bg-slate-500/20 text-slate-300 border border-slate-500/30", label: "Info" },
+    Info: { cls: "bg-slate-500/20 text-foreground border border-slate-500/30", label: "Info" },
   };
   const { cls, label } = map[status];
   return (
@@ -165,9 +165,9 @@ function statusBadge(status: LogStatus) {
 }
 
 function auditLevelColor(level: AuditLog["level"]) {
-  if (level === "ERROR") return "text-red-400";
-  if (level === "WARN") return "text-yellow-400";
-  return "text-emerald-400";
+  if (level === "ERROR") return "text-red-600 dark:text-red-400";
+  if (level === "WARN") return "text-yellow-600 dark:text-yellow-400";
+  return "text-emerald-600 dark:text-emerald-400";
 }
 
 function generateCredentials(hospitalName: string) {
@@ -196,11 +196,11 @@ function KPICard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 flex flex-col gap-2 hover:border-white/20 transition-colors"
+      className="rounded-2xl border border-border bg-muted/50 backdrop-blur-sm p-5 flex flex-col gap-2 hover:border-white/20 transition-colors"
     >
-      <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">{title}</p>
+      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{title}</p>
       <p className={`text-3xl font-bold ${accent}`}>{value}</p>
-      <p className="text-xs text-slate-500">{sub}</p>
+      <p className="text-xs text-muted-foreground">{sub}</p>
     </motion.div>
   );
 }
@@ -229,34 +229,34 @@ function PlatformDashboard() {
       {/* Live Clock */}
       <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-6 flex items-center gap-6">
         <div>
-          <p className="text-xs text-indigo-400 uppercase tracking-widest mb-1">System Clock</p>
+          <p className="text-xs text-indigo-600 dark:text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-1">System Clock</p>
           <p className="font-mono text-5xl font-bold text-indigo-300 tabular-nums">{clockStr}</p>
-          <p className="text-sm text-slate-400 mt-1">{dateStr}</p>
+          <p className="text-sm text-muted-foreground mt-1">{dateStr}</p>
         </div>
         <div className="ml-auto flex flex-col items-end gap-1">
-          <span className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
+          <span className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             System Online
           </span>
-          <span className="text-xs text-slate-500">All services operational</span>
+          <span className="text-xs text-muted-foreground">All services operational</span>
         </div>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard title="System Uptime" value="99.99%" sub="Last 30 days" accent="text-emerald-400" delay={0.05} />
+        <KPICard title="System Uptime" value="99.99%" sub="Last 30 days" accent="text-emerald-600 dark:text-emerald-400" delay={0.05} />
         <KPICard title="Active TPA Sessions" value="42" sub="Current live sessions" accent="text-sky-400" delay={0.1} />
-        <KPICard title="STP Avg Processing" value="1.2s" sub="Straight-through processing" accent="text-violet-400" delay={0.15} />
-        <KPICard title="API Health" value="100%" sub="All endpoints green" accent="text-emerald-400" delay={0.2} />
+        <KPICard title="STP Avg Processing" value="1.2s" sub="Straight-through processing" accent="text-violet-600 dark:text-violet-400" delay={0.15} />
+        <KPICard title="API Health" value="100%" sub="All endpoints green" accent="text-emerald-600 dark:text-emerald-400" delay={0.2} />
       </div>
 
       {/* Activity Logs Table */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">System Activity Logs</h3>
-        <div className="rounded-2xl border border-white/10 overflow-hidden">
+        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">System Activity Logs</h3>
+        <div className="rounded-2xl border border-border overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-white/5 text-slate-400 text-xs uppercase tracking-wider">
+              <tr className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wider">
                 <th className="px-4 py-3 text-left">Timestamp</th>
                 <th className="px-4 py-3 text-left">Service</th>
                 <th className="px-4 py-3 text-left">Event</th>
@@ -270,11 +270,11 @@ function PlatformDashboard() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="border-t border-white/5 hover:bg-white/5 transition-colors"
+                  className="border-t border-border hover:bg-muted/50 transition-colors"
                 >
-                  <td className="px-4 py-3 font-mono text-slate-400 text-xs">{log.timestamp}</td>
-                  <td className="px-4 py-3 text-slate-300 font-medium">{log.service}</td>
-                  <td className="px-4 py-3 text-slate-400 text-xs max-w-xs truncate">{log.event}</td>
+                  <td className="px-4 py-3 font-mono text-muted-foreground text-xs">{log.timestamp}</td>
+                  <td className="px-4 py-3 text-foreground font-medium">{log.service}</td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs max-w-xs truncate">{log.event}</td>
                   <td className="px-4 py-3">{statusBadge(log.status)}</td>
                 </motion.tr>
               ))}
@@ -298,44 +298,44 @@ function RuleEngineSettings() {
 
   return (
     <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
-        <h3 className="text-lg font-semibold text-white">Rule Engine Configuration</h3>
+      <div className="rounded-2xl border border-border bg-muted/50 p-6 space-y-5">
+        <h3 className="text-lg font-semibold text-foreground">Rule Engine Configuration</h3>
 
         <div className="space-y-1">
-          <Label className="text-slate-300 text-sm">Auto-Approval Threshold (₹)</Label>
+          <Label className="text-foreground text-sm">Auto-Approval Threshold (₹)</Label>
           <Input
             type="number"
             value={autoApproval}
             onChange={(e) => setAutoApproval(Number(e.target.value))}
-            className="bg-white/5 border-white/15 text-white focus:ring-indigo-500"
+            className="bg-muted/50 border-border text-foreground focus:ring-indigo-500"
           />
-          <p className="text-xs text-slate-500">Claims below this amount are auto-approved if all other checks pass.</p>
+          <p className="text-xs text-muted-foreground">Claims below this amount are auto-approved if all other checks pass.</p>
         </div>
 
         <div className="space-y-1">
-          <Label className="text-slate-300 text-sm">High Risk Score Threshold (0–100)</Label>
+          <Label className="text-foreground text-sm">High Risk Score Threshold (0–100)</Label>
           <Input
             type="number"
             min={0}
             max={100}
             value={riskThreshold}
             onChange={(e) => setRiskThreshold(Number(e.target.value))}
-            className="bg-white/5 border-white/15 text-white focus:ring-indigo-500"
+            className="bg-muted/50 border-border text-foreground focus:ring-indigo-500"
           />
-          <p className="text-xs text-slate-500">Claims with a risk score above this threshold are flagged for manual review.</p>
+          <p className="text-xs text-muted-foreground">Claims with a risk score above this threshold are flagged for manual review.</p>
         </div>
 
         <div className="space-y-1">
-          <Label className="text-slate-300 text-sm">Co-Pay Percentage Override (%)</Label>
+          <Label className="text-foreground text-sm">Co-Pay Percentage Override (%)</Label>
           <Input
             type="number"
             min={0}
             max={100}
             value={coPay}
             onChange={(e) => setCoPay(Number(e.target.value))}
-            className="bg-white/5 border-white/15 text-white focus:ring-indigo-500"
+            className="bg-muted/50 border-border text-foreground focus:ring-indigo-500"
           />
-          <p className="text-xs text-slate-500">Set to 0 to use policy-level co-pay. Any value overrides all policies.</p>
+          <p className="text-xs text-muted-foreground">Set to 0 to use policy-level co-pay. Any value overrides all policies.</p>
         </div>
 
         <div className="flex flex-col gap-3 pt-2">
@@ -346,7 +346,7 @@ function RuleEngineSettings() {
               onCheckedChange={(v) => setNetworkCheck(Boolean(v))}
               className="border-white/30 data-[state=checked]:bg-indigo-500"
             />
-            <Label htmlFor="networkCheck" className="text-slate-300 text-sm cursor-pointer">
+            <Label htmlFor="networkCheck" className="text-foreground text-sm cursor-pointer">
               Network Check — verify hospital empanelment before approval
             </Label>
           </div>
@@ -357,7 +357,7 @@ function RuleEngineSettings() {
               onCheckedChange={(v) => setPolicyCheck(Boolean(v))}
               className="border-white/30 data-[state=checked]:bg-indigo-500"
             />
-            <Label htmlFor="policyCheck" className="text-slate-300 text-sm cursor-pointer">
+            <Label htmlFor="policyCheck" className="text-foreground text-sm cursor-pointer">
               Policy Validity Check — reject claims from expired policies
             </Label>
           </div>
@@ -365,44 +365,44 @@ function RuleEngineSettings() {
 
         <Button
           onClick={() => setOpen(true)}
-          className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold mt-2"
+          className="w-full bg-indigo-600 hover:bg-indigo-500 text-foreground font-semibold mt-2"
         >
           Save Configuration
         </Button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-emerald-400 text-lg">✓ Configuration Saved</DialogTitle>
-            <DialogDescription className="text-slate-400 text-sm">
+            <DialogTitle className="text-emerald-600 dark:text-emerald-400 text-lg">✓ Configuration Saved</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-sm">
               The following settings have been applied to the Rule Engine:
             </DialogDescription>
           </DialogHeader>
-          <div className="rounded-xl bg-white/5 border border-white/10 p-4 space-y-2 text-sm font-mono">
+          <div className="rounded-xl bg-muted/50 border border-border p-4 space-y-2 text-sm font-mono">
             <div className="flex justify-between">
-              <span className="text-slate-400">auto_approval_threshold</span>
+              <span className="text-muted-foreground">auto_approval_threshold</span>
               <span className="text-indigo-300">₹{autoApproval.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">risk_score_threshold</span>
+              <span className="text-muted-foreground">risk_score_threshold</span>
               <span className="text-yellow-300">{riskThreshold}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">copay_override_pct</span>
-              <span className="text-sky-300">{coPay}%</span>
+              <span className="text-muted-foreground">copay_override_pct</span>
+              <span className="text-sky-600 dark:text-sky-400">{coPay}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">network_check_enabled</span>
-              <span className={networkCheck ? "text-emerald-400" : "text-red-400"}>{String(networkCheck)}</span>
+              <span className="text-muted-foreground">network_check_enabled</span>
+              <span className={networkCheck ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}>{String(networkCheck)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">policy_validity_check</span>
-              <span className={policyCheck ? "text-emerald-400" : "text-red-400"}>{String(policyCheck)}</span>
+              <span className="text-muted-foreground">policy_validity_check</span>
+              <span className={policyCheck ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}>{String(policyCheck)}</span>
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={() => setOpen(false)} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+            <Button onClick={() => setOpen(false)} className="bg-emerald-600 hover:bg-emerald-500 text-foreground">
               Close
             </Button>
           </DialogFooter>
@@ -427,7 +427,7 @@ function BarChart({ data }: { data: BarChartItem[] }) {
     <div className="flex items-end gap-4 h-36">
       {data.map((d) => (
         <div key={d.label} className="flex flex-col items-center gap-2 flex-1">
-          <span className="text-xs text-slate-300 font-semibold">{d.pct}%</span>
+          <span className="text-xs text-foreground font-semibold">{d.pct}%</span>
           <motion.div
             initial={{ height: 0 }}
             animate={{ height: `${d.pct}%` }}
@@ -435,7 +435,7 @@ function BarChart({ data }: { data: BarChartItem[] }) {
             className={`w-full rounded-t-lg ${d.color}`}
             style={{ minHeight: 8 }}
           />
-          <span className="text-xs text-slate-400 text-center leading-tight">{d.label}</span>
+          <span className="text-xs text-muted-foreground text-center leading-tight">{d.label}</span>
         </div>
       ))}
     </div>
@@ -459,25 +459,25 @@ function PlatformAnalytics() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Claims by Status */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">Claims by Status</h3>
+        <div className="rounded-2xl border border-border bg-muted/50 p-5">
+          <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-5">Claims by Status</h3>
           <BarChart data={claimsData} />
         </div>
 
         {/* Portal Usage */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">Portal Usage Breakdown</h3>
+        <div className="rounded-2xl border border-border bg-muted/50 p-5">
+          <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-5">Portal Usage Breakdown</h3>
           <BarChart data={portalData} />
         </div>
       </div>
 
       {/* Monthly Volume */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">Monthly Claims Volume (2026)</h3>
+      <div className="rounded-2xl border border-border bg-muted/50 p-5">
+        <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-5">Monthly Claims Volume (2026)</h3>
         <div className="flex items-end gap-3 h-40">
           {MONTHLY_VOLUME.map((d, i) => (
             <div key={d.month} className="flex flex-col items-center gap-2 flex-1">
-              <span className="text-xs text-sky-300 font-semibold">{d.value}</span>
+              <span className="text-xs text-sky-600 dark:text-sky-400 font-semibold">{d.value}</span>
               <motion.div
                 initial={{ height: 0 }}
                 animate={{ height: `${(d.value / maxVol) * 100}%` }}
@@ -485,7 +485,7 @@ function PlatformAnalytics() {
                 className="w-full rounded-t-lg bg-gradient-to-t from-indigo-600 to-sky-400"
                 style={{ minHeight: 8 }}
               />
-              <span className="text-xs text-slate-400">{d.month}</span>
+              <span className="text-xs text-muted-foreground">{d.month}</span>
             </div>
           ))}
         </div>
@@ -524,10 +524,10 @@ function ProviderApprovals() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-white/10 overflow-hidden">
+      <div className="rounded-2xl border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-white/5 text-slate-400 text-xs uppercase tracking-wider">
+            <tr className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wider">
               <th className="px-4 py-3 text-left">Name</th>
               <th className="px-4 py-3 text-left">Location</th>
               <th className="px-4 py-3 text-left">Type</th>
@@ -543,17 +543,17 @@ function ProviderApprovals() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="border-t border-white/5 hover:bg-white/5 transition-colors"
+                  className="border-t border-border hover:bg-muted/50 transition-colors"
                 >
-                  <td className="px-4 py-3 text-white font-medium">{h.name}</td>
-                  <td className="px-4 py-3 text-slate-400">{h.location}</td>
-                  <td className="px-4 py-3 text-slate-400">{h.type}</td>
-                  <td className="px-4 py-3 text-slate-400 font-mono text-xs">{h.appliedDate}</td>
+                  <td className="px-4 py-3 text-foreground font-medium">{h.name}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{h.location}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{h.type}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{h.appliedDate}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <Button
                         size="sm"
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs"
+                        className="bg-emerald-600 hover:bg-emerald-500 text-foreground text-xs"
                         onClick={() => {
                           setTier("2");
                           setApproveTarget(h);
@@ -579,7 +579,7 @@ function ProviderApprovals() {
             </AnimatePresence>
             {hospitals.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500 text-sm">
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground text-sm">
                   No pending provider applications.
                 </td>
               </tr>
@@ -590,22 +590,22 @@ function ProviderApprovals() {
 
       {/* Approve Dialog */}
       <Dialog open={!!approveTarget} onOpenChange={(o) => { if (!o) setApproveTarget(null); }}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-emerald-400">Approve Provider Empanelment</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-emerald-600 dark:text-emerald-400">Approve Provider Empanelment</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Confirm empanelment for{" "}
-              <span className="text-white font-semibold">{approveTarget?.name}</span>
+              <span className="text-foreground font-semibold">{approveTarget?.name}</span>
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label className="text-slate-300 text-sm mb-1.5 block">Network Tier</Label>
+              <Label className="text-foreground text-sm mb-1.5 block">Network Tier</Label>
               <Select value={tier} onValueChange={setTier}>
-                <SelectTrigger className="bg-white/5 border-white/15 text-white">
+                <SelectTrigger className="bg-muted/50 border-border text-foreground">
                   <SelectValue placeholder="Select Tier" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   <SelectItem value="1">Tier 1 — Premium Network</SelectItem>
                   <SelectItem value="2">Tier 2 — Standard Network</SelectItem>
                   <SelectItem value="3">Tier 3 — Basic Network</SelectItem>
@@ -614,18 +614,18 @@ function ProviderApprovals() {
             </div>
             {creds && (
               <div>
-                <Label className="text-slate-300 text-sm mb-1.5 block">Generated Credentials</Label>
-                <div className="rounded-xl bg-slate-800 border border-white/10 p-4 font-mono text-sm space-y-1">
+                <Label className="text-foreground text-sm mb-1.5 block">Generated Credentials</Label>
+                <div className="rounded-xl bg-card border border-border p-4 font-mono text-sm space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">username</span>
+                    <span className="text-muted-foreground">username</span>
                     <span className="text-indigo-300">{creds.username}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">password</span>
-                    <span className="text-emerald-300">{creds.password}</span>
+                    <span className="text-muted-foreground">password</span>
+                    <span className="text-emerald-600 dark:text-emerald-400">{creds.password}</span>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   These credentials will be emailed to the provider's registered contact.
                 </p>
               </div>
@@ -635,11 +635,11 @@ function ProviderApprovals() {
             <Button
               variant="ghost"
               onClick={() => setApproveTarget(null)}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               Cancel
             </Button>
-            <Button onClick={handleApprove} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+            <Button onClick={handleApprove} className="bg-emerald-600 hover:bg-emerald-500 text-foreground">
               Confirm & Send Credentials
             </Button>
           </DialogFooter>
@@ -648,33 +648,33 @@ function ProviderApprovals() {
 
       {/* Reject Dialog */}
       <Dialog open={!!rejectTarget} onOpenChange={(o) => { if (!o) setRejectTarget(null); }}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-red-400">Reject Provider Application</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-red-600 dark:text-red-400">Reject Provider Application</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Provide a reason for rejecting{" "}
-              <span className="text-white font-semibold">{rejectTarget?.name}</span>
+              <span className="text-foreground font-semibold">{rejectTarget?.name}</span>
             </DialogDescription>
           </DialogHeader>
           <div>
-            <Label className="text-slate-300 text-sm mb-1.5 block">Rejection Reason</Label>
+            <Label className="text-foreground text-sm mb-1.5 block">Rejection Reason</Label>
             <textarea
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
               rows={3}
               placeholder="e.g. Incomplete documentation, facility not meeting standards..."
-              className="w-full rounded-xl bg-white/5 border border-white/15 text-white text-sm p-3 resize-none focus:outline-none focus:ring-2 focus:ring-red-500/50 placeholder:text-slate-600"
+              className="w-full rounded-xl bg-muted/50 border border-border text-foreground text-sm p-3 resize-none focus:outline-none focus:ring-2 focus:ring-red-500/50 placeholder:text-slate-600"
             />
           </div>
           <DialogFooter>
             <Button
               variant="ghost"
               onClick={() => setRejectTarget(null)}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               Cancel
             </Button>
-            <Button onClick={handleReject} className="bg-red-600 hover:bg-red-500 text-white">
+            <Button onClick={handleReject} className="bg-red-600 hover:bg-red-500 text-foreground">
               Reject Application
             </Button>
           </DialogFooter>
@@ -731,16 +731,16 @@ function TPAAccounts() {
       <div className="flex justify-end">
         <Button
           onClick={() => setAddOpen(true)}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white"
+          className="bg-indigo-600 hover:bg-indigo-500 text-foreground"
         >
           + Add TPA User
         </Button>
       </div>
 
-      <div className="rounded-2xl border border-white/10 overflow-hidden">
+      <div className="rounded-2xl border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-white/5 text-slate-400 text-xs uppercase tracking-wider">
+            <tr className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wider">
               <th className="px-4 py-3 text-left">Name</th>
               <th className="px-4 py-3 text-left">Role</th>
               <th className="px-4 py-3 text-left">Claims Processed</th>
@@ -753,17 +753,17 @@ function TPAAccounts() {
             {users.map((u) => (
               <tr
                 key={u.id}
-                className="border-t border-white/5 hover:bg-white/5 transition-colors"
+                className="border-t border-border hover:bg-muted/50 transition-colors"
               >
-                <td className="px-4 py-3 text-white font-medium">{u.name}</td>
-                <td className="px-4 py-3 text-slate-400 text-xs">{u.role}</td>
-                <td className="px-4 py-3 text-sky-300 font-mono">{u.claimsProcessed}</td>
-                <td className="px-4 py-3 text-slate-400 text-xs font-mono">{u.lastActive}</td>
+                <td className="px-4 py-3 text-foreground font-medium">{u.name}</td>
+                <td className="px-4 py-3 text-muted-foreground text-xs">{u.role}</td>
+                <td className="px-4 py-3 text-sky-600 dark:text-sky-400 font-mono">{u.claimsProcessed}</td>
+                <td className="px-4 py-3 text-muted-foreground text-xs font-mono">{u.lastActive}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                       u.status === "Active"
-                        ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                        ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
                         : "bg-red-500/20 text-red-300 border border-red-500/30"
                     }`}
                   >
@@ -790,39 +790,39 @@ function TPAAccounts() {
 
       {/* Add User Dialog */}
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-indigo-400">Add TPA User</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-indigo-600 dark:text-indigo-600 dark:text-indigo-400">Add TPA User</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Create a new TPA adjudicator account.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <div>
-              <Label className="text-slate-300 text-sm mb-1 block">Full Name</Label>
+              <Label className="text-foreground text-sm mb-1 block">Full Name</Label>
               <Input
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="e.g. Kiran Rao"
-                className="bg-white/5 border-white/15 text-white"
+                className="bg-muted/50 border-border text-foreground"
               />
             </div>
             <div>
-              <Label className="text-slate-300 text-sm mb-1 block">Email Address</Label>
+              <Label className="text-foreground text-sm mb-1 block">Email Address</Label>
               <Input
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 placeholder="e.g. kiran@tpa.in"
-                className="bg-white/5 border-white/15 text-white"
+                className="bg-muted/50 border-border text-foreground"
               />
             </div>
             <div>
-              <Label className="text-slate-300 text-sm mb-1 block">Role</Label>
+              <Label className="text-foreground text-sm mb-1 block">Role</Label>
               <Select value={newRole} onValueChange={setNewRole}>
-                <SelectTrigger className="bg-white/5 border-white/15 text-white">
+                <SelectTrigger className="bg-muted/50 border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   <SelectItem value="Junior Adjudicator">Junior Adjudicator</SelectItem>
                   <SelectItem value="Senior Adjudicator">Senior Adjudicator</SelectItem>
                   <SelectItem value="Lead Adjudicator">Lead Adjudicator</SelectItem>
@@ -830,12 +830,12 @@ function TPAAccounts() {
               </Select>
             </div>
             <div>
-              <Label className="text-slate-300 text-sm mb-1 block">Access Level</Label>
+              <Label className="text-foreground text-sm mb-1 block">Access Level</Label>
               <Select value={newAccess} onValueChange={setNewAccess}>
-                <SelectTrigger className="bg-white/5 border-white/15 text-white">
+                <SelectTrigger className="bg-muted/50 border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10 text-white">
+                <SelectContent className="bg-card border-border text-foreground">
                   <SelectItem value="Standard">Standard</SelectItem>
                   <SelectItem value="Elevated">Elevated</SelectItem>
                   <SelectItem value="Admin">Admin</SelectItem>
@@ -847,11 +847,11 @@ function TPAAccounts() {
             <Button
               variant="ghost"
               onClick={() => setAddOpen(false)}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               Cancel
             </Button>
-            <Button onClick={handleAddUser} className="bg-indigo-600 hover:bg-indigo-500 text-white">
+            <Button onClick={handleAddUser} className="bg-indigo-600 hover:bg-indigo-500 text-foreground">
               Create Account
             </Button>
           </DialogFooter>
@@ -860,12 +860,12 @@ function TPAAccounts() {
 
       {/* Suspend Confirm Dialog */}
       <Dialog open={!!suspendTarget} onOpenChange={(o) => { if (!o) setSuspendTarget(null); }}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-yellow-400">Suspend Account</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-yellow-600 dark:text-yellow-400">Suspend Account</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Are you sure you want to suspend{" "}
-              <span className="text-white font-semibold">{suspendTarget?.name}</span>? They will
+              <span className="text-foreground font-semibold">{suspendTarget?.name}</span>? They will
               lose access immediately.
             </DialogDescription>
           </DialogHeader>
@@ -873,11 +873,11 @@ function TPAAccounts() {
             <Button
               variant="ghost"
               onClick={() => setSuspendTarget(null)}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               Cancel
             </Button>
-            <Button onClick={handleSuspend} className="bg-yellow-600 hover:bg-yellow-500 text-white">
+            <Button onClick={handleSuspend} className="bg-yellow-600 hover:bg-yellow-500 text-foreground">
               Yes, Suspend
             </Button>
           </DialogFooter>
@@ -913,15 +913,15 @@ function SystemAuditLogs() {
     <div className="space-y-4">
       {/* Toolbar */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="flex gap-1 bg-white/5 rounded-xl p-1">
+        <div className="flex gap-1 bg-muted/50 rounded-xl p-1">
           {tabs.map((t) => (
             <button
               key={t}
               onClick={() => setFilter(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 filter === t
-                  ? "bg-indigo-600 text-white"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-indigo-600 text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t}
@@ -932,7 +932,7 @@ function SystemAuditLogs() {
           <Button
             size="sm"
             variant="outline"
-            className="border-white/15 text-slate-300 hover:bg-white/10 hover:text-white text-xs"
+            className="border-border text-foreground hover:bg-muted hover:text-foreground text-xs"
             onClick={() => toast.success("Audit logs exported as audit-logs.csv")}
           >
             Export Logs
@@ -949,7 +949,7 @@ function SystemAuditLogs() {
       </div>
 
       {/* Terminal-style log viewer */}
-      <ScrollArea className="h-[480px] rounded-2xl border border-white/10 bg-[#0d1117]">
+      <ScrollArea className="h-[480px] rounded-2xl border border-border bg-card">
         <div className="p-4 space-y-1">
           <AnimatePresence>
             {filtered.map((log, i) => (
@@ -965,8 +965,8 @@ function SystemAuditLogs() {
                 <span className={`font-bold w-14 shrink-0 ${auditLevelColor(log.level)}`}>
                   [{log.level}]
                 </span>
-                <span className="text-violet-400 shrink-0">{log.module}:</span>
-                <span className="text-emerald-300">{log.message}</span>
+                <span className="text-violet-600 dark:text-violet-400 shrink-0">{log.module}:</span>
+                <span className="text-emerald-600 dark:text-emerald-400">{log.message}</span>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -980,10 +980,10 @@ function SystemAuditLogs() {
 
       {/* Clear Confirm Dialog */}
       <Dialog open={clearOpen} onOpenChange={setClearOpen}>
-        <DialogContent className="bg-slate-900 border border-white/10 text-white">
+        <DialogContent className="bg-card border border-border text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-red-400">Clear All Logs</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-red-600 dark:text-red-400">Clear All Logs</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               This will permanently delete all {logs.length} audit log entries. This action cannot
               be undone.
             </DialogDescription>
@@ -992,12 +992,12 @@ function SystemAuditLogs() {
             <Button
               variant="ghost"
               onClick={() => setClearOpen(false)}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               Cancel
             </Button>
             <Button
-              className="bg-red-600 hover:bg-red-500 text-white"
+              className="bg-red-600 hover:bg-red-500 text-foreground"
               onClick={() => {
                 setLogs([]);
                 setClearOpen(false);
@@ -1053,8 +1053,8 @@ export default function AdminPortal() {
           transition={{ duration: 0.3 }}
           className="mb-8"
         >
-          <h1 className="text-2xl font-bold text-white">{sectionTitles[activeSection]}</h1>
-          <p className="text-slate-400 text-sm mt-1">{sectionDescriptions[activeSection]}</p>
+          <h1 className="text-2xl font-bold text-foreground">{sectionTitles[activeSection]}</h1>
+          <p className="text-muted-foreground text-sm mt-1">{sectionDescriptions[activeSection]}</p>
         </motion.div>
 
         {/* Section Content */}
