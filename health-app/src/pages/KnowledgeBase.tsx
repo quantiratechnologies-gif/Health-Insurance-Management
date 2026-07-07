@@ -1,4 +1,5 @@
-import { BookOpen, FileText, CheckCircle2, ShieldAlert, ArrowLeft, Users, User, HeartPulse, ShieldHalf, Baby, Building2, TrendingUp, Scale, Settings } from "lucide-react"
+import { FileText, CheckCircle2, ShieldAlert, ArrowLeft, Users, User, HeartPulse, ShieldHalf, Baby, Building2, TrendingUp, Scale, Settings } from "lucide-react"
+import { Logo } from "../components/Logo"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -19,10 +20,8 @@ export default function KnowledgeBase() {
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Hub
           </Button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
-              <BookOpen className="w-6 h-6 text-yellow-600" />
-            </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">HealthSure Knowledge Base</h1>
+            <Logo className="h-6 w-auto" />
+            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 border-l border-slate-200 pl-3 ml-1">Knowledge Base</h1>
           </div>
         </div>
       </div>

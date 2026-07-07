@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { ShieldHalf, Building2, User, ShieldCheck } from "lucide-react"
+import { Building2, User, ShieldCheck } from "lucide-react"
+import { Logo } from "./components/Logo"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -42,11 +43,8 @@ function LoginScreen() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
       {/* Brand Header */}
       <div className="flex flex-col items-center mb-8 cursor-pointer" onClick={() => navigate('/knowledge-base')}>
-        <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-4">
-          <ShieldHalf className="w-8 h-8 text-primary" />
-        </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">HealthSure</h1>
-        <p className="text-slate-500 mt-1">Unified Platform Access</p>
+        <Logo className="h-10 w-auto" />
+        <p className="text-slate-500 mt-2">Unified Platform Access</p>
       </div>
 
       <Tabs defaultValue="patient" className="w-full max-w-[400px]">

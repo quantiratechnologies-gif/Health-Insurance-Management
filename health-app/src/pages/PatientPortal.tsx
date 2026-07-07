@@ -1,4 +1,5 @@
 import { ShieldHalf, FileText, Activity, CreditCard, LogOut, Search, Bell, Settings } from "lucide-react"
+import { Logo } from "../components/Logo"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -22,10 +23,7 @@ export default function PatientPortal() {
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="p-6 flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <ShieldHalf className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-bold text-xl tracking-tight text-slate-900">HealthSure</span>
+          <Logo className="h-6 w-auto" />
         </div>
         
         <nav className="flex-1 px-4 space-y-2 mt-4">

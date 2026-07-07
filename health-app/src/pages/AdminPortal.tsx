@@ -1,4 +1,5 @@
-import { ShieldHalf, ShieldAlert, BarChart3, Server, CheckCircle2, AlertTriangle, LogOut, Bell } from "lucide-react"
+import { ShieldAlert, BarChart3, Server, CheckCircle2, AlertTriangle, LogOut, Bell } from "lucide-react"
+import { Logo } from "../components/Logo"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -23,10 +24,7 @@ export default function AdminPortal() {
     <div className="flex h-screen bg-slate-100 text-slate-900">
       <aside className="w-64 bg-slate-950 text-white border-r border-slate-800 flex flex-col">
         <div className="p-6 flex items-center gap-3">
-          <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-            <ShieldHalf className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-bold text-xl tracking-tight">TPA Admin</span>
+          <Logo className="h-6 w-auto brightness-0 invert" />
         </div>
         <nav className="flex-1 px-4 space-y-2 mt-4">
           <a href="#" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl font-medium">
