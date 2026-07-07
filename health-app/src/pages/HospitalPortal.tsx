@@ -4,37 +4,54 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useStore } from "../store/useStore"
 import { useState } from "react"
+import { toast } from "sonner"
+import { motion, Variants } from "framer-motion"
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+
+const claimFormSchema = z.object({
+  patientId: z.string().regex(/^HS-\d{5}$/, "Policy ID must be in format HS-XXXXX (e.g. HS-89302)"),
+  patientName: z.string().min(2, "Patient Name is required"),
+  treatment: z.string().min(5, "Treatment description must be at least 5 characters"),
+  cost: z.string().min(1, "Minimum cost is ₹100"),
+})
 
 export default function HospitalPortal() {
   const { claims, submitClaim } = useStore()
   const [open, setOpen] = useState(false)
 
-  // Form State
-  const [patientId, setPatientId] = useState('')
-  const [patientName, setPatientName] = useState('')
-  const [treatment, setTreatment] = useState('')
-  const [cost, setCost] = useState('')
+  const form = useForm<z.infer<typeof claimFormSchema>>({
+    resolver: zodResolver(claimFormSchema),
+    defaultValues: {
+      patientId: "",
+      patientName: "",
+      treatment: "",
+      cost: "",
+    },
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = (values: z.infer<typeof claimFormSchema>) => {
     submitClaim({
-      patientId,
-      patientName,
-      treatment,
-      cost: Number(cost),
+      patientId: values.patientId,
+      patientName: values.patientName,
+      treatment: values.treatment,
+      cost: Number(values.cost),
       hospital: 'Apollo Hospitals, Jubilee Hills'
     })
+    
+    toast.success("Pre-Authorization Submitted", {
+      description: `Claim for ${values.patientName} has been routed to the STP Engine.`,
+    })
+
     setOpen(false)
-    setPatientId('')
-    setPatientName('')
-    setTreatment('')
-    setCost('')
+    form.reset()
   }
 
   const hospitalClaims = claims.filter(c => c.hospital === 'Apollo Hospitals, Jubilee Hills')
@@ -68,9 +85,29 @@ export default function HospitalPortal() {
     </>
   )
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  }
+
   return (
     <AppLayout title="Provider Hub" navLinks={navLinks} headerContent={headerContent}>
-        <div className="flex-1 overflow-auto p-8">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="flex-1 overflow-auto p-8"
+        >
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-xl font-bold text-slate-800">Apollo Hospitals, Jubilee Hills</h2>
             
@@ -85,114 +122,157 @@ export default function HospitalPortal() {
                     Enter patient details to trigger the STP Adjudication Engine.
                   </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="patientId">Policy ID</Label>
-                      <Input id="patientId" value={patientId} onChange={e => setPatientId(e.target.value)} placeholder="HS-89302" required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="name">Patient Name</Label>
-                      <Input id="name" value={patientName} onChange={e => setPatientName(e.target.value)} placeholder="Vempati Vamshi Krishna" required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="treatment">Diagnosis / Treatment</Label>
-                      <Input id="treatment" value={treatment} onChange={e => setTreatment(e.target.value)} placeholder="Cataract Surgery" required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="cost">Estimated Cost (₹)</Label>
-                      <Input id="cost" type="number" value={cost} onChange={e => setCost(e.target.value)} placeholder="45000" required />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit">Submit to TPA</Button>
-                  </DialogFooter>
-                </form>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="patientId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Policy ID</FormLabel>
+                          <FormControl>
+                            <Input placeholder="HS-89302" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="patientName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Patient Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Vempati Vamshi Krishna" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="treatment"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Diagnosis / Treatment</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Cataract Surgery" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control as any}
+                      name="cost"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Estimated Cost (₹)</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="45000" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <DialogFooter className="pt-4">
+                      <Button type="submit">Submit to TPA</Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
               </DialogContent>
             </Dialog>
-
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card className="shadow-sm border-slate-200">
-              <CardContent className="p-6 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">Pending</p>
-                  <h3 className="text-2xl font-bold mt-1">{pendingCount}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-slate-600" />
-                </div>
-              </CardContent>
-            </Card>
+            <motion.div variants={itemVariants}>
+              <Card className="shadow-sm border-slate-200">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-slate-500">Pending</p>
+                    <h3 className="text-2xl font-bold mt-1">{pendingCount}</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-slate-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="shadow-sm border-slate-200">
-              <CardContent className="p-6 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">Approved (STP)</p>
-                  <h3 className="text-2xl font-bold mt-1 text-green-600">{approvedCount}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                </div>
-              </CardContent>
-            </Card>
+            <motion.div variants={itemVariants}>
+              <Card className="shadow-sm border-slate-200">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-slate-500">Approved (STP)</p>
+                    <h3 className="text-2xl font-bold mt-1 text-green-600">{approvedCount}</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="shadow-sm border-slate-200">
-              <CardContent className="p-6 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">Rejected</p>
-                  <h3 className="text-2xl font-bold mt-1 text-red-600">{rejectedCount}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                  <XCircle className="w-5 h-5 text-red-600" />
-                </div>
-              </CardContent>
-            </Card>
+            <motion.div variants={itemVariants}>
+              <Card className="shadow-sm border-slate-200">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-slate-500">Rejected</p>
+                    <h3 className="text-2xl font-bold mt-1 text-red-600">{rejectedCount}</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                    <XCircle className="w-5 h-5 text-red-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
-          <Card className="shadow-sm border-slate-200">
-            <CardHeader>
-              <CardTitle>Recent Patient Submissions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Claim ID</TableHead>
-                    <TableHead>Patient Name</TableHead>
-                    <TableHead>Treatment</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {hospitalClaims.map(claim => (
-                    <TableRow key={claim.id}>
-                      <TableCell className="font-medium font-mono text-xs">{claim.id}</TableCell>
-                      <TableCell>
-                        <div className="font-medium">{claim.patientName}</div>
-                        <div className="text-xs text-slate-500">{claim.patientId}</div>
-                      </TableCell>
-                      <TableCell>{claim.treatment}</TableCell>
-                      <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
-                      <TableCell>
-                        {claim.status === 'Pending TPA' || claim.status === 'Flagged' ? (
-                           <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
-                        ) : claim.status === 'Rejected' ? (
-                           <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
-                        ) : (
-                           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
-                        )}
-                      </TableCell>
+          <motion.div variants={itemVariants}>
+            <Card className="shadow-sm border-slate-200">
+              <CardHeader>
+                <CardTitle>Recent Patient Submissions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Claim ID</TableHead>
+                      <TableHead>Patient Name</TableHead>
+                      <TableHead>Treatment</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {hospitalClaims.map(claim => (
+                      <TableRow key={claim.id}>
+                        <TableCell className="font-medium font-mono text-xs">{claim.id}</TableCell>
+                        <TableCell>
+                          <div className="font-medium">{claim.patientName}</div>
+                          <div className="text-xs text-slate-500">{claim.patientId}</div>
+                        </TableCell>
+                        <TableCell>{claim.treatment}</TableCell>
+                        <TableCell>₹{claim.cost.toLocaleString('en-IN')}</TableCell>
+                        <TableCell>
+                          {claim.status === 'Pending TPA' || claim.status === 'Flagged' ? (
+                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">{claim.status}</Badge>
+                          ) : claim.status === 'Rejected' ? (
+                             <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Rejected</Badge>
+                          ) : (
+                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{claim.status}</Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </motion.div>
           
-        </div>
+        </motion.div>
     </AppLayout>
   )
 }

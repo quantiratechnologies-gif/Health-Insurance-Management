@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { Building2, User, ShieldCheck } from "lucide-react"
+import { Building2, User, ShieldCheck, Loader2 } from "lucide-react"
 import { Logo } from "./components/Logo"
+import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -40,110 +41,137 @@ function LoginScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
-      {/* Brand Header */}
-      <div className="flex flex-col items-center mb-8 cursor-pointer" onClick={() => navigate('/knowledge-base')}>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4 relative overflow-hidden">
+      {/* Premium Background Gradients */}
+      <div className="absolute top-0 left-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col items-center mb-8 cursor-pointer z-10" 
+        onClick={() => navigate('/knowledge-base')}
+      >
         <Logo className="h-10 w-auto" />
-        <p className="text-slate-500 mt-2">Unified Platform Access</p>
-      </div>
+        <p className="text-slate-500 mt-3 font-medium tracking-wide text-sm">UNIFIED PLATFORM ACCESS</p>
+      </motion.div>
 
-      <Tabs defaultValue="patient" className="w-full max-w-[400px]">
-        <TabsList className="grid w-full grid-cols-3 mb-6">
-          <TabsTrigger value="patient" className="flex gap-2"><User className="w-4 h-4" /> Patient</TabsTrigger>
-          <TabsTrigger value="hospital" className="flex gap-2"><Building2 className="w-4 h-4" /> Hospital</TabsTrigger>
-          <TabsTrigger value="admin" className="flex gap-2"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
-        </TabsList>
-        
-        {/* Patient Login */}
-        <TabsContent value="patient">
-          <Card className="border-slate-200 shadow-lg">
-            <CardHeader>
-              <CardTitle>Member Portal</CardTitle>
-              <CardDescription>Sign in to manage your health policies and claims.</CardDescription>
-            </CardHeader>
-            <form onSubmit={(e) => handleLogin(e, '/patient')}>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="patient-email">Email or Policy ID</Label>
-                  <Input id="patient-email" type="text" placeholder="m.doe@example.com" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="patient-password">Password</Label>
-                  <Input id="patient-password" type="password" required />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Authenticating..." : "Sign In to Member Portal"}
-                </Button>
-              </CardFooter>
-            </form>
-          </Card>
-        </TabsContent>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="w-full max-w-[420px] z-10"
+      >
+        <Tabs defaultValue="patient" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-6 p-1 bg-white/50 backdrop-blur-md border border-slate-200/50 rounded-xl shadow-sm">
+            <TabsTrigger value="patient" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><User className="w-4 h-4" /> Patient</TabsTrigger>
+            <TabsTrigger value="hospital" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><Building2 className="w-4 h-4" /> Provider</TabsTrigger>
+            <TabsTrigger value="admin" className="flex gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm"><ShieldCheck className="w-4 h-4" /> Admin</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="patient">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-xl">
+              <CardHeader className="space-y-1 pb-6">
+                <CardTitle className="text-2xl font-bold tracking-tight">Member Portal</CardTitle>
+                <CardDescription>Sign in to manage your health policies and claims.</CardDescription>
+              </CardHeader>
+              <form onSubmit={(e) => handleLogin(e, '/patient')}>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="patient-email">Email or Policy ID</Label>
+                    <Input id="patient-email" type="text" placeholder="m.doe@example.com" required className="bg-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="patient-password">Password</Label>
+                      <a href="#" className="text-xs text-primary font-medium hover:underline">Forgot password?</a>
+                    </div>
+                    <Input id="patient-password" type="password" required className="bg-white" />
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-2 pb-6">
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Sign In"}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+          </TabsContent>
 
-        {/* Hospital Login */}
-        <TabsContent value="hospital">
-          <Card className="border-slate-200 shadow-lg">
-            <CardHeader>
-              <CardTitle>Provider Portal</CardTitle>
-              <CardDescription>Access patient eligibility and submit pre-auths.</CardDescription>
-            </CardHeader>
-            <form onSubmit={(e) => handleLogin(e, '/hospital')}>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="hospital-id">Provider Registration ID</Label>
-                  <Input id="hospital-id" type="text" placeholder="PRV-8492" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="hospital-password">Password</Label>
-                  <Input id="hospital-password" type="password" required />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Authenticating..." : "Sign In to Provider Portal"}
-                </Button>
-              </CardFooter>
-            </form>
-          </Card>
-        </TabsContent>
+          <TabsContent value="hospital">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-xl">
+              <CardHeader className="space-y-1 pb-6">
+                <CardTitle className="text-2xl font-bold tracking-tight">Provider Portal</CardTitle>
+                <CardDescription>Access patient eligibility and submit pre-auths.</CardDescription>
+              </CardHeader>
+              <form onSubmit={(e) => handleLogin(e, '/hospital')}>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="hospital-id">Provider Registration ID</Label>
+                    <Input id="hospital-id" type="text" placeholder="PRV-8492" required className="bg-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="hospital-password">Password</Label>
+                      <a href="#" className="text-xs text-primary font-medium hover:underline">Forgot password?</a>
+                    </div>
+                    <Input id="hospital-password" type="password" required className="bg-white" />
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-2 pb-6">
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Sign In to Provider Portal"}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+          </TabsContent>
 
-        {/* Admin Login */}
-        <TabsContent value="admin">
-          <Card className="border-slate-200 shadow-lg">
-            <CardHeader>
-              <CardTitle>TPA / Super Admin</CardTitle>
-              <CardDescription>Secure access for claim adjudication and rule engines.</CardDescription>
-            </CardHeader>
-            <form onSubmit={(e) => handleLogin(e, '/admin')}>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="admin-email">Admin Email</Label>
-                  <Input id="admin-email" type="email" placeholder="admin@healthsure.com" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="admin-password">Password</Label>
-                  <Input id="admin-password" type="password" required />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white" disabled={isLoading}>
-                  {isLoading ? "Authenticating..." : "Secure Admin Login"}
-                </Button>
-              </CardFooter>
-            </form>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="admin">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-xl">
+              <CardHeader className="space-y-1 pb-6">
+                <CardTitle className="text-2xl font-bold tracking-tight">System Admin</CardTitle>
+                <CardDescription>Secure access for claim adjudication and rule engines.</CardDescription>
+              </CardHeader>
+              <form onSubmit={(e) => handleLogin(e, '/admin')}>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="admin-email">Admin Email</Label>
+                    <Input id="admin-email" type="email" placeholder="admin@healthsure.com" required className="bg-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="admin-password">Password</Label>
+                      <a href="#" className="text-xs text-slate-500 font-medium hover:underline">SSO Recovery</a>
+                    </div>
+                    <Input id="admin-password" type="password" required className="bg-white" />
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-2 pb-6">
+                  <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white" disabled={isLoading}>
+                    {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Authenticating...</> : "Secure Admin Login"}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </motion.div>
       
-      <div className="mt-8 text-center">
-        <Button variant="link" onClick={() => navigate('/knowledge-base')} className="text-slate-500">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-8 text-center z-10"
+      >
+        <Button variant="link" onClick={() => navigate('/knowledge-base')} className="text-slate-500 font-medium">
           Explore Knowledge Base &rarr;
         </Button>
-        <div className="text-sm text-slate-400 mt-2">
+        <div className="text-sm text-slate-400 mt-2 font-medium">
           &copy; 2026 HealthSure TPA Systems.
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
