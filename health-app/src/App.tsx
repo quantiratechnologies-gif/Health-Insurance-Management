@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { ShieldHalf, Building2, User, ShieldCheck } from "lucide-react"
 
@@ -19,23 +20,28 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
-function App() {
-  const [isLoading, setIsLoading] = useState(false)
+import PatientPortal from './pages/PatientPortal'
+import HospitalPortal from './pages/HospitalPortal'
+import AdminPortal from './pages/AdminPortal'
+import KnowledgeBase from './pages/KnowledgeBase'
 
-  const handleLogin = (e: React.FormEvent) => {
+function LoginScreen() {
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const handleLogin = (e: React.FormEvent, route: string) => {
     e.preventDefault()
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      alert("Login flow triggered. Routing would happen here.")
-    }, 1500)
+      navigate(route)
+    }, 1000)
   }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
-      
       {/* Brand Header */}
-      <div className="flex flex-col items-center mb-8">
+      <div className="flex flex-col items-center mb-8 cursor-pointer" onClick={() => navigate('/knowledge-base')}>
         <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-4">
           <ShieldHalf className="w-8 h-8 text-primary" />
         </div>
@@ -43,7 +49,6 @@ function App() {
         <p className="text-slate-500 mt-1">Unified Platform Access</p>
       </div>
 
-      {/* Unified Login Card via Tabs */}
       <Tabs defaultValue="patient" className="w-full max-w-[400px]">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="patient" className="flex gap-2"><User className="w-4 h-4" /> Patient</TabsTrigger>
@@ -56,11 +61,9 @@ function App() {
           <Card className="border-slate-200 shadow-lg">
             <CardHeader>
               <CardTitle>Member Portal</CardTitle>
-              <CardDescription>
-                Sign in to manage your health policies and claims.
-              </CardDescription>
+              <CardDescription>Sign in to manage your health policies and claims.</CardDescription>
             </CardHeader>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={(e) => handleLogin(e, '/patient')}>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="patient-email">Email or Policy ID</Label>
@@ -85,11 +88,9 @@ function App() {
           <Card className="border-slate-200 shadow-lg">
             <CardHeader>
               <CardTitle>Provider Portal</CardTitle>
-              <CardDescription>
-                Access patient eligibility and submit pre-auths.
-              </CardDescription>
+              <CardDescription>Access patient eligibility and submit pre-auths.</CardDescription>
             </CardHeader>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={(e) => handleLogin(e, '/hospital')}>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="hospital-id">Provider Registration ID</Label>
@@ -114,11 +115,9 @@ function App() {
           <Card className="border-slate-200 shadow-lg">
             <CardHeader>
               <CardTitle>TPA / Super Admin</CardTitle>
-              <CardDescription>
-                Secure access for claim adjudication and rule engines.
-              </CardDescription>
+              <CardDescription>Secure access for claim adjudication and rule engines.</CardDescription>
             </CardHeader>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={(e) => handleLogin(e, '/admin')}>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="admin-email">Admin Email</Label>
@@ -138,11 +137,30 @@ function App() {
           </Card>
         </TabsContent>
       </Tabs>
-
-      <div className="mt-8 text-center text-sm text-slate-400">
-        &copy; 2026 HealthSure TPA Systems. All rights reserved.
+      
+      <div className="mt-8 text-center">
+        <Button variant="link" onClick={() => navigate('/knowledge-base')} className="text-slate-500">
+          Explore Knowledge Base &rarr;
+        </Button>
+        <div className="text-sm text-slate-400 mt-2">
+          &copy; 2026 HealthSure TPA Systems.
+        </div>
       </div>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginScreen />} />
+        <Route path="/patient" element={<PatientPortal />} />
+        <Route path="/hospital" element={<HospitalPortal />} />
+        <Route path="/admin" element={<AdminPortal />} />
+        <Route path="/knowledge-base" element={<KnowledgeBase />} />
+      </Routes>
+    </Router>
   )
 }
 
