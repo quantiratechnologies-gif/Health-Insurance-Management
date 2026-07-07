@@ -1,4 +1,4 @@
-import { Activity, ShieldCheck, UserCheck, CheckCircle2, Search, Bell, FilePlus2 } from "lucide-react"
+import { Activity, ShieldCheck, UserCheck, CheckCircle2, Search, Bell, FilePlus2, Eye } from "lucide-react"
 import { AppLayout, NavGroup } from "../components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useStore } from "../store/useStore"
+import { useStore, Claim } from "../store/useStore"
 import { motion, Variants } from "framer-motion"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function HospitalPortal() {
   const { claims, submitClaim } = useStore()
@@ -23,6 +25,11 @@ export default function HospitalPortal() {
   const [patientId, setPatientId] = useState("")
   const [amount, setAmount] = useState("")
   const [treatment, setTreatment] = useState("")
+  
+  // Dialog States
+  const [selectedClaim, setSelectedClaim] = useState<Claim | null>(null)
+  const [preAuthOpen, setPreAuthOpen] = useState(false)
+  const [preAuthData, setPreAuthData] = useState({ patientId: "", doctorName: "", reason: "" })
 
   const handleClaimSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -156,6 +163,7 @@ export default function HospitalPortal() {
                         <TableHead>Amount</TableHead>
                         <TableHead>Date</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Action</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -176,6 +184,11 @@ export default function HospitalPortal() {
                             ) : (
                                <Badge variant="outline" className="bg-warning-muted text-warning-foreground border-warning-border">{claim.status}</Badge>
                             )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm" className="gap-2" onClick={() => setSelectedClaim(claim)}>
+                              <Eye className="w-4 h-4" /> View
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -273,7 +286,7 @@ export default function HospitalPortal() {
                 <div className="text-center">
                   <ShieldCheck className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
                   <p className="text-muted-foreground font-medium text-lg">No pending requests.</p>
-                  <Button variant="outline" className="mt-6" onClick={() => setActiveView("Submit Claim")}>New Pre-Auth Request</Button>
+                  <Button variant="outline" className="mt-6" onClick={() => setPreAuthOpen(true)}>New Pre-Auth Request</Button>
                 </div>
               </CardContent>
             </Card>
@@ -294,6 +307,80 @@ export default function HospitalPortal() {
       >
         {renderView()}
       </motion.div>
+
+      {/* Claim Details Dialog */}
+      <Dialog open={!!selectedClaim} onOpenChange={(open) => !open && setSelectedClaim(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Claim Details: {selectedClaim?.id}</DialogTitle>
+            <DialogDescription>Submitted on {selectedClaim?.date}</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-muted-foreground uppercase">Patient Name</p>
+                <p className="font-semibold">{selectedClaim?.patientName}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground uppercase">Patient ID</p>
+                <p className="font-semibold">{selectedClaim?.patientId}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground uppercase">Treatment</p>
+                <p className="font-semibold">{selectedClaim?.treatment}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground uppercase">Total Cost</p>
+                <p className="font-semibold">₹{selectedClaim?.cost.toLocaleString('en-IN')}</p>
+              </div>
+            </div>
+            <div className="bg-muted/50 p-4 rounded-lg mt-2">
+              <p className="text-xs text-muted-foreground uppercase mb-1">STP Adjudication Result</p>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge>{selectedClaim?.status}</Badge>
+                <span className="text-sm font-medium">Score: {selectedClaim?.score}/100</span>
+              </div>
+              <p className="text-sm text-foreground"><span className="font-semibold">Rule Triggered:</span> {selectedClaim?.ruleTriggered}</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSelectedClaim(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Pre-Auth Request Dialog */}
+      <Dialog open={preAuthOpen} onOpenChange={setPreAuthOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Request Pre-Authorisation</DialogTitle>
+            <DialogDescription>Submit clinical details for planned procedures.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Patient ID</Label>
+              <Input placeholder="e.g. HS-89302" value={preAuthData.patientId} onChange={(e) => setPreAuthData({ ...preAuthData, patientId: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Treating Doctor</Label>
+              <Input placeholder="Dr. Name" value={preAuthData.doctorName} onChange={(e) => setPreAuthData({ ...preAuthData, doctorName: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Clinical Justification & Procedure Details</Label>
+              <Textarea placeholder="Enter detailed medical necessity..." value={preAuthData.reason} onChange={(e) => setPreAuthData({ ...preAuthData, reason: e.target.value })} className="h-24" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreAuthOpen(false)}>Cancel</Button>
+            <Button onClick={() => {
+              toast.success("Pre-Auth Requested Successfully", { description: "TPA is reviewing the clinical details." });
+              setPreAuthOpen(false);
+              setPreAuthData({ patientId: "", doctorName: "", reason: "" });
+            }}>Submit Request</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </AppLayout>
   )
 }
